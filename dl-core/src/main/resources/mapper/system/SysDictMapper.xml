@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.system.mapper.SysDictMapper">
+
+    <select id="dictTree" resultType="com.yc.core.tree.TreeNode">
+        select
+            sys_dict_id as id,
+            parent_id as parentId,
+            name as title,
+            sort as order_num
+        from sys_dict
+        where
+            del_flag = 0
+        <if test="name != null and name != '' ">
+            and name like concat ('%',#{name},'%')
+        </if>
+        order by sort
+    </select>
+
+    <select id="childrenDict" resultType="com.yc.core.system.entity.SysDict">
+        select
+            sd.*
+        from sys_dict sd
+        where
+            sd.del_flag = 0
+        and sd.parent_id = #{query.parentId}
+        <if test="query.name != null and query.name != '' ">
+            and sd.name like concat ('%',#{query.name},'%')
+        </if>
+        order by sd.sort,sd.create_time desc
+    </select>
+
+    <select id="getDict" resultType="com.yc.core.system.entity.SysDict">
+        select
+            dic.*
+        from sys_dict dic
+        where
+            dic.parent_id = ('"'+ #{hqls} +'"' )
+            and dic.del_flag = 0
+        order by dic.sort asc
+    </select>
+
+    <select id="getDictByRoute" resultType="com.yc.core.system.entity.SysDict">
+        select
+            dic.*
+        from sys_dict dic
+        where
+            dic.parent_id = (
+                SELECT
+                    d_second.sys_dict_id
+                from sys_dict d_first
+                left join sys_dict d_second on d_first.sys_dict_id = d_second.parent_id
+                where
+                    d_first.parent_id = '#'
+                and d_first.`name` = #{firstName}
+                and d_second.name = #{secondName}
+                and d_first.state = 0
+                and d_second.state = 0
+        )
+        and dic.del_flag = 0
+        and dic.state = 0
+        order by dic.sort asc
+    </select>
+
+</mapper>

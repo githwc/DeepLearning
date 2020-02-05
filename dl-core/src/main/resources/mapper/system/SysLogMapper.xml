@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.system.mapper.SysLogMapper">
+
+    <select id="logPage" resultType="com.yc.core.system.model.vo.SysLogVO">
+        select
+            sl.*,
+            su.login_name,su.user_name
+        from sys_log sl
+        left join sys_user su on su.sys_user_id = sl.create_user_id
+        <where>
+            <if test="query.loginName != null and query.loginName != '' ">
+                and su.login_name like concat ('%',#{query.loginName},'%')
+            </if>
+            <if test="query.userName != null and query.userName != '' ">
+                and su.user_name like concat ('%',#{query.userName},'%')
+            </if>
+            <if test="query.opType != null and query.opType != '' ">
+                and sl.op_type like concat ('%',#{query.opType},'%')
+            </if>
+            <if test="query.logType != null and query.logType != '' ">
+                and sl.log_type like concat ('%',#{query.logType},'%')
+            </if>
+            <if test="query.beginTime != null and query.endTime != null and query.beginTime != '' and query.endTime != '' ">
+                and sl.create_time between #{query.beginTime} and #{query.endTime}
+            </if>
+        </where>
+        order by sl.create_time desc
+    </select>
+</mapper>

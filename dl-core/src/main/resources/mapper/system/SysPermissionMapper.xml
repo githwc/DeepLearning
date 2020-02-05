@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.system.mapper.SysPermissionMapper">
+
+    <select id="queryPermissionByUser" resultType="com.yc.core.system.entity.SysPermission">
+		   SELECT p.*
+		   FROM  sys_permission p
+		   WHERE exists(
+		   		select a.sys_role_permission_id from sys_role_permission a
+		   		join sys_role b on a.role_id = b.sys_role_id
+		   		join sys_user_role c on c.role_id = b.sys_role_id
+		   		join sys_user d on d.sys_user_id = c.user_id
+		   		where p.sys_permission_id = a.permission_id AND d.login_name = #{loginName} AND b.del_flag = 0
+		   )
+		   and p.del_flag = 0
+		   order by p.sort ASC
+	</select>
+
+</mapper>

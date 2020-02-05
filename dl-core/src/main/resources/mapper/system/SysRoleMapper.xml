@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.system.mapper.SysRoleMapper">
+
+    <select id="getUserRoles" resultType="com.yc.core.system.entity.SysRole">
+        select
+            role_code
+        from sys_role
+        where
+            del_flag = 0 AND sys_role_id in
+            (select
+                role_id
+                from sys_user_role
+                where user_id =
+                (select sys_user_id from sys_user where login_name=#{loginName})
+            )
+    </select>
+
+    <select id="roleList" resultType="com.yc.core.system.entity.SysRole">
+        select *
+        from sys_role r
+        <where>
+            r.del_flag = 0
+            <if test="query.roleName != null and query.roleName != '' ">
+                and r.role_name like concat('%',#{query.roleName},'%')
+            </if>
+        </where>
+        order by r.sort
+    </select>
+
+
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.4.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.yc</groupId>
+    <artifactId>DeepLearning</artifactId>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>dl-common</module>
+        <module>dl-core</module>
+        <module>dl-practice</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <!-- jar -->
+        <druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
+        <mybatis-plus.version>3.1.0</mybatis-plus.version>
+        <lombok.version>1.16.4</lombok.version>
+        <swagger.version>2.7.0</swagger.version>
+        <bootstrap.version>4.0.0</bootstrap.version>
+        <common-codec.version>1.9</common-codec.version>
+        <commons-lang3.version>3.9</commons-lang3.version>
+        <itextpdf.version>5.5.13.1</itextpdf.version>
+        <zxing-core.version>3.4.0</zxing-core.version>
+        <fastjson.version>1.2.58</fastjson.version>
+        <json-lib.version>1.0.2</json-lib.version>
+        <freemarker.version>2.3.29</freemarker.version>
+        <jwt.version>3.7.0</jwt.version>
+        <hutool.version>5.0.0</hutool.version>
+        <shiro.version>1.4.0</shiro.version>
+    </properties>
+
+        <dependencies>
+            <!-- druid -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!--lombok jar -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
+            <!--shiro-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring-boot-starter</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>slf4j-api</artifactId>
+                        <groupId>org.apache</groupId>
+                    </exclusion>
+                </exclusions>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <!--JWT-->
+            <dependency>
+                <groupId>com.auth0</groupId>
+                <artifactId>java-jwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+            </dependency>
+
+            <!--配置文件处理器：用于编写yml时的提示信息-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+            </dependency>
+
+        </dependencies>
+
+</project>

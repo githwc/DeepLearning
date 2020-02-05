@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.redisPractice.mapper.RedisPubSubMapper">
+
+    <select id="pubSubPage" resultType="com.yc.core.redisPractice.entity.RedisPubSub">
+        select
+            *
+        from redis_pub_sub
+        order by create_time desc
+    </select>
+</mapper>
