@@ -30,7 +30,7 @@ public class MyBatisGenerator {
     /**
      * 生成文件所在项目路径
      */
-    private static final String BASE_PATH = "D:\\workSpace\\DeepLearning";
+    private static final String BASE_PATH = "D:\\workSpace\\DeepLearning\\dl-core";
     /**
      * 基本包名
      */
@@ -38,14 +38,16 @@ public class MyBatisGenerator {
     /**
      * 文件夹名
      */
-    private static final String MODEL_NAME = "redisPractice";
+    private static final String MODEL_NAME = "aaa";
     private static final String AUTHOR = "xieyc";
     /**
      * 要生成的表名
      */
-    private static final String[] TABLES = {"redis_rank"};
+    private static final String[] TABLES = {"aaa"};
 
-    //数据库配置四要素
+    /**
+     * 数据库配置四要素
+     */
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     private static final String URL =
             "jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8";
