@@ -17,6 +17,5 @@ import com.yc.core.TestTemp.entity.Test;
  */
 public interface TestService extends IService<Test> {
 
-    void updateAll();
-
+    void testHashMap();
 }

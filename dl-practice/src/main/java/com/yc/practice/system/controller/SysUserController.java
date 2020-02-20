@@ -154,15 +154,4 @@ public class SysUserController {
         }
     }
 
-    /**
-     * todo 放到常见案例菜单
-     * 导出Word
-     * @param response 响应
-     */
-    @PostMapping(value = "/exportWord")
-    public void export(HttpServletResponse response) {
-        service.export(response);
-    }
-
-
 }

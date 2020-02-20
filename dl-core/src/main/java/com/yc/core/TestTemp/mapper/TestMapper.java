@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yc.core.TestTemp.entity.Test;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+
 /**
  *
  * 功能描述：
@@ -20,4 +22,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TestMapper extends BaseMapper<Test> {
 
+    HashMap testHashMap(String name);
 }

@@ -8,6 +8,8 @@ import com.yc.practice.TestTemp.service.TestService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+
 /**
 * 功能描述：
 *
@@ -24,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class TestServiceImpl extends ServiceImpl<TestMapper, Test> implements TestService {
 
-    @Override
-    public void updateAll() {
-        Test test = new Test();
-        this.baseMapper.update(test,new QueryWrapper<Test>(null));
-    }
 
+    @Override
+    public void testHashMap() {
+        HashMap hashMap = this.baseMapper.testHashMap("贝尔");
+        System.out.println(hashMap.get("name"));
+        System.out.println(hashMap.get("sex"));
+        System.out.println(hashMap);
+    }
 }

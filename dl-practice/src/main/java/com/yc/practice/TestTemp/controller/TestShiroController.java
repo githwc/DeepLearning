@@ -7,6 +7,7 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.log.WriteLog;
 import com.yc.common.utils.EncoderUtil;
 import com.yc.core.system.entity.SysUser;
+import com.yc.practice.TestTemp.service.TestService;
 import com.yc.practice.config.filter.JwtUtil;
 import com.yc.practice.system.service.SysUserService;
 import io.swagger.annotations.Api;
@@ -19,10 +20,10 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,17 +38,19 @@ import java.util.concurrent.TimeUnit;
  * @Datetime: 2019-09-18 14:01
  * @Version: 1.0.0
  */
-@Controller
+@RestController
 @Api(tags="测试接口")
 @Slf4j
 public class TestShiroController {
 
     private final SysUserService iSysUserService;
+    private final TestService testService;
     private RedisTemplate redisTemplate;
 
     @Autowired
-    public TestShiroController(SysUserService iSysUserService, RedisTemplate redisTemplate) {
+    public TestShiroController(SysUserService iSysUserService, RedisTemplate redisTemplate,TestService testService) {
         this.iSysUserService = iSysUserService;
+        this.testService = testService;
         this.redisTemplate = redisTemplate;
     }
 
@@ -59,9 +62,10 @@ public class TestShiroController {
     }
 
     @RequestMapping("/test")
-    public String test(){
+    public void test(){
         log.info("执行test方法");
-        return "test";
+        testService.testHashMap();
+        // return "test";
     }
 
     @RequestMapping("/add")

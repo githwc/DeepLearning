@@ -21,13 +21,19 @@ public interface RedisRankService {
     /**
      * 初始化数据
      */
-    void init();
+    void initRankData();
 
     /**
      * 获取数据
-     * @return
+     * @return set
      */
-    Set initRank();
+    Set getData();
+
+    /**
+     * 初始化数据
+     */
+    void clearData();
+
 
     /**
      * 获取排行榜top10

@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  *
- * 功能描述：排行榜
+ * 功能描述：排行榜 暴露接口 API
  *
  *  <p>版权所有：</p>
  *  未经本人许可，不得以任何方式复制或使用本程序任何部分
@@ -37,22 +37,30 @@ public class RedisRankController {
      * 初始化数据
      */
     @PostMapping("/initRankData")
-    public void init(){
-        iRedisRankService.init();
+    public void initRankData(){
+        iRedisRankService.initRankData();
     }
 
     /**
      * 获取数据
-     * @return
+     * @return set
      */
-    @GetMapping("/initRank")
-    public Set initRank(){
-        return iRedisRankService.initRank();
+    @GetMapping("/getData")
+    public Set getData(){
+        return iRedisRankService.getData();
+    }
+
+    /**
+     * 清除数据
+     */
+    @PostMapping("/clearData")
+    public void clearData(){
+        iRedisRankService.clearData();
     }
 
     /**
      * 获取总成绩排行榜top10
-     * @return
+     * @return set
      */
     @GetMapping("/scoreTop10")
     public Set top10(@RequestParam("type")String type){

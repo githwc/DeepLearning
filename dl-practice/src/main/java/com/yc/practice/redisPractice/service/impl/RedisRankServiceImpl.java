@@ -40,7 +40,7 @@ public class RedisRankServiceImpl implements RedisRankService {
     }
 
     @Override
-    public Set initRank() {
+    public Set getData() {
         String key = RedisConstant.SCORE_BANK ;
         if(redisTemplate.hasKey(key)){
             Long aLong = redisTemplate.opsForZSet().zCard(key);
@@ -53,32 +53,23 @@ public class RedisRankServiceImpl implements RedisRankService {
     }
 
     @Override
-    public void init() {
+    public void clearData() {
+        redisTemplate.delete(RedisConstant.SCORE_BANK);
+    }
+
+    @Override
+    public void initRankData() {
         String score_key = RedisConstant.SCORE_BANK;
-        String chinese_score_key = RedisConstant.CHINESE_SCORE_BANK;
-        String math_score_key = RedisConstant.MATH_SCORE_BANK;
         redisTemplate.delete(score_key);
-        redisTemplate.delete(chinese_score_key);
-        redisTemplate.delete(math_score_key);
 
         Set<ZSetOperations.TypedTuple<String>> scoreTuples = new HashSet<>();
-        Set<ZSetOperations.TypedTuple<String>> chineseTuples = new HashSet<>();
-        Set<ZSetOperations.TypedTuple<String>> mathTuples = new HashSet<>();
-        for(int i = 0; i< 1000;i++){
+        for(int i = 0; i< 200;i++){
             // (int)((Math.random()*9+1)*10) 生成两位随机数字
             DefaultTypedTuple<String> scoreTuple = new DefaultTypedTuple<>("乔治_"+ i,
                     (double)((int)((Math.random()*9+1)*10)));
-            DefaultTypedTuple<String> chineseTuple = new DefaultTypedTuple<>("乔治_"+ i,
-                    (double)((int)((Math.random()*9+1)*10)));
-            DefaultTypedTuple<String> mathTuple = new DefaultTypedTuple<>("乔治_"+ i,
-                    (double)((int)((Math.random()*9+1)*10)));
             scoreTuples.add(scoreTuple);
-            chineseTuples.add(chineseTuple);
-            mathTuples.add(mathTuple);
         }
         redisTemplate.opsForZSet().add(score_key, scoreTuples);
-        redisTemplate.opsForZSet().add(chinese_score_key, chineseTuples);
-        redisTemplate.opsForZSet().add(math_score_key, mathTuples);
         log.info("redis排行榜初始化完成");
     }
 
@@ -86,14 +77,9 @@ public class RedisRankServiceImpl implements RedisRankService {
     @Override
     public Set top10(String type) {
         String key = RedisConstant.SCORE_BANK ;
-        if("2".equals(type)){
-            key = RedisConstant.MATH_SCORE_BANK ;
-        }else if("3".equals(type)) {
-            key = RedisConstant.MATH_SCORE_BANK ;
-        }
         if(redisTemplate.hasKey(key)){
             Set<ZSetOperations.TypedTuple<String>> range =
-                    redisTemplate.opsForZSet().reverseRangeWithScores(key,0,10);
+                    redisTemplate.opsForZSet().reverseRangeWithScores(key,0,9);
             return range;
         }else{
             return null;
@@ -111,9 +97,9 @@ public class RedisRankServiceImpl implements RedisRankService {
     public Map userInfo() {
         String key = RedisConstant.SCORE_BANK ;
         if(redisTemplate.hasKey(key)){
-            Map<String,Object> map = new HashMap<>();
+            Map<String,Object> map = new HashMap<>(16);
             Long rankNum = redisTemplate.opsForZSet().reverseRank(key, "乔治_1");
-            map.put("rankNum",rankNum);
+            map.put("rankNum",rankNum + 1);
             Double score = redisTemplate.opsForZSet().score(key, "乔治_1");
             map.put("score",score);
             return map;
@@ -136,7 +122,7 @@ public class RedisRankServiceImpl implements RedisRankService {
     public void addScore() {
         String key = RedisConstant.SCORE_BANK ;
         if(redisTemplate.hasKey(key)) {
-            Double score = redisTemplate.opsForZSet().incrementScore(key, "乔治_1", 500);
+            Double score = redisTemplate.opsForZSet().incrementScore(key, "乔治_1", 10);
             log.info("乔治1添加500后的分数为:"+score);
         }
     }

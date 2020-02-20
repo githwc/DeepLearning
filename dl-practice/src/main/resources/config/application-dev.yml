@@ -7,7 +7,7 @@ server:
 spring:
   #=====DataBase 相关===========
   datasource:
-    url: jdbc:mysql://192.168.8.101:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: xieyc@mysql
     driver-class-name: com.mysql.cj.jdbc.Driver

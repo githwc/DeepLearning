@@ -44,8 +44,10 @@ public class RedisPubSubServiceImpl extends ServiceImpl<RedisPubSubMapper, Redis
         redisPubSub.setChannel(channel);
         redisPubSub.setContent(content);
         redisPubSub.setCreateUserId(daoApi.getCurrentUserId());
-        this.baseMapper.insert(redisPubSub);
-        redisTemplate.convertAndSend(channel,content);
+        int result = this.baseMapper.insert(redisPubSub);
+        if(result > 0 ){
+            redisTemplate.convertAndSend(channel,content);
+        }
     }
 
     @Override
