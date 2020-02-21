@@ -27,22 +27,22 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 登录
-     * @param sysUser
-     * @return
+     * @param sysUser 登录信息
+     * @return 登录信息
      */
     JSONObject login(SysUser sysUser);
 
     /**
      * 登出
-     * @param request
-     * @param response
+     * @param request 请求
+     * @param response 响应
      */
     void logout(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 根据账号查询用户
-     * @param loginName
-     * @return
+     * @param loginName 登录名称
+     * @return 用户信息
      */
     SysUser getUserByName(String loginName);
 
@@ -53,46 +53,46 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 加载用户数据
-     * @param page
-     * @param userQuery
-     * @return
+     * @param page 分页信息
+     * @param userQuery 查询条件
+     * @return 分页数据
      */
     Page<SysUserVO> userList(Page<SysUserVO> page, UserQuery userQuery);
 
     /**
      * 添加用户
-     * @param jsonObject
+     * @param jsonObject 用户信息
      */
     void add(JSONObject jsonObject);
 
     /**
      * 修改用户
-     * @param jsonObject
+     * @param jsonObject 用户信息
      */
     void edit(JSONObject jsonObject);
 
     /**
      * 登录账号唯一性检测
-     * @param loginName
+     * @param loginName 登录名
      */
     void checkIsOnly(String loginName);
 
     /**
      * 单个删除
-     * @param id
+     * @param id id
      */
     void deleteUser(String id);
 
     /**
      * 批量删除
-     * @param ids
+     * @param ids ids
      */
     void deleteBatch(String ids);
 
     /**
      * 查询用户拥有角色
-     * @param userId
-     * @return
+     * @param userId 用户id
+     * @return 角色s
      */
     List<String> queryUserRole(String userId);
 

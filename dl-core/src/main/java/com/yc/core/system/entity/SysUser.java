@@ -65,7 +65,7 @@ public class SysUser implements Serializable {
     /**
      * 职务
      */
-    private Integer jobs;
+    private String jobs;
     /**
      * 性别(0女 1男 2保密 3未知)
      */

@@ -32,7 +32,7 @@ public class DateTimeUtil {
      * @param endDate 结束时间
      * @return 0,2,13
      */
-    private String dayCompareStr(String beginDate,String endDate){
+    public static String dayCompareStr(String beginDate,String endDate){
         Period period = Period.between(LocalDate.parse(beginDate), LocalDate.parse(endDate));
         StringBuffer sb = new StringBuffer();
         sb.append(period.getYears()).append(",")
