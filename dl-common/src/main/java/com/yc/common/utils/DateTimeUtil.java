@@ -1,7 +1,9 @@
 package com.yc.common.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
@@ -69,6 +71,37 @@ public class DateTimeUtil {
         int month = toYear *  12  + toMonth  -  (fromYear  *  12  +  fromMonth);
         int day = (int) ((to.getTimeInMillis()  -  from.getTimeInMillis())  /  (24  *  3600  *  1000));
         return year+","+month+","+day;
+    }
+
+    /**
+     * 以天、时、分、秒计算两个时间差
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return X天 X小时 X分钟 X秒 例如:49分钟23秒
+     */
+    public static String getDateDiff(LocalDateTime startTime, LocalDateTime endTime) {
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        long ns = 1000;
+        // 获得两个时间的毫秒时间差异
+        Duration duration = Duration.between(startTime,endTime);
+        long diff = duration.toMillis();
+        // 计算差多少天
+        long day = diff / nd;
+        // 计算差多少小时
+        long hour = diff % nd / nh;
+        // 计算差多少分钟
+        long min = diff % nd % nh / nm;
+        // 计算差多少秒//输出结果
+        long sec = diff % nd % nh % nm / ns;
+        if(hour == 0 ){
+            return min + "分钟"+sec +"秒";
+        }else if(hour > 0){
+            return hour + "小时" + min + "分钟"+sec +"秒";
+        }else {
+            return day + "天" + hour + "小时" + min + "分钟"+sec +"秒";
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 功能描述：
+ * 功能描述：封装返回数据
  *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
@@ -31,9 +31,9 @@ public class GlobalResponseBodyAdviceHandle implements ResponseBodyAdvice<Object
     /**
      * 是否对指定接口生效
      *  标注了RestController的接口有效
-     * @param returnType
-     * @param converterType
-     * @return
+     * @param returnType  返回类型
+     * @param converterType 转化类型
+     * @return boolean
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
