@@ -1,9 +1,8 @@
 package com.yc.common.log;
 
 import com.yc.common.constant.CommonConstant;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,28 +29,26 @@ public class LogAspect {
 	@Autowired
 	private SystemLogService service;
 
-    /**
-     * @Description:标注为后置通知，当目标方法执行成功后执行该函数
-     * @Date: 2019/5/31 11:04
-     * @Param: within：扫描目标方法   annotation：标记为log的方法
-     * @Return:
-     */
-	@AfterReturning("within(com.yc..*) && @annotation(log)")
-	public void addLogSuccess(JoinPoint jp, WriteLog log) {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		service.write(request, log.opPosition(), log.optype(),log.logType(), jp.getSignature().getDeclaringTypeName(), CommonConstant.OPSTATE_SUCCESS);
-	}
+	@Around("within(com.yc..*) && @annotation(log)")
+    public Object around (ProceedingJoinPoint jp,WriteLog log){
+        long startTimeMillis = System.currentTimeMillis();
+        try{
+            Object result = jp.proceed();
+            long costTimeMillis = System.currentTimeMillis() - startTimeMillis;
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            service.write(request,log.opPosition(),log.optype(),log.logType(),
+                    jp.getSignature().getDeclaringTypeName()+"."+jp.getSignature().getName(),
+                    costTimeMillis,CommonConstant.OPSTATE_SUCCESS);
+            return result;
+        }catch (Throwable throwable) {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            service.write(request,log.opPosition(),log.optype(),log.logType(),
+                    jp.getSignature().getDeclaringTypeName()+"."+jp.getSignature().getName(),
+                    CommonConstant.OPSTATE_FAILURE);
+            throwable.printStackTrace();
+            throw new RuntimeException(throwable.getMessage());
+        }
+    }
 
-    /**
-     * @Description:标注为异常通知，当目标方法出现异常，执行该方法体
-     * @Date: 2019/5/31 11:07
-     * @Param:  within：扫描目标方法   annotation：标记为log的方法
-     * @Return:
-     */
-	@AfterThrowing(pointcut="within(com.yc..*) && @annotation(log)", throwing="ex")
-	public void addLogFail(JoinPoint jp, WriteLog log, Exception ex) {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		service.write(request, log.opPosition(), log.optype(), log.logType(),jp.getSignature().getDeclaringTypeName(), CommonConstant.OPSTATE_FAILURE, ex);
-	}
 
 }
