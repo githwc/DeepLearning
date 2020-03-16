@@ -3,7 +3,7 @@ package com.yc.practice.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.core.system.entity.SysPermission;
 import com.yc.core.system.model.vo.SysPermissionTree;
 import com.yc.practice.system.service.SysPermissionService;

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.dao.DaoApi;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.core.system.entity.SysRole;
 import com.yc.core.system.entity.SysRolePermission;
 import com.yc.core.system.mapper.SysRoleMapper;

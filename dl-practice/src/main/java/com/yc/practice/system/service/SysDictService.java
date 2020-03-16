@@ -6,7 +6,6 @@ import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
 import com.yc.core.tree.TreeNode;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -40,82 +39,32 @@ public interface SysDictService extends IService<SysDict> {
 
     /**
      * 根据字典Id修改
-     * @param sysDict
+     * @param sysDict 标识
      */
     void editByDictId(SysDict sysDict);
 
     /**
      * 根据字典ID删除
-     * @param id
+     * @param id 标识
      */
     void deleteAlone(String id);
 
     /**
      * 字典批量删除
-     * @param ids
+     * @param ids 批量标识
      */
     void deleteBatch(String ids);
 
     /**
      * 创建字典
-     * @param sysDict
+     * @param sysDict 字典信息
      */
     void create(SysDict sysDict);
 
     /**
-     * 读取字典，返回字典集合
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @param mode : 字典模式 0,1
-     * @return LinkedHashMap&gt;String, Object&lt;
-     */
-    LinkedHashMap<String, Object> getDict(String sKey, String mode);
-
-    /**
-     * 读取字典，返回字典字符串
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @param mode : 字典模式
-     * @return String
-     */
-    String getDictString(String sKey, String mode);
-
-    /**
-     * 读取字典(Key-Value)
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @return LinkedHashMap&gt;String, Object&lt;
-     */
-    LinkedHashMap<String, Object> getKeyValue(String sKey);
-
-    /**
-     * 读取字典(Key-Value)
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @return String
-     */
-    String getKeyValueString(String sKey);
-
-    /**
-     * 读取字典(Value-Key)
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @return LinkedHashMap&gt;String, Object&lt;
-     */
-    LinkedHashMap<String, Object> getValueKey(String sKey);
-
-    /**
-     * 读取字典(Value-Key)
-     *
-     * @param sKey : 字典路径，分隔符">"
-     * @return String
-     */
-    String getValueKeyString(String sKey);
-
-    /**
      * 根据指定路径读取子级字典
      * @param skeys 字典路径，分隔符">"
-     * @return
+     * @return list
      */
     List<SysDict> getDict(String skeys);
 

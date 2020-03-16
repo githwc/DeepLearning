@@ -8,13 +8,13 @@ import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.config.exception.parameterException.ParameterException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.dao.DaoApi;
 import com.yc.common.utils.YouBianCodeUtil;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.mapper.SysDeptMapper;
 import com.yc.core.system.model.query.DeptQuery;
 import com.yc.core.tree.Tree;
 import com.yc.core.tree.TreeNode;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.practice.system.service.SysDeptService;
 import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +43,13 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
-    @Autowired
     private DaoApi daoApi;
+
+    @Autowired
+    public SysDeptServiceImpl(DaoApi daoApi){
+        this.daoApi = daoApi;
+    }
+
 
     @Override
     public List<TreeNode> departTree(String departName) {

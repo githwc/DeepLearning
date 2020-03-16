@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.model.query.UserQuery;
 import com.yc.core.system.model.vo.SysUserVO;

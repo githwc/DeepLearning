@@ -1,4 +1,4 @@
-package com.yc.common.log;
+package com.yc.practice.common.log;
 
 import com.yc.common.constant.CommonConstant;
 
@@ -27,21 +27,21 @@ public @interface WriteLog {
 
     /**
      * 操作位置
-     * @return
+     * @return 所处位置
      */
 	String opPosition();
 
     /**
      * 操作类型(0:增 1：删  2：改 3：查)
-     * @return
+     * @return 操作类型
      */
-	int optype();
+	int optype() default CommonConstant.OPTYPE_READ;
 
     /**
      * 日志类型
      *     0:操作日志;1:登录日志;2:定时任务;
      *
-     * @return
+     * @return 日志类型
      */
     int logType() default CommonConstant.LOG_TYPE_0;
 

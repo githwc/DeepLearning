@@ -3,7 +3,7 @@ package com.yc.practice.system.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.dao.DaoApi;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.common.utils.LocalHostUtil;
 import com.yc.common.utils.SpringContextUtils;
 import com.yc.core.system.entity.SysLog;
@@ -36,8 +36,12 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
 
-    @Autowired
     private DaoApi daoApi;
+
+    @Autowired
+    public SysLogServiceImpl (DaoApi daoApi){
+        this.daoApi = daoApi;
+    }
 
     @Override
     public void addLog(String LogContent, Integer logType, String requestMethod,String requestParams) {

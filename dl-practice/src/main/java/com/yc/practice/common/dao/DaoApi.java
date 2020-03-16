@@ -1,5 +1,4 @@
-package com.yc.common.dao;
-
+package com.yc.practice.common.dao;
 
 import com.yc.core.system.entity.SysUser;
 
@@ -19,12 +18,13 @@ public interface DaoApi {
 
     /**
      * 获取当前用户
-     * @return
+     * @return 用户信息
      */
     SysUser getCurrentUser();
 
     /**
      * 获取当前用户的ID
+     * @return 用户ID
      */
     String getCurrentUserId();
 

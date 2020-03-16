@@ -2,7 +2,7 @@ package com.yc.practice.redisPractice.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.dao.DaoApi;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.core.redisPractice.entity.RedisPubSub;
 import com.yc.core.redisPractice.mapper.RedisPubSubMapper;
 import com.yc.practice.redisPractice.service.RedisPubSubService;

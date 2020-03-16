@@ -43,7 +43,7 @@ public class MyBatisGenerator {
     /**
      * 要生成的表名
      */
-    private static final String[] TABLES = {"aaa"};
+    private static final String[] TABLES = {"da"};
 
     /**
      * 数据库配置四要素

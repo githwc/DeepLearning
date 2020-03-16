@@ -37,7 +37,7 @@ public class ResponseCode {
     /**
      * 系统错误
      */
-    public static final int SYSTEM_EXCEPTION = 500;
+    public static final int SYSTEM_EXCEPTION = 10500;
 
     //=========================自定义 =====================
 

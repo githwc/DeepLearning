@@ -1,4 +1,4 @@
-package com.yc.common.dao;
+package com.yc.practice.common.dao;
 
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.core.system.entity.SysUser;

@@ -2,7 +2,7 @@ package com.yc.practice.remind.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.remind.service.RemindMessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

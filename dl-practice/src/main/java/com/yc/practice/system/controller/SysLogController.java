@@ -3,10 +3,9 @@ package com.yc.practice.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.config.exception.RunException.RunningException;
-import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
 import com.yc.core.system.model.query.LogQuery;
 import com.yc.core.system.model.vo.SysLogVO;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.system.service.SysLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +43,7 @@ public class SysLogController {
 
     @GetMapping("/logInfo")
     @ApiOperation(value = "首页获取系统访问数据",notes = "首页获取系统访问数据")
-    @WriteLog(opPosition = "首页获取系统访问数据" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "首页获取系统访问数据")
     public JSONObject logInfo(){
         try{
             return service.logInfo();
@@ -53,13 +52,9 @@ public class SysLogController {
         }
     }
 
-    /**
-     * 分页查询系统日志
-     * @param page 分页信息
-     * @param logQuery 查询条件
-     * @return
-     */
     @GetMapping("/logPage")
+    @ApiOperation(value = "分页查询系统日志",notes = "分页查询系统日志")
+    @WriteLog(opPosition = "查询系统日志")
     public Page<SysLogVO> logPage(Page<SysLogVO> page, LogQuery logQuery){
         return service.logPage(page,logQuery);
     }

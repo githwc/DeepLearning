@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.common.utils.EncoderUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.practice.TestTemp.service.TestService;

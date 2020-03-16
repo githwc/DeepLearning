@@ -3,7 +3,7 @@ package com.yc.practice.system.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
 import com.yc.core.tree.TreeNode;
@@ -64,11 +64,11 @@ public class SysDictController {
     @PostMapping(value = "/add")
     @WriteLog(opPosition = "字典添加" ,optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysDict sysDict) {
-        try {
+        // try {
             service.create(sysDict);
-        } catch (Exception e) {
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        // } catch (Exception e) {
+        //     throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
+        // }
     }
 
     @PutMapping(value = "/edit")
@@ -106,7 +106,7 @@ public class SysDictController {
 
     /**
      * 查询指定字典
-     * @return
+     * @return list
      */
     @GetMapping("/getDict")
     public List<SysDict> getDict(@RequestParam("skey")String skeys,@RequestParam("mode")String mode){

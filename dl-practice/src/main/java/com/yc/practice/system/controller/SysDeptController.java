@@ -3,7 +3,7 @@ package com.yc.practice.system.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.log.WriteLog;
+import com.yc.practice.common.log.WriteLog;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.model.query.DeptQuery;
 import com.yc.core.tree.TreeNode;
