@@ -55,7 +55,7 @@ public class TestShiroController {
     }
 
     @RequestMapping("/test2")
-    @WriteLog(opPosition = "测试日志点" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "测试日志点")
     public String test2(){
         log.info("执行test方法");
         return "test";

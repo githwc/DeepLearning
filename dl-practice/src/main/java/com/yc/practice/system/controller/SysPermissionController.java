@@ -46,7 +46,7 @@ public class SysPermissionController {
 
     @GetMapping(value = "/getUserPermissionByToken")
     @ApiOperation(value = "获取用户权限",notes = "根据Token获取用户拥有的权限")
-    @WriteLog(opPosition = "获取指定用户权限" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "获取指定用户权限" )
     public JSONObject getUserPermissionByToken(@RequestParam("token") String token, HttpServletResponse response) {
         try {
             return service.getUserPermissionByToken(token,response);
@@ -57,7 +57,7 @@ public class SysPermissionController {
 
     @GetMapping(value = "/list")
     @ApiOperation(value = "查询全部权限",notes = "查询全部权限")
-    @WriteLog(opPosition = "查询全部权限" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询全部权限")
     public List<SysPermissionTree> list() {
         try {
             return service.permissionlist();
@@ -68,7 +68,7 @@ public class SysPermissionController {
 
     @GetMapping(value = "/queryTreeList")
     @ApiOperation(value = "获取权限树",notes = "获取权限树")
-    @WriteLog(opPosition = "获取权限树" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "获取权限树" )
     public Map<String, Object> queryTreeList() {
         try{
             return service.queryTreeList();
@@ -125,7 +125,7 @@ public class SysPermissionController {
 
     @GetMapping(value = "/permissionMapTree")
     @ApiOperation(value = "菜单权限树",notes = "菜单权限树")
-    @WriteLog(opPosition = "查看菜单权限树" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查看菜单权限树")
     public Map<String,Object> permissionMapTree() {
         try {
             return service.permissionMapTree();

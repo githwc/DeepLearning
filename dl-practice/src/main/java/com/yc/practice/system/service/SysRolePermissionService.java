@@ -17,12 +17,4 @@ import com.yc.core.system.entity.SysRolePermission;
  */
 public interface SysRolePermissionService extends IService<SysRolePermission> {
 
-    /**
-     * 保存授权 将上次的权限和这次作比较 差异处理提高效率
-     *
-     * @param roleId 关联权限
-     * @param permissionIds 最新权限集
-     * @param lastPermissionIds 上次权限集
-     */
-    void saveRolePermission(String roleId, String permissionIds, String lastPermissionIds);
 }

@@ -56,7 +56,7 @@ public class SysPermission implements Serializable {
      */
     private String redirect;
     /**
-     * 菜单类型(0:一级菜单; 1:子菜单:2:按钮权限)
+     * 菜单类型(0:一级菜单; 1:子菜单:2:按钮)
      */
     private Integer menuType;
     /**

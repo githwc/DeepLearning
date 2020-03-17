@@ -48,7 +48,7 @@ public class SysRoleController {
 
     @GetMapping(value = "/rolePage")
     @ApiOperation(value = "查询所有角色",notes = "加载所有角色(分页)")
-    @WriteLog(opPosition = "查询所有角色" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询所有角色")
     public Page<SysRole> rolePage(Page<SysRole> page, RoleQuery roleQuery) {
         try{
             return service.rolePage(page,roleQuery);
@@ -59,7 +59,7 @@ public class SysRoleController {
 
     @GetMapping(value = "/roleList")
     @ApiOperation(value = "查询所有角色",notes = "查询所有角色(新增用户时调用)")
-    @WriteLog(opPosition = "查询所有角色" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询所有角色")
     public List<SysRole> roleList() {
         try{
             return service.roleList();
@@ -124,7 +124,7 @@ public class SysRoleController {
 
     @GetMapping("/duplicate")
     @ApiOperation(value = "重复校验",notes = "角色代码唯一性校验")
-    @WriteLog(opPosition = "重复校验" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "重复校验")
     public void duplicate(@RequestParam("roleCode") String roleCode){
         try {
             service.duplicate(roleCode);
@@ -135,7 +135,7 @@ public class SysRoleController {
 
     @GetMapping(value = "/rolePermission")
     @ApiOperation(value = "查询角色授权", notes = "查询角色拥有的权限")
-    @WriteLog(opPosition = "查询角色授权" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询角色授权")
     public List<String> queryRolePermission(@RequestParam("sysRoleId") String roleId) {
         try {
             return service.queryRolePermission(roleId);
