@@ -33,7 +33,7 @@ public class LogAspect {
      *      ("within(com.yc..*) && @annotation(log)")[清楚记录操作痕迹,需添加@writeLog()注解]
      *      ("within(com.yc.*.controller..*)")[只记录方法名称,无需修改原代码]
      *
-     * @param jp 切点
+     * @param jp 连接点
      * @param log 注解
      * @return 对象
      */

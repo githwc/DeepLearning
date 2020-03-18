@@ -3,7 +3,7 @@ server:
   tomcat:
     uri-encoding: UTF-8
   servlet:
-    context-path: /lionherding
+    context-path: /deepLearning
 spring:
   #=====DataBase 相关===========
   datasource:

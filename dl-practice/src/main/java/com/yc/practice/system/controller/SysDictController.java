@@ -64,11 +64,11 @@ public class SysDictController {
     @PostMapping(value = "/add")
     @WriteLog(opPosition = "字典添加" ,optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysDict sysDict) {
-        // try {
+        try {
             service.create(sysDict);
-        // } catch (Exception e) {
-        //     throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        // }
+        } catch (Exception e) {
+            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
+        }
     }
 
     @PutMapping(value = "/edit")
