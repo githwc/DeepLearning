@@ -1,7 +1,6 @@
 package com.yc.practice.system.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,8 +12,8 @@ import com.yc.practice.common.dao.DaoApi;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.mapper.SysDictMapper;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.Tree;
-import com.yc.core.tree.TreeNode;
+import com.yc.core.tree.Tree2;
+import com.yc.core.tree.TreeNode2;
 import com.yc.practice.system.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -50,9 +48,9 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     private DaoApi daoApi;
 
     @Override
-    public List<TreeNode> dictTree(String name) {
-        List<TreeNode> list = this.baseMapper.dictTree(name);
-        Tree tree = new Tree(list).setRoot("字典管理").build();
+    public List<TreeNode2> dictTree(String name) {
+        List<TreeNode2> list = this.baseMapper.dictTree(name);
+        Tree2 tree = new Tree2(list).setRoot("字典管理").build();
         return tree.getRootNodes();
     }
 

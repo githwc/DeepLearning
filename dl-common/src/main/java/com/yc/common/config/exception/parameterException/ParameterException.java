@@ -2,7 +2,7 @@ package com.yc.common.config.exception.parameterException;
 
 import com.yc.common.config.exception.ApiException;
 import com.yc.common.config.response.ResponseCode;
-import com.yc.common.config.response.ResultUtils;
+import com.yc.common.config.response.RestResult;
 
 /**
  * 功能描述：参数异常
@@ -21,7 +21,7 @@ public class ParameterException extends ApiException {
     }
 
     public ParameterException(String msg, Object... params) {
-        super(ResponseCode.PARAMETER_EXCEPTION, ResultUtils.formatMsg(msg, params));
+        super(ResponseCode.PARAMETER_EXCEPTION, RestResult.formatMsg(msg, params));
     }
 
 }

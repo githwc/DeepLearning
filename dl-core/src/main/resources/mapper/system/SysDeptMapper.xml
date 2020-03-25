@@ -5,8 +5,9 @@
     <select id="departTree" resultType="com.yc.core.tree.TreeNode">
         select
             sys_dept_id as id,
-            parent_id as parentId,
+            parent_id as parent_id,
             depart_name as title,
+            depart_name as value,
             sort as order_num
         from sys_dept
         where

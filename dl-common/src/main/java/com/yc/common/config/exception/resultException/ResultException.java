@@ -2,7 +2,7 @@ package com.yc.common.config.exception.resultException;
 
 import com.yc.common.config.exception.ApiException;
 import com.yc.common.config.response.ResponseCode;
-import com.yc.common.config.response.ResultUtils;
+import com.yc.common.config.response.RestResult;
 
 /**
  * 功能描述：结果异常
@@ -20,7 +20,7 @@ public class ResultException extends ApiException {
     }
 
     public ResultException(String msg, Object... params) {
-        super(ResponseCode.RESULT_EXCEPTION, ResultUtils.formatMsg(msg, params));
+        super(ResponseCode.RESULT_EXCEPTION, RestResult.formatMsg(msg, params));
     }
 
 }

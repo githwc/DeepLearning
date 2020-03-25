@@ -6,7 +6,7 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.TreeNode;
+import com.yc.core.tree.TreeNode2;
 import com.yc.practice.system.service.SysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +45,7 @@ public class SysDictController {
     @GetMapping(value = "/dictTree")
     @ApiOperation(value = "加载字典树",notes = "加载所有字典")
     @WriteLog(opPosition = "加载字典树" ,optype = CommonConstant.OPTYPE_READ)
-    public List<TreeNode> dictTree(@RequestParam(value = "name",required = false)String name){
+    public List<TreeNode2> dictTree(@RequestParam(value = "name",required = false)String name){
         try {
             return service.dictTree(name);
         }catch (Exception e){

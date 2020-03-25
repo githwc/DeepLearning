@@ -1,188 +1,74 @@
 package com.yc.core.tree;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 功能描述：
- *
+ *  构建树形数据
+ *  [使用简单数据集合构建tree]
+ *  [设置根节点信息]
+ *  [节点排序]
  * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 未经本许可，不得以任何方式复制或使用本程序任何部分
  *
  * @Company: 紫色年华
  * @Author: xieyc
- * @Datetime: 2019-12-26 18:05
+ * @Datetime: 2020-03-25
  * @Version: 1.0.0
  */
 public class Tree {
-    private Map<String, TreeNode> treeNodeMap = new LinkedHashMap<>();
-    private List<TreeNode> treeNodeList;
-    private JSON treeJson;
 
     /**
-     * 根节点编码
-     */
-    public static final String ROOT_NODE_CODE = "#";
-
-    /**
-     * 初始化树对象
+     * * 解析树形数据
      *
-     * @param treeNodes 树简单数据集合对象
-     */
-    public Tree(List<TreeNode> treeNodes) {
-        this.treeNodeList = treeNodes;
-    }
-
-    /**
-     * 初始化树对象
-     *
-     * @param treeJson 树JSONObject对象
-     */
-    public Tree(JSON treeJson) {
-        this.treeJson = treeJson;
-    }
-
-    /**
-     * 设置根节点
-     * 根节点的选中状态会根据第一层节点的checked选中情况进行勾选，如果下级节点全部选中则副节点也全部选中，反之不选中
-     *
-     * @param rootNodeName 根节点名称
+     * @param topId
+     * @param entityList
      * @return
      */
-    public Tree setRoot(String rootNodeName) {
-        TreeNode rootNode = treeNodeMap.get(ROOT_NODE_CODE);
-        TreeNode treeNode;
-        if (rootNode == null || rootNode.getChildren().isEmpty()) {
-            treeNode = new TreeNode("#","root", rootNodeName, 0, true);
-        } else {
-            boolean rootChecked = true;
-            for (TreeNode child : rootNode.getChildren()) {
-                if (child != null && !child.getChecked()) {
-                    rootChecked = false;
-                }
+    public static <E extends TreeEntity<E>> List<E> getTreeList(String topId, List<E> entityList) {
+        List<E> resultList = new ArrayList<>();
+        // 获取顶层元素集合
+        String parentId;
+        for (E entity : entityList) {
+            parentId = entity.getParentId();
+            if (parentId == null || topId.equals(parentId)) {
+                resultList.add(entity);
             }
-            treeNode = new TreeNode("#","root", rootNodeName, 0, rootChecked);
         }
-        this.treeNodeMap.put(ROOT_NODE_CODE, treeNode);
-        return this;
+        // 获取每个顶层元素的子数据集合
+        for (E entity : resultList) {
+            entity.setChildren(getSubList(entity.getId(), entityList));
+        }
+        return resultList;
     }
 
     /**
-     * 使用简单数据集合构建tree
+     * * 获取子数据集合
      *
+     * @param id
+     * @param entityList
      * @return
      */
-    public Tree build() {
-        if (!treeNodeList.isEmpty()) {
-            buildList();
+    private static <E extends TreeEntity<E>> List<E> getSubList(String id, List<E> entityList) {
+        List<E> childList = new ArrayList<>();
+        String parentId;
+        // 子集的直接子对象
+        for (E entity : entityList) {
+            parentId = entity.getParentId();
+            if (id.equals(parentId)) {
+                childList.add(entity);
+            }
         }
-        if (treeJson != null) {
-            buildJson(treeJson);
+        // 子集的间接子对象
+        for (E entity : childList) {
+            entity.setChildren(getSubList(entity.getId(), entityList));
         }
-        return this;
+        // 递归退出条件
+        if (childList.size() == 0) {
+            return null;
+        }
+        return childList;
     }
 
-    /**
-     * 构建list to map
-     */
-    private void buildList() {
-        // 倒叙排序list
-        treeNodeList.sort((o1, o2) -> {
-            int o1OrderNum = o1.getOrderNum() == null ? 0 : o1.getOrderNum();
-            int o2OrderNum = o2.getOrderNum() == null ? 0 : o2.getOrderNum();
-            return o2OrderNum - o1OrderNum;
-        });
-
-        for (TreeNode treeNode : treeNodeList) {
-            treeNodeMap.put(treeNode.getId(), treeNode);
-        }
-
-        for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
-            if (StringUtils.isBlank(entry.getValue().getParentId())) {
-                continue;
-            }
-            TreeNode treeNodeParent = treeNodeMap.get(entry.getValue().getParentId());
-            if (treeNodeParent != null) {
-                entry.getValue().setParent(treeNodeParent);
-                treeNodeParent.addChildren(entry.getValue());
-            }
-        }
-    }
-
-    /**
-     * 构建json to map
-     *
-     * @param json
-     */
-    private void buildJson(JSON json) {
-        if (json instanceof JSONObject) {
-            JSONObject treeNodeJsonObject = (JSONObject) json;
-            treeNodeMap.put(treeNodeJsonObject.getString("id"), treeNodeJsonObject.toJavaObject(TreeNode.class));
-            if (treeNodeJsonObject.containsKey("children")) {
-                buildJson(treeNodeJsonObject.getJSONArray("children"));
-            }
-        } else if (json instanceof JSONArray) {
-            JSONArray treeNodeJsonArray = (JSONArray) json;
-            JSONObject treeNodeJsonObject;
-            for (int i = 0; i < treeNodeJsonArray.size(); i++) {
-                treeNodeJsonObject = treeNodeJsonArray.getJSONObject(i);
-                treeNodeMap.put(treeNodeJsonObject.getString("id"), treeNodeJsonObject.toJavaObject(TreeNode.class));
-                if (treeNodeJsonObject.containsKey("children")) {
-                    buildJson(treeNodeJsonObject.getJSONArray("children"));
-                }
-            }
-        }
-    }
-
-    /**
-     * 获取根节点，本方法要求根节点只有一个
-     *
-     * @return
-     */
-    public TreeNode getRootNode() {
-        if (treeNodeMap.containsKey(ROOT_NODE_CODE)) {
-            return treeNodeMap.get(ROOT_NODE_CODE);
-        }
-        for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
-            if (entry.getValue().getParent() == null) {
-                return entry.getValue();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 获取根节点数据，根节点可能会存在多个
-     *
-     * @return
-     */
-    public List<TreeNode> getRootNodes() {
-        List<TreeNode> list = new LinkedList<>();
-        for (Map.Entry<String, TreeNode> entry : treeNodeMap.entrySet()) {
-            if (entry.getValue().getParent() == null) {
-                list.add(entry.getValue());
-            }
-        }
-        return list;
-    }
-
-    /**
-     * 获取树集合选中节点
-     *
-     * @return
-     */
-    public List<TreeNode> getTreeCheckedList() {
-        // 获取tree选中项目
-        List<TreeNode> treeNodeCheckeds = new ArrayList<>();
-        for (TreeNode treeNode : treeNodeMap.values()) {
-            if (treeNode.getChecked()) {
-                treeNodeCheckeds.add(treeNode);
-            }
-        }
-        return treeNodeCheckeds;
-    }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.model.query.DeptQuery;
+import com.yc.core.tree.Tree;
 import com.yc.core.tree.TreeNode;
 
 import java.util.List;
