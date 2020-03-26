@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.TreeNode2;
+import com.yc.core.tree.TreeNode;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public interface SysDictService extends IService<SysDict> {
      * @param name [搜索条件] 字典名称
      * @return tree
      */
-    List<TreeNode2> dictTree(String name);
+    List<TreeNode> dictTree(String name);
 
     /**
      * 查询子级字典

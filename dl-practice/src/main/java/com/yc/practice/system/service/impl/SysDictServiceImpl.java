@@ -8,12 +8,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.config.exception.parameterException.ParameterException;
 import com.yc.common.constant.CommonConstant;
-import com.yc.practice.common.dao.DaoApi;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.mapper.SysDictMapper;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.Tree2;
-import com.yc.core.tree.TreeNode2;
+import com.yc.core.tree.Tree;
+import com.yc.core.tree.TreeNode;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.practice.system.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -41,17 +41,17 @@ import java.util.List;
 @Slf4j
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
-    private final static String MODE_KEY_VALUE = "0";
-    private final static String MODE_VALUE_KEY = "1";
+    private final DaoApi daoApi;
 
     @Autowired
-    private DaoApi daoApi;
+    public SysDictServiceImpl(DaoApi daoApi){
+        this.daoApi = daoApi;
+    }
 
     @Override
-    public List<TreeNode2> dictTree(String name) {
-        List<TreeNode2> list = this.baseMapper.dictTree(name);
-        Tree2 tree = new Tree2(list).setRoot("字典管理").build();
-        return tree.getRootNodes();
+    public List<TreeNode> dictTree(String name) {
+        List<TreeNode> list = this.baseMapper.dictTree(name);
+        return Tree.getTreeList("#",list);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if (sysDict != null) {
             sysDict.setCreateUserId(daoApi.getCurrentUserId());
             if (StringUtils.isBlank(sysDict.getParentId())) {
-                sysDict.setParentId("#");
+                sysDict.setParentId("root");
             }else{
                 QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
                 queryWrapper.eq("parent_id",sysDict.getParentId());

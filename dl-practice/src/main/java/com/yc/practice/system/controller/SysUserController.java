@@ -67,7 +67,7 @@ public class SysUserController {
 
     @GetMapping(value = "/userList")
     @ApiOperation(value = "查询用户",notes = "查询某个部门下的有效用户")
-    @WriteLog(opPosition = "查询用户" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询用户")
     public Page<SysUserVO> userList(Page<SysUserVO> page, UserQuery userQuery) {
         try {
             return service.userList(page, userQuery);
@@ -100,7 +100,7 @@ public class SysUserController {
 
     @GetMapping("/checkIsOnly")
     @ApiOperation(value = "账号唯一性检测",notes = "登录账号唯一性检测")
-    @WriteLog(opPosition = "账号唯一性检测" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "账号唯一性检测")
     public void checkIsOnly(String loginName){
         try {
             service.checkIsOnly(loginName);
@@ -133,7 +133,7 @@ public class SysUserController {
 
     @GetMapping(value = "/queryUserRole")
     @ApiOperation(value = "查询用户拥有角色",notes = "查询用户拥有角色")
-    @WriteLog(opPosition = "查询用户拥有角色" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询用户拥有角色")
     public List<String> queryUserRole(@RequestParam("sysUserId") String userId) {
         try{
             return service.queryUserRole(userId);

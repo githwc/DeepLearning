@@ -54,7 +54,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public List<TreeNode> departTree(String departName) {
         List<TreeNode> list = this.baseMapper.departTree(departName);
-       return Tree.getTreeList("0", list);
+       return Tree.getTreeList("#", list);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.TreeNode2;
+import com.yc.core.tree.TreeNode;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,7 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      * @param name 搜索条件
      * @return tree
      */
-    List<TreeNode2> dictTree(@Param("name") String name);
+    List<TreeNode> dictTree(@Param("name") String name);
 
     /**
      * 子级字典

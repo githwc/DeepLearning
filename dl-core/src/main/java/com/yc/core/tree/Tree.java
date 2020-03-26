@@ -20,7 +20,7 @@ import java.util.List;
 public class Tree {
 
     /**
-     * * 解析树形数据
+     * 构建树形数据
      *
      * @param topId
      * @param entityList
