@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.model.query.UserQuery;
+import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.core.system.model.vo.SysUserVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,14 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     Page<SysUserVO> userList(@Param("page") Page<SysUserVO> page, @Param("query") UserQuery userQuery);
+
+    /**
+     * 根据登录账号获取用户信息
+     *
+     * @param loginName 登陆账号
+     * @return 用户信息
+     */
+    CurrUserVO loginByName(@Param("loginName") String loginName);
+
 
 }

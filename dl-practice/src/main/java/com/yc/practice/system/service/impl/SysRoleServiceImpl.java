@@ -2,6 +2,7 @@ package com.yc.practice.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.config.exception.RunException.RunningException;
@@ -12,7 +13,6 @@ import com.yc.core.system.mapper.SysRoleMapper;
 import com.yc.core.system.model.query.RoleQuery;
 import com.yc.practice.system.service.SysRolePermissionService;
 import com.yc.practice.system.service.SysRoleService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

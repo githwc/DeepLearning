@@ -1,8 +1,8 @@
 package com.yc.practice.common.dao;
 
 import com.yc.common.config.exception.RunException.RunningException;
-import com.yc.core.system.entity.SysUser;
-import org.apache.shiro.SecurityUtils;
+import com.yc.core.system.model.vo.CurrUserVO;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,18 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class DaoFactory implements DaoApi {
 
     @Override
-    public SysUser getCurrentUser() {
+    public CurrUserVO getCurrUser() {
         try {
-            return (SysUser) SecurityUtils.getSubject().getPrincipal();
+            return (CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e) {
             throw new RunningException("系统错误");
         }
     }
 
+
     @Override
-    public String getCurrentUserId() {
+    public String getCurrUserId() {
         try {
-            return ((SysUser) SecurityUtils.getSubject().getPrincipal()).getSysUserId();
+            return ((CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
         }catch (Exception e) {
             throw new RunningException("系统错误");
         }

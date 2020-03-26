@@ -50,13 +50,13 @@ public class MallBrandServiceImpl extends ServiceImpl<MallBrandMapper, MallBrand
         if(StringUtils.isEmpty(mallBrand.getFirstLetter())){
             mallBrand.setFirstLetter(mallBrand.getName().substring(0,1));
         }
-        mallBrand.setUpdateUserId(daoApi.getCurrentUserId());
+        mallBrand.setUpdateUserId(daoApi.getCurrUserId());
         this.baseMapper.updateById(mallBrand);
     }
 
     @Override
     public void addBrand(MallBrand mallBrand) {
-        mallBrand.setCreateUserId(daoApi.getCurrentUserId());
+        mallBrand.setCreateUserId(daoApi.getCurrUserId());
         if(StringUtils.isEmpty(mallBrand.getFirstLetter())){
             mallBrand.setFirstLetter(mallBrand.getName().substring(0,1));
         }

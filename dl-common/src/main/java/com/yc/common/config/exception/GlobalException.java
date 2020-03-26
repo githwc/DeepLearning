@@ -1,6 +1,6 @@
 package com.yc.common.config.exception;
 
-import com.yc.common.config.response.ResponseBean;
+import com.yc.common.config.response.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +25,7 @@ public class GlobalException {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(ApiException.class)
     public Object myErrorHandlerException(ApiException e) {
-        ResponseBean response = ResponseBean.error(e.getCode(), e.getMsg());
+        RestResult response = RestResult.error(e.getCode(), e.getMsg());
         log.error("error : {}", response.toJSONString(), e);
         return response;
     }

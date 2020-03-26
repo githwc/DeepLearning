@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -30,17 +31,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Version: 1.0.0
  */
 @Configuration
+@EnableWebMvc
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
-     * @Description:指定接口基础信息
-     * @Date: 2019/7/20 14:42
-     * @Param:  apiInfo:定义项目描述信息
-     *          apis:   指定接口层中的位置
-     *          paths(PathSelectors.any()):  对所有路径进行监控
-     * @Return:
-     * @throws:
+     * 指定接口基础信息
+     *      apiInfo:定义项目描述信息
+     *      apis:   指定接口层中的位置
+     *
+     * @return Docket
      */
     @Bean
     public Docket createRestApi() {
@@ -48,40 +48,49 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .groupName("业务接口")
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.lh.modules"))
+                .apis(RequestHandlerSelectors.basePackage("com.yc.practice.mall"))
                 .paths(PathSelectors.any())
-                .build()
-                ;
+                .build();
     }
 
+    /**
+     * 指定接口基础信息
+     *      apiInfo:定义项目描述信息
+     *      apis:   指定接口层中的位置
+     *
+     *  [将多个controller拼装到一个分组
+     *    .apis(Predicates.or(selector1,selector2))   ]
+     *  [只监控user相关接口
+     *    .paths(PathSelectors.regex("/user.*"))  ]
+     *  [为有@Api注解的Controller生成API文档
+     *   .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))   ]
+     *  [为有@ApiOperation注解的方法生成API文档
+     *    .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))  ]
+     *
+     * @return Docket
+     */
     @Bean
     public Docket createSystemRestApi() {
         //分组展示
-        Predicate<RequestHandler> selector1 = RequestHandlerSelectors.basePackage("com.lh.system.controller");
+        Predicate<RequestHandler> selector1 = RequestHandlerSelectors.basePackage("com.yc.practice.system.controller");
         // Predicate<RequestHandler> selector2 = RequestHandlerSelectors.basePackage("com.lh.modules");
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("系统接口")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(Predicates.or(selector1))
-                // .apis(Predicates.or(selector1,selector2))    // 将多个controller拼装到一个分组
-                // .paths(PathSelectors.regex("/user.*"))   //只监控user相关接口
                 .paths(PathSelectors.any())
-                .build()
-                ;
+                .build();
     }
 
     /**
-     * @Description: 定义项目描述信息
-     * @Date: 2019/7/20 14:39
-     * @Param:
-     * @Return:
-     * @throws:
+     * 定义项目描述信息
+     * @return 定义项目描述信息
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("后台管理服务API")
-                .description("后台管理服务Restful风格API文档")
+                .title("接口文档")
+                .description("Restful风格接口文档")
                 .version("1.0")
                 .build();
     }

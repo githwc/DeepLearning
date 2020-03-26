@@ -56,7 +56,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         } catch (Exception e) {
             sysLog.setIpAddress("异常地址");
         }
-        SysUser currUser = daoApi.getCurrentUser();
+        SysUser currUser = daoApi.getCurrUser();
         sysLog.setCreateUserId(currUser == null ? "" : currUser.getSysUserId());
         this.baseMapper.insert(sysLog);
     }

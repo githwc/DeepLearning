@@ -62,9 +62,9 @@ public class GlobalResponseBodyAdviceHandle implements ResponseBodyAdvice<Object
 
         String objclassname = obj == null ? null : obj.getClass().getName();
 
-        ResponseBean responseBean = ResponseBean.success();
-        if (obj instanceof ResponseBean) {
-            responseBean = (ResponseBean) obj;
+        RestResult responseBean = RestResult.success();
+        if (obj instanceof RestResult) {
+            responseBean = (RestResult) obj;
         }else if (obj != null && objclassname.startsWith("com.baomidou.mybatisplus")) {
             // 判断是否是MyBatisPlus分页对象，是则使用反射获取Page对象属性值封装返回
             Class<?> objectClass = obj.getClass();

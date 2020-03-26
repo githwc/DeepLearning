@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/sysDept")
 @Slf4j
-@Api(tags="系统部门")
+@Api(tags="部门管理")
 public class SysDeptController {
 
     private final SysDeptService service;
@@ -45,7 +45,7 @@ public class SysDeptController {
 
     @GetMapping(value = "/departTree")
     @ApiOperation(value = "加载部门树",notes = "加载所有部门树")
-    @WriteLog(opPosition = "加载部门树" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "加载部门树")
     public List<TreeNode> departTree(@RequestParam(value = "departName",required = false)String departName){
         try {
             return service.departTree(departName);
@@ -56,7 +56,7 @@ public class SysDeptController {
 
     @GetMapping("/childrenDept")
     @ApiOperation(value = "查询子级部门",notes = "查询子级部门")
-    @WriteLog(opPosition = "查询子级部门" ,optype = CommonConstant.OPTYPE_READ)
+    @WriteLog(opPosition = "查询子级部门")
     public Page<SysDept> childrenDept(Page<SysDept> page, DeptQuery deptQuery){
         return service.childrenDept(page,deptQuery);
     }

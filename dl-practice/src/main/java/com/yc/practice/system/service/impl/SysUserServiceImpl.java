@@ -19,13 +19,10 @@ import com.yc.core.system.mapper.SysUserRoleMapper;
 import com.yc.core.system.model.query.UserQuery;
 import com.yc.core.system.model.vo.SysUserVO;
 import com.yc.practice.common.dao.DaoApi;
-import com.yc.practice.config.filter.JwtUtil;
 import com.yc.practice.system.service.SysLogService;
 import com.yc.practice.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -39,7 +36,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述：
@@ -57,18 +53,18 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
-    @Autowired
-    private DaoApi daoApi;
-
+    private final DaoApi daoApi;
     private final SysLogService sysLogService;
     private final SysUserRoleMapper sysUserRoleMapper;
     private RedisTemplate redisTemplate;
 
     @Autowired
     public SysUserServiceImpl(SysUserRoleMapper sysUserRoleMapper,
-                              SysLogService sysLogService,RedisTemplate redisTemplate) {
+                              SysLogService sysLogService,RedisTemplate redisTemplate,
+                              DaoApi daoApi) {
         this.sysUserRoleMapper = sysUserRoleMapper;
         this.redisTemplate = redisTemplate;
+        this.daoApi = daoApi;
         this.sysLogService = sysLogService;
     }
 
@@ -95,11 +91,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
             JSONObject jsonObject = new JSONObject();
             // 生成token
-            String token = JwtUtil.sign(loginName, sysPassword);
+            // String token = JwtUtil.sign(loginName, sysPassword);
             ValueOperations operations = redisTemplate.opsForValue();
             // 放入缓存并设置超时时间
-            operations.set(CacheConstant.LOGIN_USER_TOKEN_ + token, token,30, TimeUnit.MINUTES);
-            jsonObject.put("token", token);
+            // operations.set(CacheConstant.LOGIN_USER_TOKEN_ + token, token,30, TimeUnit.MINUTES);
+            // jsonObject.put("token", token);
             jsonObject.put("userInfo", sysUser);
             // 记录登录数据
             this.dealUser(sysUser);
@@ -110,20 +106,21 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
-        SysUser sysUser = (SysUser)subject.getPrincipal();
-        sysLogService.addLog("用户名: "+sysUser.getLoginName()+",退出成功！", CommonConstant.LOG_TYPE_1, "sysUser/logout","");
-        subject.logout();
-        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        //清空用户Token缓存
-        redisTemplate.delete(CacheConstant.LOGIN_USER_TOKEN_ + token);
-        //清空用户权限缓存：权限Perms和角色集合
-        redisTemplate.delete(CacheConstant.LOGIN_USER_ROLES_+ sysUser.getLoginName());
-        redisTemplate.delete(CacheConstant.LOGIN_USER_PERMISSION_+ sysUser.getLoginName());
+        // Subject subject = SecurityUtils.getSubject();
+        // SysUser sysUser = (SysUser)subject.getPrincipal();
+        // sysLogService.addLog("用户名: "+sysUser.getLoginName()+",退出成功！", CommonConstant.LOG_TYPE_1, "sysUser/logout","");
+        // subject.logout();
+        // String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
+        // //清空用户Token缓存
+        // redisTemplate.delete(CacheConstant.LOGIN_USER_TOKEN_ + token);
+        // //清空用户权限缓存：权限Perms和角色集合
+        // redisTemplate.delete(CacheConstant.LOGIN_USER_ROLES_+ sysUser.getLoginName());
+        // redisTemplate.delete(CacheConstant.LOGIN_USER_PERMISSION_+ sysUser.getLoginName());
     }
 
     @Override
     public SysUser getUserByName(String loginName) {
+        log.info("======================= 谁在调用 =================");
         return this.baseMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getLoginName, loginName)
         );
@@ -161,7 +158,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setSalt(salt);
         String passwordEncode = EncoderUtil.encrypt(user.getLoginName(), "123456", salt);
         user.setPassword(passwordEncode);
-        user.setCreateUserId(daoApi.getCurrentUserId());
+        user.setCreateUserId(daoApi.getCurrUserId());
         user.setAge(IdcardUtils.getAgeByIdCard(user.getIdCard()));
         user.setSex(IdcardUtils.getSexByIdCard(user.getIdCard()));
         user.setBirthday(LocalDate.parse(IdcardUtils.getBirthByIdCard(user.getIdCard())));

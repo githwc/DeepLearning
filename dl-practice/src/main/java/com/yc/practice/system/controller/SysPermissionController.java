@@ -46,7 +46,7 @@ public class SysPermissionController {
 
     @GetMapping(value = "/getUserPermissionByToken")
     @ApiOperation(value = "获取用户权限",notes = "根据Token获取用户拥有的权限")
-    @WriteLog(opPosition = "获取指定用户权限" )
+    @WriteLog(opPosition = "获取指定用户权限")
     public JSONObject getUserPermissionByToken(@RequestParam("token") String token, HttpServletResponse response) {
         try {
             return service.getUserPermissionByToken(token,response);

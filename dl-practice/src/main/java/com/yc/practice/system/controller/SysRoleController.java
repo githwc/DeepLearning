@@ -73,7 +73,7 @@ public class SysRoleController {
     @WriteLog(opPosition = "角色添加" ,optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysRole sysRole) {
         try {
-            sysRole.setCreateUserId(daoApi.getCurrentUserId());
+            sysRole.setCreateUserId(daoApi.getCurrUserId());
             service.save(sysRole);
         } catch (Exception e) {
             throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());

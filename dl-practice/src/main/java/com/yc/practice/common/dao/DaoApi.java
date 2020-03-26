@@ -1,6 +1,6 @@
 package com.yc.practice.common.dao;
 
-import com.yc.core.system.entity.SysUser;
+import com.yc.core.system.model.vo.CurrUserVO;
 
 /**
  * 功能描述：Interface - DAO data operation layer
@@ -20,12 +20,12 @@ public interface DaoApi {
      * 获取当前用户
      * @return 用户信息
      */
-    SysUser getCurrentUser();
+    CurrUserVO getCurrUser();
 
     /**
      * 获取当前用户的ID
      * @return 用户ID
      */
-    String getCurrentUserId();
+    String getCurrUserId();
 
 }

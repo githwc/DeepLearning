@@ -1,6 +1,6 @@
 package com.yc.common.config.exception;
 
-import com.yc.common.config.response.ResultUtils;
+import com.yc.common.config.response.RestResult;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -28,9 +28,9 @@ public class ApiException extends RuntimeException {
     private String msg;
 
     public ApiException(int code, String msg, Object... params) {
-        super(ResultUtils.formatMsg(msg, params));
+        super(RestResult.formatMsg(msg, params));
         this.code = code;
-        this.msg = ResultUtils.formatMsg(msg, params);
+        this.msg = RestResult.formatMsg(msg, params);
     }
 
 }

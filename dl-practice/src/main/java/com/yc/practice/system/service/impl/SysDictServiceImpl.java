@@ -70,7 +70,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if(ObjectUtil.isNotEmpty(sysDicts)){
             throw new RuntimeException("存在重复字典项,请重新填写！");
         }
-        sysDict.setUpdateUserId(daoApi.getCurrentUserId());
+        sysDict.setUpdateUserId(daoApi.getCurrUserId());
         this.updateById(sysDict);
     }
 
@@ -107,7 +107,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public void create(SysDict sysDict) {
         if (sysDict != null) {
-            sysDict.setCreateUserId(daoApi.getCurrentUserId());
+            sysDict.setCreateUserId(daoApi.getCurrUserId());
             if (StringUtils.isBlank(sysDict.getParentId())) {
                 sysDict.setParentId("root");
             }else{

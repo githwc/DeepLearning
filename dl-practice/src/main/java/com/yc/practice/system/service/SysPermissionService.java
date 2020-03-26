@@ -32,6 +32,13 @@ public interface SysPermissionService extends IService<SysPermission> {
     Set<String> getUserPermCodes(String loginName);
 
     /**
+     * 获取用户权限码 例如：admin,guest,xxx
+     * @param loginName
+     * @return
+     */
+    List<SysPermission> getUserPerm(String loginName);
+
+    /**
      * 根据Token获取用户拥有的权限
      * @param token
      * @param response

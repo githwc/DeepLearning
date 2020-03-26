@@ -18,4 +18,12 @@
         order by u.sort
     </select>
 
+    <select id="loginByName" resultType="com.yc.core.system.model.vo.CurrUserVO">
+        SELECT
+               sys.*
+        FROM
+             sys_user AS sys
+        where login_name = #{loginName}
+        limit 1
+    </select>
 </mapper>

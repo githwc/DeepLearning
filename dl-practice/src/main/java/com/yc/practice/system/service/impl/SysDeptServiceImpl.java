@@ -65,7 +65,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     @CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void editByDeptId(SysDept sysDept) {
-        sysDept.setUpdateUserId(daoApi.getCurrentUserId());
+        sysDept.setUpdateUserId(daoApi.getCurrUserId());
         this.updateById(sysDept);
     }
 
@@ -107,7 +107,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());
             sysDept.setUniqueCoding(codeAndLevel[0]);
             sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
-            sysDept.setCreateUserId(daoApi.getCurrentUserId());
+            sysDept.setCreateUserId(daoApi.getCurrUserId());
             if (StringUtils.isBlank(sysDept.getParentId())) {
                 sysDept.setParentId("#");
             }

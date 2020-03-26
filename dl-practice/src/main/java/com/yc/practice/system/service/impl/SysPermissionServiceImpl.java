@@ -16,7 +16,6 @@ import com.yc.core.system.mapper.SysPermissionMapper;
 import com.yc.core.system.model.vo.SysPermissionTree;
 import com.yc.core.system.model.vo.TreeModel;
 import com.yc.practice.common.dao.DaoApi;
-import com.yc.practice.config.filter.JwtUtil;
 import com.yc.practice.system.service.SysPermissionService;
 import com.yc.practice.system.utils.PermissionOPUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +45,12 @@ import java.util.*;
 @Slf4j
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
+    private final DaoApi daoApi;
+
     @Autowired
-    private DaoApi daoApi;
+    public SysPermissionServiceImpl (DaoApi daoApi){
+        this.daoApi = daoApi;
+    }
 
     @Override
     public Set<String> getUserPermCodes(String loginName) {
@@ -62,13 +65,17 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
+    public List<SysPermission> getUserPerm(String loginName) {
+        return this.baseMapper.queryPermissionByUser(loginName);
+    }
+
+    @Override
     public JSONObject getUserPermissionByToken(String token, HttpServletResponse response) {
         JSONObject json = new JSONObject();
         if (StringUtils.isEmpty(token)) {
             throw new ParameterException("参数错误:TOKEN不允许为空");
         }
-        String loginName = JwtUtil.getUsername(token);
-        List<SysPermission> metaList = this.baseMapper.queryPermissionByUser(loginName);
+        List<SysPermission> metaList = this.baseMapper.queryPermissionByUser(daoApi.getCurrUser().getLoginName());
         PermissionOPUtil.addIndexPage(metaList);
         JSONArray menujsonArray = new JSONArray();
         this.getMenuJsonArray(menujsonArray, metaList, null);
@@ -327,7 +334,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             this.baseMapper.setMenuLeaf(pid, 0);
         }
         sysPermission.setIsLeaf(true);
-        sysPermission.setCreateUserId(daoApi.getCurrentUser().getSysUserId());
+        sysPermission.setCreateUserId(daoApi.getCurrUser().getSysUserId());
         this.save(sysPermission);
     }
 

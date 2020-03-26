@@ -3,9 +3,9 @@ package com.yc.practice.remind.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.config.webSocket.WebSocket;
-import com.yc.practice.common.dao.DaoApi;
 import com.yc.core.remind.entity.RemindMessage;
 import com.yc.core.remind.mapper.RemindMessageMapper;
+import com.yc.practice.common.dao.DaoApi;
 import com.yc.practice.remind.service.RemindMessageReceiveService;
 import com.yc.practice.remind.service.RemindMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +59,8 @@ public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, R
         remindMessage.setRid(rid);
         remindMessage.setSendState("1");
         remindMessage.setSendTime(LocalDateTime.now());
-        remindMessage.setCreateUser(daoApi.getCurrentUser().getUserName());
-        remindMessage.setCreateUserId(daoApi.getCurrentUserId());
+        remindMessage.setCreateUser(daoApi.getCurrUser().getUserName());
+        remindMessage.setCreateUserId(daoApi.getCurrUserId());
         int result = this.baseMapper.insert(remindMessage);
         if(result > 0){
             remindMessageReceiveService.insertRecord(userId,remindMessage.getRemindMessageId(),flag);
@@ -84,8 +84,8 @@ public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, R
         remindMessage.setRid(rid);
         remindMessage.setSendState("1");
         remindMessage.setSendTime(LocalDateTime.now());
-        remindMessage.setCreateUser(daoApi.getCurrentUser().getUserName());
-        remindMessage.setCreateUserId(daoApi.getCurrentUserId());
+        remindMessage.setCreateUser(daoApi.getCurrUser().getUserName());
+        remindMessage.setCreateUserId(daoApi.getCurrUserId());
         this.baseMapper.insert(remindMessage);
         /**
          * 群发消息不记录接收人
