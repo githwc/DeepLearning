@@ -51,12 +51,6 @@ public enum Error implements IError {
     LoginNameOrPwdError(400, 42010, "用户名或密码错误"),
     LoginPwdError(400, 42011, "用户密码错误"),
     /**
-     * 订单异常
-     */
-    OrderError(400, 43000, "订单错误"),
-    OrderPayError(400, 43001, "订单支付错误"),
-    OrderPayRepeatCallback(400, 43002, "订单支付重复回调"),
-    /**
      * 格式错误
      */
     FormatError(400, 44000, "格式错误"),

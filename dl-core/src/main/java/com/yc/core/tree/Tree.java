@@ -6,11 +6,9 @@ import java.util.List;
 /**
  * 功能描述：
  *  构建树形数据
- *  [使用简单数据集合构建tree]
- *  [设置根节点信息]
- *  [节点排序]
+ *
  * <p>版权所有：</p>
- * 未经本许可，不得以任何方式复制或使用本程序任何部分
+ * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
  * @Company: 紫色年华
  * @Author: xieyc
@@ -22,9 +20,9 @@ public class Tree {
     /**
      * 构建树形数据
      *
-     * @param topId
-     * @param entityList
-     * @return
+     * @param topId 顶级元素父ID
+     * @param entityList list
+     * @return tree list
      */
     public static <E extends TreeEntity<E>> List<E> getTreeList(String topId, List<E> entityList) {
         List<E> resultList = new ArrayList<>();
@@ -36,7 +34,7 @@ public class Tree {
                 resultList.add(entity);
             }
         }
-        // 获取每个顶层元素的子数据集合
+        // 获取子节点
         for (E entity : resultList) {
             entity.setChildren(getSubList(entity.getId(), entityList));
         }
@@ -44,11 +42,11 @@ public class Tree {
     }
 
     /**
-     * * 获取子数据集合
+     * 获取子数据集合
      *
-     * @param id
-     * @param entityList
-     * @return
+     * @param id id
+     * @param entityList list
+     * @return 子集合
      */
     private static <E extends TreeEntity<E>> List<E> getSubList(String id, List<E> entityList) {
         List<E> childList = new ArrayList<>();

@@ -2,7 +2,6 @@ package com.yc.practice.system.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.core.system.model.query.LogQuery;
 import com.yc.core.system.model.vo.SysLogVO;
 import com.yc.practice.common.log.WriteLog;
@@ -45,11 +44,7 @@ public class SysLogController {
     @ApiOperation(value = "首页获取系统访问数据",notes = "首页获取系统访问数据")
     @WriteLog(opPosition = "首页获取系统访问数据")
     public JSONObject logInfo(){
-        try{
-            return service.logInfo();
-        }catch(Exception e){
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        return service.logInfo();
     }
 
     @GetMapping("/logPage")

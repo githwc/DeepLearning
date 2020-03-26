@@ -1,7 +1,6 @@
 package com.yc.practice.system.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.common.config.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
@@ -46,11 +45,7 @@ public class SysDictController {
     @ApiOperation(value = "加载字典树",notes = "加载所有字典")
     @WriteLog(opPosition = "加载字典树")
     public List<TreeNode> dictTree(@RequestParam(value = "name",required = false)String name){
-        try {
-            return service.dictTree(name);
-        }catch (Exception e){
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        return service.dictTree(name);
     }
 
     @GetMapping("/childrenDict")
@@ -64,44 +59,28 @@ public class SysDictController {
     @PostMapping(value = "/add")
     @WriteLog(opPosition = "字典添加" ,optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysDict sysDict) {
-        try {
-            service.create(sysDict);
-        } catch (Exception e) {
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        service.create(sysDict);
     }
 
     @PutMapping(value = "/edit")
     @ApiOperation(value = "字典修改",notes = "字典修改")
     @WriteLog(opPosition = "字典修改" ,optype = CommonConstant.OPTYPE_UPDATE)
     public void edit(@RequestBody SysDict sysDict) {
-        try{
-            service.editByDictId(sysDict);
-        }catch (Exception e){
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+       service.editByDictId(sysDict);
     }
 
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "字典删除",notes = "字典删除")
     @WriteLog(opPosition = "字典删除" ,optype = CommonConstant.OPTYPE_DELETE)
     public void delete(@RequestParam("sysDictId") String sysDictId) {
-        try{
-            service.deleteAlone(sysDictId);
-        }catch(Exception e){
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        service.deleteAlone(sysDictId);
     }
 
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "字典批量删除",notes = "字典批量删除")
     @WriteLog(opPosition = "字典批量删除" ,optype = CommonConstant.OPTYPE_DELETE)
     public void deleteBatch(@RequestParam("ids") String ids) {
-        try{
-            service.deleteBatch(ids);
-        }catch(Exception e){
-            throw new RunningException("".equals(e.getMessage()) ?  "系统错误,请联系管理员！" : e.getMessage());
-        }
+        service.deleteBatch(ids);
     }
 
     /**

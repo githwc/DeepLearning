@@ -54,7 +54,7 @@ public class JwtTokenUtil {
     /**
      * 验证token是否还有效
      *
-     * @param token       客户端传入的token
+     * @param token 客户端传入的token
      */
     public void validateToken(String token) {
         log.info("=================== 验证token是否还有效 ===================");
@@ -69,8 +69,8 @@ public class JwtTokenUtil {
     /**
      * 获取token中的id
      *
-     * @param token
-     * @return
+     * @param token token
+     * @return string
      */
     public String getId(String token) {
         DecodedJWT jwt = JWT.decode(token);
@@ -81,7 +81,7 @@ public class JwtTokenUtil {
      * 获取token中的name
      *
      * @param token token
-     * @return
+     * @return string
      */
     public String getName(String token) {
         DecodedJWT jwt = JWT.decode(token);
@@ -91,8 +91,8 @@ public class JwtTokenUtil {
     /**
      * 解密token内容
      *
-     * @param token
-     * @return
+     * @param token token
+     * @return decoded
      */
     public DecodedJWT getDecodedJWT(String token) {
         return JWT.decode(token);

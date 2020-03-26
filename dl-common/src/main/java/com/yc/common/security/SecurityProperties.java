@@ -18,24 +18,29 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "dl.security")
 @Data
 public class SecurityProperties {
+
     /**
      * jwt加密密钥
      */
     private String jwtSecret;
+
     /**
      * jwt token 有效时间（毫秒）
      * 默认30分钟
      */
     private Integer jwtActiveTime = 1800000;
+
     /**
      * jwt token 续签时间（毫秒）
      * 默认20分钟后开始续签
      */
     private Integer jwtRenewTime = 1200000;
+
     /**
      * 安全校验排除资源路径
      */
     private String[] excludes;
+
     /**
      * 默认登陆账号
      * 该属性在环境为开发环境时生效，将前端接口改为此账号登陆

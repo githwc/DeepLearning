@@ -15,21 +15,21 @@ public interface IError {
     /**
      * 返回HTTP状态码
      *
-     * @return
+     * @return int
      */
     int getHttpStatusCode();
 
     /**
      * 返回自定义错误码
      *
-     * @return
+     * @return int
      */
     int getCode();
 
     /**
      * 获取错误消息
      *
-     * @return
+     * @return string
      */
     String getMsg();
 }

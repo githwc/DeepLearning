@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 功能描述：树节点数据
+ *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -69,5 +70,5 @@ public class TreeNode implements TreeEntity<TreeNode>, Serializable {
     @JSONField(ordinal = 8)
     public List<TreeNode> children;
 
-    //  ======================== 类方法 ==================
+
 }
