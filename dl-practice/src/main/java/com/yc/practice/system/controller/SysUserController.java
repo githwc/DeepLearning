@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysUser;
+import com.yc.core.system.model.form.SysUserForm;
 import com.yc.core.system.model.query.UserQuery;
 import com.yc.core.system.model.vo.SysUserVO;
 import com.yc.practice.common.log.WriteLog;
@@ -71,8 +72,8 @@ public class SysUserController {
     @PutMapping(value = "/edit")
     @ApiOperation(value = "用户修改", notes = "用户修改")
     @WriteLog(opPosition = "用户修改", optype = CommonConstant.OPTYPE_UPDATE)
-    public void edit(@RequestBody JSONObject jsonObject) {
-        service.edit(jsonObject);
+    public void edit(@RequestBody SysUserForm sysUserForm) {
+        service.edit(sysUserForm);
     }
 
     @GetMapping("/checkIsOnly")

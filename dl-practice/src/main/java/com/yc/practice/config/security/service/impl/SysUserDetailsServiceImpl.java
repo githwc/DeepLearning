@@ -1,7 +1,11 @@
 package com.yc.practice.config.security.service.impl;
 
+import com.yc.common.config.error.Error;
+import com.yc.common.config.error.ErrorException;
+import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,23 +40,19 @@ public class SysUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginName) {
-        System.out.println("========================= 调用嘛 =======================");
-        System.out.println("========================= 调用嘛 =======================");
-        System.out.println("========================= 调用嘛 =======================");
-        System.out.println("========================= 调用嘛 =======================");
         CurrUserVO userVO = sysUserMapper.loginByName(loginName);
-        // if (userVO == null) {
-        //     throw new RunningException("用户不存在");
-        // } else if (StringUtils.isBlank(userVO.getRoleId())) {
-        //     throw new ErrorException(HaitaoError.SysUserNoLoginPurview);
-        // } else if (StringUtils.equals(userVo.getState(), ZhyqConsts.PublicState.DISABLE)) {
-        //     throw new ErrorException(Error.UserDisabled);
-        // } else if (StringUtils.equals(userVo.getState(), ZhyqConsts.PublicState.ENABLE)) {
+        if (userVO == null) {
+            throw new ErrorException(Error.UserNotFound);
+        } /*else if (StringUtils.isBlank(userVO.getRoleId())) {
+            throw new ErrorException(Error.NoAccess);
+        } */else if (userVO.getState() == CommonConstant.PublicState.DISABLE) {
+            throw new ErrorException(Error.UserDisabled);
+        } else if (userVO.getState() == CommonConstant.PublicState.ENABLE) {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(userVO.getSysUserId()));
             return new User(userVO.getLoginName(), userVO.getPassword(), authorities);
-        // } else {
-        //     throw new ErrorException(Error.UserError);
-        // }
+        } else {
+            throw new ErrorException(Error.UserError);
+        }
     }
 }

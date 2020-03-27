@@ -1,5 +1,6 @@
 package com.yc.practice.config.security.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yc.core.system.model.vo.CurrUserVO;
 
 /**
@@ -22,4 +23,9 @@ public interface LoginService {
      */
     CurrUserVO loginSuccess(String loginName);
 
+    /**
+     * 获取图片验证码
+     * @return 验证码
+     */
+    JSONObject getImageVerify();
 }

@@ -57,9 +57,6 @@ public class JwtTokenUtil {
      * @param token 客户端传入的token
      */
     public void validateToken(String token) {
-        log.info("=================== 验证token是否还有效 ===================");
-        System.out.println(token);
-        log.info("=================== 验证token是否还有效 ===================");
         Algorithm algorithm = Algorithm.HMAC256(securityProperties.getJwtSecret());
         JWTVerifier verifier = JWT.require(algorithm).build();
         verifier.verify(token);

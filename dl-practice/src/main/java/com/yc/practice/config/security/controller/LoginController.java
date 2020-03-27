@@ -1,7 +1,9 @@
 package com.yc.practice.config.security.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yc.practice.config.security.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,4 +29,13 @@ public class LoginController {
     }
 
 
+    /**
+     * 获取图片验证码
+     *
+     * @return 返回图片验证码
+     */
+    @GetMapping("/getImageVerify")
+    public JSONObject getImageVerify() {
+        return loginService.getImageVerify();
+    }
 }

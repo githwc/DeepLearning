@@ -1,5 +1,6 @@
 package com.yc.practice.config.security.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.practice.config.security.service.LoginService;
@@ -33,4 +34,11 @@ public class LoginServiceImpl implements LoginService {
     public CurrUserVO loginSuccess(String loginName) {
         return sysUserMapper.loginByName(loginName);
     }
+
+    @Override
+    public JSONObject getImageVerify() {
+        return null;
+    }
+
+
 }

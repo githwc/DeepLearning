@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysUser;
+import com.yc.core.system.model.form.SysUserForm;
 import com.yc.core.system.model.query.UserQuery;
 import com.yc.core.system.model.vo.SysUserVO;
 
@@ -67,9 +68,9 @@ public interface SysUserService extends IService<SysUser> {
 
     /**
      * 修改用户
-     * @param jsonObject 用户信息
+     * @param sysUserForm 用户信息
      */
-    void edit(JSONObject jsonObject);
+    void edit(SysUserForm sysUserForm);
 
     /**
      * 登录账号唯一性检测

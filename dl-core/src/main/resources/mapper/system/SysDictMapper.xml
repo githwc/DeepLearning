@@ -51,7 +51,7 @@
                 from sys_dict d_first
                 left join sys_dict d_second on d_first.sys_dict_id = d_second.parent_id
                 where
-                    d_first.parent_id = '#'
+                    d_first.parent_id = 'root'
                 and d_first.`name` = #{firstName}
                 and d_second.name = #{secondName}
                 and d_first.state = 0

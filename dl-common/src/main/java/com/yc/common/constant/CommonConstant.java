@@ -12,6 +12,20 @@ package com.yc.common.constant;
  */
 public class CommonConstant {
 
+    /**
+     * 通用状态(0停用1正常/启用)
+     */
+    public static final class PublicState {
+        /**
+         * 冻结
+         */
+        public static final int DISABLE = 1;
+        /**
+         * 正常
+         */
+        public static final int ENABLE = 0;
+    }
+
     // =============== 系统日志 START ====================
     /**
      * 系统日志类型： 操作
@@ -70,7 +84,7 @@ public class CommonConstant {
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
 
-    // ================== 状态码 ===========================
+    // ================== 删除状态码 ===========================
 
     /**
      * 未删除

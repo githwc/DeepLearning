@@ -2,6 +2,7 @@ package com.yc.practice.config.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
+import com.yc.common.config.error.ErrorException;
 import com.yc.common.config.response.RestResult;
 import com.yc.common.constant.BaseConstant;
 import com.yc.practice.config.security.service.TokenService;
@@ -60,8 +61,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
         try {
             usernamePasswordAuthenticationToken = tokenService.verify(response, token);
-        } catch (RuntimeException e) {
-            String errorMsg = RestResult.error(10012, "乱七八糟").toJSONString();
+        } catch (ErrorException e) {
+            String errorMsg = RestResult.error(e.getCode(), e.getMsg()).toJSONString();
             log.error(errorMsg);
             //将错误信息输出到客户端
             ServletUtil.write(response, errorMsg, ContentType.JSON.toString());

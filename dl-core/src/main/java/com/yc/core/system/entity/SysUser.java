@@ -55,10 +55,6 @@ public class SysUser implements Serializable {
      */
     private String password;
     /**
-     * md5 密码盐
-     */
-    private String salt;
-    /**
      * 年龄
      */
     private Integer age;
