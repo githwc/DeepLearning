@@ -1,7 +1,6 @@
 package com.yc.common.config.response;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashMap;
 
@@ -22,6 +21,11 @@ public class RestResult extends HashMap<String,Object> {
     public RestResult put(String key, Object value) {
         super.put(key, value);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJSONString();
     }
 
     public RestResult(){
@@ -45,40 +49,36 @@ public class RestResult extends HashMap<String,Object> {
         return e;
     }
 
+    /**
+     * 统一设置返回数据至page节点
+     * @param data 返回数据
+     * @return result
+     */
     public RestResult data(Object data) {
         super.put("data", data);
         return this;
     }
 
+    /**
+     * 设置分页对象数据至page节点
+     * @param page 分页对象
+     * @return result
+     */
     public RestResult page(Object page) {
         super.put("page", page);
         return this;
-    }
-
-    public RestResult userData(Object userData) {
-        super.put("userData", userData);
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return this.toJSONString();
     }
 
     public String toJSONString() {
         return JSON.toJSONString(this);
     }
 
-    public JSONObject toJSONObject() {
-        return JSON.parseObject(this.toJSONString());
-    }
-
     /**
      * 格式化消息参数
      *
-     * @param msg
-     * @param params
-     * @return
+     * @param msg 消息体
+     * @param params 参数
+     * @return r
      */
     public static String formatMsg(String msg, Object... params) {
         int i = 0, j;

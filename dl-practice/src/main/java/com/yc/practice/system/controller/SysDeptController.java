@@ -48,18 +48,18 @@ public class SysDeptController {
         return service.departTree(departName);
     }
 
+    @PostMapping(value = "/add")
+    @ApiOperation(value = "部门添加",notes = "部门添加")
+    @WriteLog(opPosition = "部门添加" ,optype = CommonConstant.OPTYPE_CREATE)
+    public void add(@RequestBody SysDept sysDept) {
+        service.create(sysDept);
+    }
+
     @GetMapping("/childrenDept")
     @ApiOperation(value = "查询子级部门",notes = "查询子级部门")
     @WriteLog(opPosition = "查询子级部门")
     public Page<SysDept> childrenDept(Page<SysDept> page, DeptQuery deptQuery){
         return service.childrenDept(page,deptQuery);
-    }
-
-    @ApiOperation(value = "部门添加",notes = "部门添加")
-    @PostMapping(value = "/add")
-    @WriteLog(opPosition = "部门添加" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void add(@RequestBody SysDept sysDept) {
-        service.create(sysDept);
     }
 
     @PutMapping(value = "/edit")
@@ -82,7 +82,5 @@ public class SysDeptController {
     public void deleteBatch(@RequestParam("ids") String ids) {
         service.deleteBatch(ids);
     }
-
-
 
 }

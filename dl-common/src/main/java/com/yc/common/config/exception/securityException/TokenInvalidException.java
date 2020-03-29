@@ -16,7 +16,7 @@ import com.yc.common.config.response.RestResult;
 public class TokenInvalidException extends ApiException {
 
     public TokenInvalidException() {
-        super(10503, "token invalid");
+        super(10503, "登录信息失效,请重新登录！");
     }
 
     public TokenInvalidException(String msg, Object... params) {

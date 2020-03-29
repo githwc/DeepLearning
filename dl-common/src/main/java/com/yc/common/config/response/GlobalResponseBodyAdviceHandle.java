@@ -43,16 +43,18 @@ public class GlobalResponseBodyAdviceHandle implements ResponseBodyAdvice<Object
 
     /**
      * 怎样封装结果集
-     * @param obj
-     * @param returnType
-     * @param selectedContentType
-     * @param selectedConverterType
-     * @param request
-     * @param response
-     * @return
+     *  [在supports指定的接口返回前调用]
+     *
+     * @param body 返回值
+     * @param returnType    控制器方法的返回类型
+     * @param selectedContentType 内容类型
+     * @param selectedConverterType 转换器类型
+     * @param request   当前请求
+     * @param response  当前响应
+     * @return  传入的主体或修改的(可能是新的)实例
      */
     @Override
-    public Object beforeBodyWrite(Object obj, MethodParameter returnType,
+    public Object beforeBodyWrite(Object body, MethodParameter returnType,
                                   MediaType selectedContentType,
                                   Class<? extends HttpMessageConverter<?>> selectedConverterType,
                                   ServerHttpRequest request, ServerHttpResponse response) {
@@ -60,44 +62,46 @@ public class GlobalResponseBodyAdviceHandle implements ResponseBodyAdvice<Object
 
         Logger log = LoggerFactory.getLogger(returnType.getDeclaringClass());
 
-        String objclassname = obj == null ? null : obj.getClass().getName();
+        // 通过反射获取返回值全类名
+        String bodyclassname = body == null ? null : body.getClass().getName();
 
-        RestResult responseBean = RestResult.success();
-        if (obj instanceof RestResult) {
-            responseBean = (RestResult) obj;
-        }else if (obj != null && objclassname.startsWith("com.baomidou.mybatisplus")) {
+        RestResult restResult = RestResult.success();
+        // 一个对象是否为一个类的实例
+        if (body instanceof RestResult) {
+            restResult = (RestResult) body;
+        }else if (body != null && bodyclassname.startsWith("com.baomidou.mybatisplus")) {
             // 判断是否是MyBatisPlus分页对象，是则使用反射获取Page对象属性值封装返回
-            Class<?> objectClass = obj.getClass();
+            Class<?> bodyectClass = body.getClass();
             try {
                 // 设置数据
-                responseBean.data(objectClass.getMethod("getRecords").invoke(obj));
+                restResult.data(bodyectClass.getMethod("getRecords").invoke(body));
 
                 JSONObject pageJson = new JSONObject();
                 // 当前页,兼容之前版本使用pageNum的习惯
-                pageJson.put("pageNum", objectClass.getMethod("getCurrent").invoke(obj));
-                pageJson.put("pageNo", objectClass.getMethod("getCurrent").invoke(obj));
+                pageJson.put("pageNum", bodyectClass.getMethod("getCurrent").invoke(body));
+                pageJson.put("pageNo", bodyectClass.getMethod("getCurrent").invoke(body));
                 // 每页的数量
-                pageJson.put("pageSize", objectClass.getMethod("getSize").invoke(obj));
+                pageJson.put("pageSize", bodyectClass.getMethod("getSize").invoke(body));
                 // 总条数
-                pageJson.put("total", objectClass.getMethod("getTotal").invoke(obj));
+                pageJson.put("total", bodyectClass.getMethod("getTotal").invoke(body));
                 // 总页数
-                pageJson.put("pages", objectClass.getMethod("getPages").invoke(obj));
+                pageJson.put("pages", bodyectClass.getMethod("getPages").invoke(body));
                 // 是否有上一页
-                pageJson.put("hasPrevious", objectClass.getMethod("hasPrevious").invoke(obj));
+                pageJson.put("hasPrevious", bodyectClass.getMethod("hasPrevious").invoke(body));
                 // 是否有下一页
-                pageJson.put("hasNext", objectClass.getMethod("hasNext").invoke(obj));
+                pageJson.put("hasNext", bodyectClass.getMethod("hasNext").invoke(body));
 
                 // 设置分页对象数据至page节点
-                responseBean.page(pageJson);
+                restResult.page(pageJson);
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException("封装Page对象返回值出错", e);
             }
         } else {
-            if (obj != null) {
-                responseBean.data(obj);
+            if (body != null) {
+                restResult.data(body);
             }
         }
-        log.debug("response : {}", responseBean.toJSONString());
-        return responseBean;
+        log.debug("response : {}", restResult.toJSONString());
+        return restResult;
     }
 }

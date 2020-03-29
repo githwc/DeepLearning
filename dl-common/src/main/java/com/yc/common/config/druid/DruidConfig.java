@@ -16,10 +16,13 @@ import java.util.Map;
 
 /**
  * 功能描述:
- *    1.初始化druid属性
- *    2.配置Druid的监控
- *
+ *    配置Druid的监控
  *    安全框架中放行Druid,通过访问 "项目路径/druid" 进入
+ *
+ *    [去除监控页面的广告]
+ *      druid监控页面加载以后,footer页是有阿里的广告,要去除这个广告需要修改druid.jar的源码文件，
+ *      具体方法是，用winRAR打开jar包，在druid-1.1.6.jar\support\http\resources\js\common.js路径下找到文件，
+ *      修改common.js中的代码，删除buildFooter函数中的代码即可
  *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
@@ -56,7 +59,6 @@ public class DruidConfig {
         bean.setInitParameters(initParams);
         return bean;
     }
-
 
     /**
      * 配置web监控的filter
