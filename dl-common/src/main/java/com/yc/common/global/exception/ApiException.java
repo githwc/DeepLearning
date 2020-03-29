@@ -1,6 +1,6 @@
-package com.yc.common.config.exception;
+package com.yc.common.global.exception;
 
-import com.yc.common.config.response.RestResult;
+import com.yc.common.global.response.RestResult;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -2,7 +2,7 @@ package com.yc.practice.remind.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.config.webSocket.WebSocket;
+import com.yc.common.webSocket.WebSocket;
 import com.yc.core.remind.entity.RemindMessage;
 import com.yc.core.remind.mapper.RemindMessageMapper;
 import com.yc.practice.common.dao.DaoApi;

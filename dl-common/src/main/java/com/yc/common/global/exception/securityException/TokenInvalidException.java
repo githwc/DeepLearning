@@ -1,7 +1,7 @@
-package com.yc.common.config.exception.securityException;
+package com.yc.common.global.exception.securityException;
 
-import com.yc.common.config.exception.ApiException;
-import com.yc.common.config.response.RestResult;
+import com.yc.common.global.exception.ApiException;
+import com.yc.common.global.response.RestResult;
 
 /**
  * 功能描述：Token无效异常

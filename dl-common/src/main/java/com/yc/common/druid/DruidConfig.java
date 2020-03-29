@@ -1,4 +1,4 @@
-package com.yc.common.config.druid;
+package com.yc.common.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;

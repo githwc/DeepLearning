@@ -1,4 +1,4 @@
-package com.yc.common.config.response;
+package com.yc.common.global.response;
 
 import com.alibaba.fastjson.JSON;
 

@@ -2,7 +2,7 @@ package com.yc.practice.scheduled.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.config.webSocket.WebSocket;
+import com.yc.common.webSocket.WebSocket;
 import com.yc.core.TestTemp.entity.Test;
 import com.yc.core.TestTemp.mapper.TestMapper;
 import com.yc.practice.scheduled.service.ScheduledService;

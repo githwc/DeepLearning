@@ -1,8 +1,8 @@
-package com.yc.common.config.exception.resultException;
+package com.yc.common.global.exception.resultException;
 
-import com.yc.common.config.exception.ApiException;
-import com.yc.common.config.response.ResponseCode;
-import com.yc.common.config.response.RestResult;
+import com.yc.common.global.exception.ApiException;
+import com.yc.common.global.response.ResponseCode;
+import com.yc.common.global.response.RestResult;
 
 /**
  * 功能描述：结果异常

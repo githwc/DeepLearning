@@ -2,7 +2,7 @@ package com.yc.practice.config.security.service.impl;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yc.common.config.error.ErrorException;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.constant.BaseConstant;
 import com.yc.common.security.JwtTokenUtil;
 import com.yc.common.security.SecurityProperties;

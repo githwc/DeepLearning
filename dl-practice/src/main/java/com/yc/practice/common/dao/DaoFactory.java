@@ -1,6 +1,6 @@
 package com.yc.practice.common.dao;
 
-import com.yc.common.config.exception.RunException.RunningException;
+import com.yc.common.global.exception.RunException.RunningException;
 import com.yc.core.system.model.vo.CurrUserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;

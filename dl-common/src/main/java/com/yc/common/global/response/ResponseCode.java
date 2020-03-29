@@ -1,4 +1,4 @@
-package com.yc.common.config.response;
+package com.yc.common.global.response;
 
 /**
  * 功能描述：返回码

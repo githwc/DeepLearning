@@ -1,6 +1,6 @@
-package com.yc.common.config.error;
+package com.yc.common.global.error;
 
-import com.yc.common.config.response.RestResult;
+import com.yc.common.global.response.RestResult;
 
 /**
  * 功能描述：接口服务通用异常

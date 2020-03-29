@@ -1,7 +1,7 @@
 package com.yc.practice.config.security.service.impl;
 
-import com.yc.common.config.error.Error;
-import com.yc.common.config.error.ErrorException;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;

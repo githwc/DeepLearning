@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.config.exception.RunException.RunningException;
+import com.yc.common.global.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysRole;
 import com.yc.core.system.entity.SysRolePermission;

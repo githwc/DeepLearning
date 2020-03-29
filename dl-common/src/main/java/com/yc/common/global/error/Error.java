@@ -1,4 +1,4 @@
-package com.yc.common.config.error;
+package com.yc.common.global.error;
 
 /**
  * 功能描述：异常代码枚举
