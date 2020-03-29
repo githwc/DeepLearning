@@ -6,9 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.exception.RunException.RunningException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.IdcardUtils;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.entity.SysUserRole;
@@ -177,7 +178,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void edit(SysUserForm user) throws RunningException{
+    public void edit(SysUserForm user){
         String roles = user.getSelectedroles();
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(user,sysUser);
@@ -200,7 +201,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             .eq(SysUser::getLoginName,loginName)
         );
         if(list!= null && list.size()>0){
-            throw new RunningException("该账号已存在！");
+            throw new ErrorException(Error.UserExisted);
         }
     }
 
@@ -234,7 +235,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         List<SysUserRole> userRole = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>()
                 .eq(SysUserRole::getUserId, userId));
         if (ObjectUtil.isNull(userRole)) {
-            throw new RunningException("未找到用户相关角色信息");
+            throw new ErrorException(Error.UserNotFound);
         } else {
             for (SysUserRole sysUserRole : userRole) {
                 list.add(sysUserRole.getRoleId());

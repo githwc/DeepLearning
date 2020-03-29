@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.exception.RunException.RunningException;
-import com.yc.common.global.exception.parameterException.ParameterException;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.mapper.SysDictMapper;
 import com.yc.core.system.model.query.DictQuery;
@@ -79,7 +79,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         List<String> idList = new ArrayList<String>();
         SysDict sysDict = this.getById(id);
         if (sysDict == null) {
-            throw new RunningException("未找到对应实体");
+            throw new ErrorException(Error.DictNotFound);
         } else {
             //逻辑删除子级字典
             idList.add(id);
@@ -97,7 +97,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public void deleteBatch(String ids) {
         if (ids == null || "".equals(ids.trim())) {
-            throw new ParameterException("参数不识别！");
+            throw new ErrorException(Error.ParameterNotFound);
         } else {
             List<String> list = Arrays.asList(ids.split(","));
             list.forEach(this::deleteAlone);
@@ -117,7 +117,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                 queryWrapper.and(wrapper-> wrapper.eq("name",sysDict.getName()).or().eq("value",sysDict.getValue()));
                 List<SysDict> sysDicts = this.baseMapper.selectList(queryWrapper);
                 if(ObjectUtil.isNotEmpty(sysDicts)){
-                    throw new RunningException("存在重复字典项,请重新填写！");
+                    throw new ErrorException(Error.DictExisted);
                 }
             }
             this.save(sysDict);
@@ -148,10 +148,10 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         // 字典路径检查
         Object[] keys = sKey.replaceAll(" ", "").split(">");
         if (keys.length <= 0) {
-            throw new RunningException("字典路径不能为空，禁止读取根字典信息!");
+            throw new ErrorException(Error.PathIsNull);
         }
         if(keys.length != 2){
-            throw new RunningException("字典路径格式有误！");
+            throw new ErrorException(Error.PathIsError);
         }
         return this.baseMapper.getDictByRoute(keys[0],keys[1]);
     }

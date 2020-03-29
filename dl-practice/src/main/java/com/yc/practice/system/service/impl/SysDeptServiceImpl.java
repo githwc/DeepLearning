@@ -4,8 +4,8 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.exception.RunException.RunningException;
-import com.yc.common.global.exception.parameterException.ParameterException;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.utils.YouBianCodeUtil;
@@ -75,7 +75,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
         List<String> idList = new ArrayList<String>();
         SysDept sysDept = this.getById(id);
         if(sysDept == null) {
-            throw new RunningException("未找到对应实体");
+            throw new ErrorException(Error.DeptNotFound);
         }else {
             //逻辑删除子部门
             idList.add(id);
@@ -93,7 +93,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     public void deleteBatch(String ids) {
         if (ids == null || "".equals(ids.trim())) {
-            throw new ParameterException("参数不识别！");
+            throw new ErrorException(Error.ParameterNotFound);
         } else {
             List<String> list = Arrays.asList(ids.split(","));
             list.forEach(this::deleteAlone);

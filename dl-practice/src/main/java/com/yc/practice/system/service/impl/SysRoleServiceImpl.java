@@ -5,8 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.exception.RunException.RunningException;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.entity.SysRole;
 import com.yc.core.system.entity.SysRolePermission;
 import com.yc.core.system.mapper.SysRoleMapper;
@@ -75,7 +76,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
                 .eq(SysRole::getDelFlag,CommonConstant.DEL_FLAG_0)
         );
         if(list != null && list.size() >0){
-            throw new RunningException("该角色码已存在！");
+            throw new ErrorException(Error.RoleExisted);
         }
     }
 

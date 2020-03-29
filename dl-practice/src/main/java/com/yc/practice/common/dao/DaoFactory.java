@@ -1,6 +1,7 @@
 package com.yc.practice.common.dao;
 
-import com.yc.common.global.exception.RunException.RunningException;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.model.vo.CurrUserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class DaoFactory implements DaoApi {
         try {
             return (CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e) {
-            throw new RunningException("系统错误");
+            throw new ErrorException(Error.TokenTimeout);
         }
     }
 
@@ -36,7 +37,7 @@ public class DaoFactory implements DaoApi {
         try {
             return ((CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
         }catch (Exception e) {
-            throw new RunningException("系统错误");
+            throw new ErrorException(Error.TokenTimeout);
         }
     }
 }

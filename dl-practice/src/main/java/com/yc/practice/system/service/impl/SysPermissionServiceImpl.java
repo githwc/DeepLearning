@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.exception.ApiException;
-import com.yc.common.global.exception.RunException.RunningException;
-import com.yc.common.global.exception.parameterException.ParameterException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.utils.EncoderUtil;
@@ -73,7 +73,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public JSONObject getUserPermissionByToken(String token, HttpServletResponse response) {
         JSONObject json = new JSONObject();
         if (StringUtils.isEmpty(token)) {
-            throw new ParameterException("参数错误:TOKEN不允许为空");
+            throw new ErrorException(Error.ParameterNotFound);
         }
         List<SysPermission> metaList = this.baseMapper.queryPermissionByUser(daoApi.getCurrUser().getLoginName());
         PermissionOPUtil.addIndexPage(metaList);
@@ -343,7 +343,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public void editPermission(SysPermission sysPermission) {
         SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
         if(oldPer==null) {
-            throw new ParameterException("未找到菜单信息");
+            throw new ErrorException(Error.PermissionNotFound);
         }else {
             //----------------------------------------------------------------------
             //Step1.判断是否是一级菜单，是的话清空父菜单ID
@@ -376,10 +376,10 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE,allEntries=true)
-    public void deletePermission(String id) throws RunningException {
+    public void deletePermission(String id) {
         SysPermission sysPermission = this.getById(id);
         if(sysPermission==null) {
-            throw new RunningException("未找到菜单信息");
+            throw new ErrorException(Error.PermissionNotFound);
         }
         String pid = sysPermission.getParentId();
         if(StringUtils.isNotEmpty(pid)) {
