@@ -1,4 +1,4 @@
-package com.yc.common.config.webMvcConfig;
+package com.yc.common.webMvcConfig;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;

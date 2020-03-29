@@ -1,7 +1,7 @@
 package com.yc.common.config.error;
 
 /**
- * 功能描述：
+ * 功能描述：异常代码枚举
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -18,19 +18,19 @@ public enum Error implements IError {
     Success(200, 0, null),
     AuthError(401, 40100, "认证错误"),
     SignError(401, 40101, "签名错误"),
-    TokenTimeout(401, 40102, "token超时"),
-    TokenError(401, 40103, "token错误"),
+    TokenTimeout(401, 40102, "登录信息已失效超时"),
+    TokenError(401, 40103, "登录信息错误"),
     NoAccess(403, 40300, "无权限"),
     /**
      * 资源已存在
      */
     Existed(400, 40200, "资源已存在"),
-    ResultExisted(400, 40201, "结果已存在"),
-    ParameterExisted(400, 40202, "参数已存在"),
+    RoleExisted(400, 40201, "角色已存在"),
     UserExisted(400, 40203, "用户已存在"),
-    OrderExisted(400, 40204, "订单已存在"),
+    DictExisted(400, 40204, "存在重复字典项,请重新填写"),
     FileExisted(400, 40205, "文件已存在"),
     LoginNameExisted(400, 40206, "用户名已存在"),
+
     /**
      * 资源不存在
      */
@@ -38,14 +38,14 @@ public enum Error implements IError {
     ResultNotFound(404, 40401, "结果不存在"),
     ParameterNotFound(404, 40402, "参数不存在"),
     UserNotFound(404, 40403, "用户不存在"),
-    OrderNotFound(404, 40404, "订单不存在"),
-    FileNotFound(404, 40405, "文件不存在"),
-    LoginNameNotFound(404, 40406, "登录名不存在"),
+    DeptNotFound(404, 40404, "部门不存在"),
+    PermissionNotFound(404, 40405, "权限点不存在"),
+    DictNotFound(404, 40406, "字典不存在"),
     /**
      * 用户异常
      */
     UserError(400, 42000, "用户错误"),
-    NotLogin(400, 42001, "未登录"),
+    NotLogin(400, 42001, "未登录或登录信息已失效"),
     UserDisabled(400, 42004, "用户已禁用"),
     UserIdcardError(400, 42006, "用户证件错误"),
     LoginNameOrPwdError(400, 42010, "用户名或密码错误"),
@@ -61,13 +61,9 @@ public enum Error implements IError {
     CheckCodeError(400, 40001, "验证码错误"),
     Disabled(400, 40002, "已禁用"),
     Deleted(400, 40003, "已删除"),
-    /**
-     * 消息异常
-     */
-    MsgError(400, 45000, "消息错误"),
-    SMSBizLimit(400, 45001, "短信发送频繁"),
-    SMSTodayPhoneLimit(400, 45002, "该手机号今日已发送超量"),
-    SMSTodayIPLimit(400, 45003, "该IP今日已发送超量"),
+    PathIsNull(400,40004,"字典路径不能为空，禁止读取根字典信息!"),
+    PathIsError(400,40005,"字典路径格式有误"),
+
     /**
      * 服务器异常
      */
@@ -107,4 +103,5 @@ public enum Error implements IError {
     public String getMsg() {
         return msg;
     }
+
 }

@@ -2,7 +2,7 @@ package com.yc.practice.config.security.service.impl;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yc.common.config.exception.securityException.TokenInvalidException;
+import com.yc.common.config.error.ErrorException;
 import com.yc.common.constant.BaseConstant;
 import com.yc.common.security.JwtTokenUtil;
 import com.yc.common.security.SecurityProperties;
@@ -73,7 +73,8 @@ public class TokenServiceImpl implements TokenService {
                 response.setHeader("Access-Control-Expose-Headers", "Authorization");
             }
         } catch (TokenExpiredException e) {
-            throw new TokenInvalidException();
+            // TODO: 2020/3/29
+            // throw new ErrorException(DlError.TokenError);
         }
         return new UsernamePasswordAuthenticationToken(currUserVO, currUserVO.getPassword(), null);
     }

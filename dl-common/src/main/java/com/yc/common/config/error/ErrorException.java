@@ -1,6 +1,5 @@
 package com.yc.common.config.error;
 
-
 import com.yc.common.config.response.RestResult;
 
 /**
