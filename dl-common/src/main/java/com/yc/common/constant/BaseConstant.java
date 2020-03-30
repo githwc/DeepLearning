@@ -22,4 +22,5 @@ public class BaseConstant {
      * Token前缀
      */
     public static final String TOKEN_PREFIX = "Bearer";
+
 }

@@ -5,11 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.error.Error;
-import com.yc.common.global.error.ErrorException;
-import com.yc.common.global.exception.ApiException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.EncoderUtil;
 import com.yc.core.system.entity.SysPermission;
 import com.yc.core.system.mapper.SysPermissionMapper;
@@ -323,7 +322,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE,allEntries=true)
-    public void addPermission(SysPermission sysPermission) throws ApiException {
+    public void addPermission(SysPermission sysPermission) {
         //判断是否是一级菜单，是的话清空父菜单
         if(CommonConstant.MENU_TYPE_0.equals(sysPermission.getMenuType())) {
             sysPermission.setParentId(null);

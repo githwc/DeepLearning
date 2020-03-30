@@ -1,6 +1,7 @@
 package com.yc.common.global.response;
 
 import com.alibaba.fastjson.JSON;
+import com.yc.common.global.error.Error;
 
 import java.util.HashMap;
 
@@ -17,6 +18,11 @@ import java.util.HashMap;
  */
 public class RestResult extends HashMap<String,Object> {
 
+    /**
+     * 成功
+     */
+    public static final int SUCCESS = 200;
+
     @Override
     public RestResult put(String key, Object value) {
         super.put(key, value);
@@ -29,7 +35,7 @@ public class RestResult extends HashMap<String,Object> {
     }
 
     public RestResult(){
-        put("code", ResponseCode.SUCCESS);
+        put("code",SUCCESS);
     }
 
     public static RestResult success(){
