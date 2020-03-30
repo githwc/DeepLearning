@@ -72,44 +72,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         this.sysLogService = sysLogService;
     }
 
-    // TODO: 2020/3/26 待删除
-    @Override
-    public JSONObject login(SysUser sysUser) {
-        // String loginName = sysUser.getLoginName();
-        // String password = sysUser.getPassword();
-        // sysUser = this.getUserByName(loginName);
-        // if (sysUser == null) {
-        //     sysLogService.addLog("登录失败，用户名:" + loginName + "不存在！", CommonConstant.LOG_TYPE_1, "sysUser/login", "loginName:" + loginName + ",password:" + password);
-        //     throw new RunningException("该用户不存在！");
-        // } else {
-        //     // 是否冻结
-        //     if(CommonConstant.DEL_FLAG_1.equals(sysUser.getDelFlag())){
-        //         sysLogService.addLog("登录失败，用户名:" + loginName + "已被冻结！", CommonConstant.LOG_TYPE_1, "sysUser/login", "loginName:" + loginName + ",password:" + password);
-        //         throw new RunningException("账号已被锁定,请联系管理员！");
-        //     }
-        //     // 密码验证
-        //     String requestPassword = EncoderUtil.encrypt(loginName, password, sysUser.getSalt());
-        //     String sysPassword = sysUser.getPassword();
-        //     if(!sysPassword.equals(requestPassword)) {
-        //         sysLogService.addLog("登录失败，用户:"+loginName+"密码输入错误！", CommonConstant.LOG_TYPE_1, "sysUser/login","loginName:"+loginName+",password:"+password);
-        //         throw new RunningException("密码错误,请重新输入！");
-        //     }
-        //     JSONObject jsonObject = new JSONObject();
-        //     // 生成token
-        //     // String token = JwtUtil.sign(loginName, sysPassword);
-        //     ValueOperations operations = redisTemplate.opsForValue();
-        //     // 放入缓存并设置超时时间
-        //     // operations.set(CacheConstant.LOGIN_USER_TOKEN_ + token, token,30, TimeUnit.MINUTES);
-        //     // jsonObject.put("token", token);
-        //     jsonObject.put("userInfo", sysUser);
-        //     // 记录登录数据
-        //     this.dealUser(sysUser);
-        //     sysLogService.addLog("用户名: " + loginName + ",登录成功！", CommonConstant.LOG_TYPE_1, "sysUser/login", "loginName:" + loginName + ",password:" + password);
-        //     return jsonObject;
-        //      }
-        return null;
-    }
-
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         CurrUserVO sysUser = daoApi.getCurrUser();
@@ -120,37 +82,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //清空用户权限缓存：权限Perms和角色集合
         // redisTemplate.delete(CacheConstant.LOGIN_USER_ROLES_+ sysUser.getLoginName());
         // redisTemplate.delete(CacheConstant.LOGIN_USER_PERMISSION_+ sysUser.getLoginName());
-    }
-
-    @Override
-    public SysUser getUserByName(String loginName) {
-        System.out.println();
-        log.info("======================= 谁在调用 =================");
-        log.info("======================= 谁在调用 =================");
-        log.info("======================= 谁在调用 =================");
-        return this.baseMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-                .eq(SysUser::getLoginName, loginName)
-        );
-    }
-
-    @Override
-    public void dealUser(SysUser sysUser) {
-        sysUser.setLoginCount(sysUser.getLoginCount() + 1);
-        if (ObjectUtil.isNotNull(sysUser.getLastLoginTime())) {
-            if (!sysUser.getLastLoginTime().toString().substring(0, 10)
-                    .equalsIgnoreCase(LocalDateTime.now().toString().substring(0, 10))) {// 判断上一次登录时间是当前时间的前一天或更多天则证明今天没登陆过
-                sysUser.setTodayLoginCount(1);
-            } else {
-                sysUser.setTodayLoginCount(sysUser.getTodayLoginCount() + 1);
-            }
-        } else {
-            sysUser.setTodayLoginCount(1);
-        }
-        if (ObjectUtil.isNotNull(sysUser.getFirstLoginTime())) {
-            sysUser.setFirstLoginTime(LocalDateTime.now());
-        }
-        sysUser.setLastLoginTime(LocalDateTime.now());
-        this.baseMapper.updateById(sysUser);
     }
 
     @Override

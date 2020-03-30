@@ -91,22 +91,6 @@ public class SysUser implements Serializable {
      */
     private String email;
     /**
-     * 登录次数
-     */
-    private Integer loginCount;
-    /**
-     * 今日登录次数
-     */
-    private Integer todayLoginCount;
-    /**
-     * 首次登录时间
-     */
-    private LocalDateTime firstLoginTime;
-    /**
-     * 最后一次登录时间
-     */
-    private LocalDateTime lastLoginTime;
-    /**
      * 创建人
      */
     private String createUserId;

@@ -70,14 +70,15 @@ public class CommonConstant {
 
     // ================== 编码格式 ===========================
 
+
     /** 文本编码 */
-    public static String TEXT_CODE = "text/plain;charset=UTF-8";
+    public static String TEXT_CONTENTTYPE = "text/plain;charset=UTF-8";
 
     /** JSON编码 */
-    public static String JSON_CODE = "application/json;charset=UTF-8";
+    public static String JSON_CONTENTTYPE = "application/json;charset=UTF-8";
 
     /** XML编码 */
-    public static String XML_CODE = "text/xml;charset=UTF-8";
+    public static String XML_CONTENTTYPE = "text/xml;charset=UTF-8";
 
     /**
      * 默认编码

@@ -1,6 +1,5 @@
-package com.yc.common.global.exception;
+package com.yc.common.global.response;
 
-import com.yc.common.global.response.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;

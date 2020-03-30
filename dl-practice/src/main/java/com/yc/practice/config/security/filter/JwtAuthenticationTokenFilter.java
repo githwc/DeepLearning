@@ -2,6 +2,7 @@ package com.yc.practice.config.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
 import com.yc.common.constant.BaseConstant;
@@ -20,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.Charset;
+
 /**
  * 功能描述：JWT登录授权过滤器
  *  [ 在用户名和密码校验前添加的过滤器
@@ -64,14 +67,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
         } catch (ErrorException e) {
             String errorMsg = RestResult.error(e.getCode(), e.getMsg()).toJSONString();
             log.error(errorMsg);
-            //将错误信息输出到客户端
-            ServletUtil.write(response, errorMsg, ContentType.JSON.toString());
+            ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
             return;
         } catch (Exception e) {
             String errorMsg = RestResult.error(10503, e.getMessage()).toJSONString();
             log.error(errorMsg);
-            //将错误信息输出到客户端
-            ServletUtil.write(response, errorMsg, ContentType.JSON.toString());
+            ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
             return;
         }
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

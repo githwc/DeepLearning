@@ -43,12 +43,6 @@ public class SysUserController {
         this.service = service;
     }
 
-    @PostMapping("/login")
-    @ApiOperation(value = "用户登录", notes = "用户登录")
-    public JSONObject login(@RequestBody SysUser sysUser) {
-        return service.login(sysUser);
-    }
-
     @PostMapping(value = "/logout")
     @ApiOperation(value = "用户登出", notes = "用户登出")
     public void logout(HttpServletRequest request, HttpServletResponse response) {

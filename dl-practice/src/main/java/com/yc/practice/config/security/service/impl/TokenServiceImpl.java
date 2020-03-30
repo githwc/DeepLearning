@@ -2,6 +2,7 @@ package com.yc.practice.config.security.service.impl;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.constant.BaseConstant;
 import com.yc.common.security.JwtTokenUtil;
@@ -73,8 +74,7 @@ public class TokenServiceImpl implements TokenService {
                 response.setHeader("Access-Control-Expose-Headers", "Authorization");
             }
         } catch (TokenExpiredException e) {
-            // TODO: 2020/3/29
-            // throw new ErrorException(DlError.TokenError);
+            throw new ErrorException(Error.TokenError);
         }
         return new UsernamePasswordAuthenticationToken(currUserVO, currUserVO.getPassword(), null);
     }

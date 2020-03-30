@@ -27,30 +27,11 @@ import java.util.List;
 public interface SysUserService extends IService<SysUser> {
 
     /**
-     * 登录
-     * @param sysUser 登录信息
-     * @return 登录信息
-     */
-    JSONObject login(SysUser sysUser);
-
-    /**
      * 登出
      * @param request 请求
      * @param response 响应
      */
     void logout(HttpServletRequest request, HttpServletResponse response);
-
-    /**
-     * 根据账号查询用户
-     * @param loginName 登录名称
-     * @return 用户信息
-     */
-    SysUser getUserByName(String loginName);
-
-    /**
-     * 处理用户数据
-     */
-    void dealUser(SysUser sysUser);
 
     /**
      * 加载用户数据

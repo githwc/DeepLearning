@@ -4,6 +4,7 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.response.RestResult;
 import com.yc.common.constant.BaseConstant;
@@ -17,11 +18,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import sun.text.normalizer.UTF16;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * 功能描述：JWT登陆校验是否合法，基于SpringSecurity
@@ -57,13 +60,15 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
             if (loginData == null) {
                 String errorMsg = RestResult.error(Error.ParameterNotFound.getCode(),
                         Error.ParameterNotFound.getMsg()).toJSONString();
-                ServletUtil.write(response, errorMsg, ContentType.JSON.toString());
+                ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                        Charset.forName(CommonConstant.DEFAULT_CHARSET)));
                 return null;
             }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             String errorMsg = RestResult.error(Error.ParameterNotFound.getCode(), Error.ParameterNotFound.getMsg()).toJSONString();
-            ServletUtil.write(response, errorMsg, ContentType.JSON.toString());
+            ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
             return null;
         }
 
@@ -95,7 +100,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
         jsonObject.put("token", jwtToken);
         String successMsg = RestResult.success().data(jsonObject).toJSONString();
-        ServletUtil.write(response, successMsg, ContentType.JSON.toString());
+        ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }
 
     @Override
@@ -118,7 +124,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         // }
         errorMsg = RestResult.error(Error.LoginNameOrPwdError.getCode(),
                 Error.LoginNameOrPwdError.getMsg()).toJSONString();
-        ServletUtil.write(response, errorMsg, ContentType.JSON.toString());
+        ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }
 
 }
