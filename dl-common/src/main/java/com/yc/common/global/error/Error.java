@@ -18,7 +18,7 @@ public enum Error implements IError {
     Success(200, 0, null),
     AuthError(401, 40100, "认证错误"),
     SignError(401, 40101, "签名错误"),
-    TokenTimeout(401, 40102, "登录信息已失效超时"),
+    TokenTimeout(401, 40102, "登录信息已失效"),
     TokenError(401, 40103, "登录信息错误"),
     NoAccess(403, 40300, "无权限"),
     /**
@@ -45,7 +45,7 @@ public enum Error implements IError {
      * 用户异常
      */
     UserError(400, 42000, "用户错误"),
-    NotLogin(400, 42001, "未登录或登录信息已失效"),
+    AccountLock(400, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
     UserDisabled(400, 42004, "用户已禁用"),
     UserIdcardError(400, 42006, "用户证件错误"),
     LoginNameOrPwdError(400, 42010, "用户名或密码错误"),

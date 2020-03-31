@@ -4,27 +4,29 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yc.common.constant.BaseConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
-import com.yc.common.constant.BaseConstant;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.practice.config.security.service.LoginService;
 import com.yc.practice.config.security.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import sun.text.normalizer.UTF16;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述：JWT登陆校验是否合法，基于SpringSecurity
@@ -52,6 +54,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         setAuthenticationManager(authenticationManager);
     }
 
+    private String username;
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         JSONObject loginData;
@@ -72,9 +76,21 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
             return null;
         }
 
-        String username = loginData.getString("loginName");
+        username = loginData.getString("loginName");
         String password = loginData.getString("password");
 
+        // 失败次数拦截
+        String cacheErrNum = redisTemplate.opsForValue().get(username+ "_errorNumber");
+        if(StringUtils.isNotEmpty(cacheErrNum)){
+            int errorNum = Integer.parseInt(cacheErrNum);
+            if(errorNum >= 5 ){
+                String errorMsg =
+                        RestResult.error(Error.AccountLock.getCode(), Error.AccountLock.getMsg()).toJSONString();
+                ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                        Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+                return null;
+            }
+        }
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         return getAuthenticationManager().authenticate(token);
     }
@@ -108,22 +124,17 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) {
         String errorMsg;
-        // if (failed.getCause() instanceof ErrorException) {
-        //     ErrorException ee = (ErrorException) failed.getCause();
-        //     errorMsg = RestResult.error(ee.getCode(), ee.getMessage()).toJSONString();
-        // } else {
-        //     // 拿到无效凭证的账号
-        //     String loginName = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //     String key = loginName + "_errorNumber";
-        //     //根据账号key拿到redis数据
-        //     String errNum = redisTemplate.opsForValue().get(key);
-        //     int errorNum = StringUtils.isBlank(errNum) ? 1 : Integer.parseInt(errNum) + 1;
-        //     redisTemplate.opsForValue().set(key, String.valueOf(errorNum), 2, TimeUnit.HOURS);
-        //     String msg = 5 - errorNum == 0 ? "当前账号密码您输入错误五次，请2小时之后再登录!" : "账号密码输入错误,您还有" + (5 - errorNum) + "次机会!";
-        //     errorMsg = RestResult.error(400, msg).toJSONString();
-        // }
-        errorMsg = RestResult.error(Error.LoginNameOrPwdError.getCode(),
-                Error.LoginNameOrPwdError.getMsg()).toJSONString();
+        if (failed.getCause() instanceof ErrorException) {
+            ErrorException ee = (ErrorException) failed.getCause();
+            errorMsg = RestResult.error(ee.getCode(), ee.getMessage()).toJSONString();
+        } else {
+            String key = username + "_errorNumber";
+            String cacheErrNum = redisTemplate.opsForValue().get(key);
+            int errorNum = StringUtils.isBlank(cacheErrNum) ? 1 : Integer.parseInt(cacheErrNum) + 1;
+            redisTemplate.opsForValue().set(key, String.valueOf(errorNum), 10, TimeUnit.MINUTES);
+            String msg = 5 - errorNum == 0 ? "当前账号密码您输入错误五次，请10分钟之后再登录!" : "账号密码输入错误,您还有" + (5 - errorNum) + "次机会!";
+            errorMsg = RestResult.error(400, msg).toJSONString();
+        }
         ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }
