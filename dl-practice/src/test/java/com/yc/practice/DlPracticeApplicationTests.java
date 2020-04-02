@@ -1,6 +1,8 @@
 package com.yc.practice;
 
 import cn.hutool.core.date.DateUtil;
+import com.yc.common.utils.RandomUtils;
+import com.yc.common.utils.YouBianCodeUtil;
 import com.yc.core.system.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
@@ -137,20 +139,21 @@ public class DlPracticeApplicationTests {
         list2.add(sysUser2);
         allList.addAll(list2);
 
-        System.out.println(allList.size());
-        System.out.println(allList);
-        System.out.println("开始去重");
-        System.out.println("开始去重");
-        allList = allList.stream().distinct().collect(Collectors.toList());
-        System.out.println(allList.size());
-        System.out.println(allList);
-        System.out.println(allList);
-        allList.sort((o1,o2)->
-            o2.getSysUserId().compareTo(o1.getSysUserId())
-        );
-        System.out.println("排序后");
-        System.out.println(allList);
-        System.out.println("结束时间:"+LocalDateTime.now());
+        // 顶级
+        // 数据库没数据，
+        // String aa = YouBianCodeUtil.getNextYouBianCode(null);
+        // System.out.println(aa);
+        //  数据库有数据
+        String bb = YouBianCodeUtil.getNextYouBianCode("Z99999");
+        System.out.println(bb);
+        // 生成二级
+        // 二级没同级部门
+       //  String cc = YouBianCodeUtil.getSubYouBianCode("A00004", null);
+       // System.out.println(cc);
+
+        // 二级有统计部门
+       //  String dd = YouBianCodeUtil.getSubYouBianCode("A00004","A00004A00004");
+       // System.out.println(dd);
     }
 
 

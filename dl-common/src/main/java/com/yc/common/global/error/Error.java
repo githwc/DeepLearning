@@ -13,14 +13,22 @@ package com.yc.common.global.error;
 public enum Error implements IError {
 
     /**
+     * 数据请求错误
+     */
+    DataError(400, 40000, "请求参数错误"),
+    CheckCodeError(400, 40001, "验证码错误"),
+    Disabled(400, 40002, "已禁用"),
+    Deleted(400, 40003, "已删除"),
+    PathIsNull(400,40004,"字典路径不能为空，禁止读取根字典信息!"),
+    PathIsError(400,40005,"字典路径格式有误"),
+
+    /**
      * 安全认证
      */
-    Success(200, 0, null),
     AuthError(401, 40100, "认证错误"),
     SignError(401, 40101, "签名错误"),
-    TokenTimeout(401, 40102, "登录信息已失效"),
-    TokenError(401, 40103, "登录信息错误"),
-    NoAccess(403, 40300, "无权限"),
+    TokenError(401, 40103, "登录信息已失效，请重新登录！"),
+
     /**
      * 资源已存在
      */
@@ -47,22 +55,8 @@ public enum Error implements IError {
     UserError(400, 42000, "用户错误"),
     AccountLock(400, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
     UserDisabled(400, 42004, "用户已禁用"),
-    UserIdcardError(400, 42006, "用户证件错误"),
     LoginNameOrPwdError(400, 42010, "用户名或密码错误"),
     LoginPwdError(400, 42011, "用户密码错误"),
-    /**
-     * 格式错误
-     */
-    FormatError(400, 44000, "格式错误"),
-    /**
-     * 数据错误
-     */
-    DataError(400, 40000, "数据错误"),
-    CheckCodeError(400, 40001, "验证码错误"),
-    Disabled(400, 40002, "已禁用"),
-    Deleted(400, 40003, "已删除"),
-    PathIsNull(400,40004,"字典路径不能为空，禁止读取根字典信息!"),
-    PathIsError(400,40005,"字典路径格式有误"),
 
     /**
      * 服务器异常

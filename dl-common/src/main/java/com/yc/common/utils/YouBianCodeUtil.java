@@ -1,5 +1,8 @@
 package com.yc.common.utils;
 
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 功能描述：流水号生成规则(按默认规则递增，数字从1-99开始递增，数字到99，递增字母;位数不够增加位数)
  *      A001
@@ -22,40 +25,40 @@ public class YouBianCodeUtil {
 	 * 根据前一个code，获取同级下一个code
 	 * 例如:当前最大code为D01A04，下一个code为：D01A05
 	 *
-	 * @param code
-	 * @return
+	 * @param code 当前最大code
+	 * @return newCode
 	 */
 	public static synchronized String getNextYouBianCode(String code) {
 		String newcode;
-		if (code == null || code =="") {
+		if (StringUtil.isNullOrEmpty(code)) {
 			String zimu = "A";
 			String num = getStrNum(1);
 			newcode = zimu + num;
 		} else {
-			String before_code = code.substring(0, code.length() - 1- numLength);
-			String after_code = code.substring(code.length() - 1 - numLength,code.length());
-			char after_code_zimu = after_code.substring(0, 1).charAt(0);
-			Integer after_code_num = Integer.parseInt(after_code.substring(1));
+			String beforeCode = code.substring(0, code.length() - 1- numLength);
+			String afterCode = code.substring(code.length() - 1 - numLength,code.length());
+			char afterCodeZimu = afterCode.substring(0, 1).charAt(0);
+			Integer afterCodeNum = Integer.parseInt(afterCode.substring(1));
 
 			String nextNum;
 			char nextZimu = 'A';
 			// 先判断数字等于999*，则计数从1重新开始，递增
-			if (after_code_num == getMaxNumByLength(numLength)) {
+			if (afterCodeNum == getMaxNumByLength(numLength)) {
 				nextNum = getNextStrNum(0);
 			} else {
-				nextNum = getNextStrNum(after_code_num);
+				nextNum = getNextStrNum(afterCodeNum);
 			}
 			// 先判断数字等于999*，则字母从A重新开始,递增
-			if(after_code_num == getMaxNumByLength(numLength)) {
-				nextZimu = getNextZiMu(after_code_zimu);
+			if(afterCodeNum == getMaxNumByLength(numLength)) {
+				nextZimu = getNextZiMu(afterCodeZimu);
 			}else{
-				nextZimu = after_code_zimu;
+				nextZimu = afterCodeZimu;
 			}
 			// 例如Z99，下一个code就是Z99A01
-			if ('Z' == after_code_zimu && getMaxNumByLength(numLength) == after_code_num) {
+			if ('Z' == afterCodeZimu && getMaxNumByLength(numLength) == afterCodeNum) {
 				newcode = code + (nextZimu + nextNum);
 			} else {
-				newcode = before_code + (nextZimu + nextNum);
+				newcode = beforeCode + (nextZimu + nextNum);
 			}
 		}
 		return newcode;
@@ -70,10 +73,10 @@ public class YouBianCodeUtil {
 	 *
 	 * @param parentCode   上级code
 	 * @param localCode    同级code
-	 * @return
+	 * @return  newCode
 	 */
 	public static synchronized String getSubYouBianCode(String parentCode,String localCode) {
-		if(localCode!=null && localCode!=""){
+		if(StringUtils.isNotEmpty(localCode)){
 			return getNextYouBianCode(localCode);
 		}else{
 			parentCode = parentCode + "A"+ getNextStrNum(0);
@@ -84,8 +87,8 @@ public class YouBianCodeUtil {
 	/**
 	 * 将数字前面位数补零
 	 *
-	 * @param num
-	 * @return
+	 * @param num 数字
+	 * @return 补全后的str
 	 */
 	private static String getNextStrNum(int num) {
 		return getStrNum(getNextNum(num));
@@ -94,19 +97,18 @@ public class YouBianCodeUtil {
 	/**
 	 * 将数字前面位数补零
 	 *
-	 * @param num
-	 * @return
+	 * @param num 数字
+	 * @return new str
 	 */
 	private static String getStrNum(int num) {
-		String s = String.format("%0" + numLength + "d", num);
-		return s;
+		return String.format("%0" + numLength + "d", num);
 	}
 
 	/**
 	 * 递增获取下个数字
 	 *
-	 * @param num
-	 * @return
+	 * @param num 当前数字
+	 * @return 下个数字
 	 */
 	private static int getNextNum(int num) {
 		num++;
@@ -116,8 +118,8 @@ public class YouBianCodeUtil {
 	/**
 	 * 递增获取下个字母
 	 *
-	 * @param zimu
-	 * @return
+	 * @param zimu 当前字母
+	 * @return 下个字母
 	 */
 	private static char getNextZiMu(char zimu) {
 		if (zimu == 'Z') {
@@ -129,18 +131,18 @@ public class YouBianCodeUtil {
 
 	/**
 	 * 根据数字位数获取最大值
-	 * @param length
-	 * @return
+	 * @param length 数字位数
+	 * @return 最大值
 	 */
 	private static int getMaxNumByLength(int length){
 		if(length==0){
 			return 0;
 		}
-		String max_num = "";
+		String maxNum = "";
 		for (int i=0;i<length;i++){
-			max_num = max_num + "9";
+			maxNum = maxNum + "9";
 		}
-		return Integer.parseInt(max_num);
+		return Integer.parseInt(maxNum);
 	}
 
 }

@@ -71,7 +71,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
                     Charset.forName(CommonConstant.DEFAULT_CHARSET)));
             return;
         } catch (Exception e) {
-            String errorMsg = RestResult.error(10503, e.getMessage()).toJSONString();
+            String errorMsg = RestResult.error(40103, e.getMessage()).toJSONString();
             log.error(errorMsg);
             ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                     Charset.forName(CommonConstant.DEFAULT_CHARSET)));

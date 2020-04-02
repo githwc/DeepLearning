@@ -27,7 +27,7 @@ public class DaoFactory implements DaoApi {
         try {
             return (CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e) {
-            throw new ErrorException(Error.TokenTimeout);
+            throw new ErrorException(Error.TokenError);
         }
     }
 
@@ -37,7 +37,7 @@ public class DaoFactory implements DaoApi {
         try {
             return ((CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
         }catch (Exception e) {
-            throw new ErrorException(Error.TokenTimeout);
+            throw new ErrorException(Error.TokenError);
         }
     }
 }

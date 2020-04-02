@@ -109,7 +109,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
             sysDept.setCreateUserId(daoApi.getCurrUserId());
             if (StringUtils.isBlank(sysDept.getParentId())) {
-                sysDept.setParentId("#");
+                sysDept.setParentId("root");
             }
             this.save(sysDept);
         }
@@ -147,9 +147,10 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             strArray[1] = "1";
             // 先判断数据库中的表是否为空,空则直接返回初始编码
             departList = this.list(new LambdaQueryWrapper<SysDept>()
-                    .eq(SysDept::getParentId, "#")
+                    .eq(SysDept::getParentId, "root")
                     .or()
                     .isNull(SysDept::getParentId)
+                    .orderByDesc(SysDept::getUniqueCoding)
             );
             if(ObjectUtil.isNull(departList)) {
                 strArray[0] = YouBianCodeUtil.getNextYouBianCode(null);
