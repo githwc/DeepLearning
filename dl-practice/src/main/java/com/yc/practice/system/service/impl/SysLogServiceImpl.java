@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.practice.common.dao.DaoApi;
 import com.yc.common.utils.LocalHostUtil;
-import com.yc.common.utils.SpringContextUtils;
+import com.yc.common.utils.SpringContextUtil;
 import com.yc.core.system.entity.SysLog;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysLogMapper;
@@ -51,7 +51,7 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         sysLog.setRequestMethod(requestMethod);
         sysLog.setRequestParam(requestParams);
         try {
-            HttpServletRequest request = SpringContextUtils.getHttpServletRequest();
+            HttpServletRequest request = SpringContextUtil.getHttpServletRequest();
             sysLog.setIpAddress(LocalHostUtil.getIpAddress(request));
         } catch (Exception e) {
             sysLog.setIpAddress("异常地址");

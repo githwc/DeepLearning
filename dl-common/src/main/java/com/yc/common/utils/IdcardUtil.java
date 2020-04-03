@@ -19,7 +19,7 @@ import java.util.Map;
  * @Datetime: 2020-01-06
  * @Version: 1.0.0
  */
-public class IdcardUtils {
+public class IdcardUtil {
 
     public static final int CHINA_ID_MIN_LENGTH = 15;
     public static final int CHINA_ID_MAX_LENGTH = 18;
@@ -31,7 +31,7 @@ public class IdcardUtils {
     public static Map<String, Integer> twFirstCode = new HashMap();
     public static Map<String, Integer> hkFirstCode = new HashMap();
 
-    public IdcardUtils() {
+    public IdcardUtil() {
     }
 
     public static String conver15CardTo18(String idCard) {

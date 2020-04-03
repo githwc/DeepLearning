@@ -9,6 +9,7 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
+import com.yc.common.utils.PasswordCheckUtil;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.practice.config.security.service.LoginService;
 import com.yc.practice.config.security.service.TokenService;
@@ -55,6 +56,7 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     private String username;
+    private String password;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -77,7 +79,7 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
 
         username = loginData.getString("loginName");
-        String password = loginData.getString("password");
+        password = loginData.getString("password");
 
         // 失败次数拦截
         String cacheErrNum = redisTemplate.opsForValue().get(username+ "_errorNumber");
@@ -111,10 +113,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         jsonObject.put("userInfo", currUserVo);
         String jwtToken = TokenService.create(authResult.getName());
         jwtToken = BaseConstant.TOKEN_PREFIX + " " + jwtToken;
-        response.addHeader(BaseConstant.HEADER_STRING, jwtToken);
-        response.setHeader("Access-Control-Allow-Headers", "Authorization");
-        response.setHeader("Access-Control-Expose-Headers", "Authorization");
         jsonObject.put("token", jwtToken);
+        jsonObject.put("pwdStrong", String.valueOf(PasswordCheckUtil.getPwdStrong(password)));
         String successMsg = RestResult.success().data(jsonObject).toJSONString();
         ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));

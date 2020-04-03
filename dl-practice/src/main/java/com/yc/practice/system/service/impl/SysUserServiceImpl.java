@@ -10,7 +10,7 @@ import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.common.utils.IdcardUtils;
+import com.yc.common.utils.IdcardUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.entity.SysUserRole;
 import com.yc.core.system.mapper.SysUserMapper;
@@ -35,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,9 +93,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
         user.setPassword(passwordEncoder.encode("123456"));
         user.setCreateUserId(daoApi.getCurrUserId());
-        user.setAge(IdcardUtils.getAgeByIdCard(user.getIdCard()));
-        user.setSex(IdcardUtils.getSexByIdCard(user.getIdCard()));
-        user.setBirthday(LocalDate.parse(IdcardUtils.getBirthByIdCard(user.getIdCard())));
+        user.setAge(IdcardUtil.getAgeByIdCard(user.getIdCard()));
+        user.setSex(IdcardUtil.getSexByIdCard(user.getIdCard()));
+        user.setBirthday(LocalDate.parse(IdcardUtil.getBirthByIdCard(user.getIdCard())));
         this.save(user);
         String roles = jsonObject.getString("selectedroles");
         if(StringUtils.isNotEmpty(roles)) {

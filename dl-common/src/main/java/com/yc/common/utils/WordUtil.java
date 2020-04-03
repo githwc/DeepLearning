@@ -22,7 +22,7 @@ import java.util.Map;
  * @Datetime: 2019-12-19 17:24
  * @Version: 1.0.0
  */
-public class WordUtils {
+public class WordUtil {
 
     private static Configuration configuration;
 
@@ -30,13 +30,13 @@ public class WordUtils {
         configuration = new Configuration();
         configuration.setDefaultEncoding(CommonConstant.DEFAULT_CHARSET);
         try {
-            configuration.setClassForTemplateLoading(WordUtils.class, "/ftl/");
+            configuration.setClassForTemplateLoading(WordUtil.class, "/ftl/");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private WordUtils() {
+    private WordUtil() {
         throw new AssertionError();
     }
 

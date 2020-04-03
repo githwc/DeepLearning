@@ -1,6 +1,6 @@
 package com.yc.practice.demo.service.impl;
 
-import com.yc.common.utils.WordUtils;
+import com.yc.common.utils.WordUtil;
 import com.yc.practice.demo.service.ExportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class ExportServiceImpl implements ExportService {
     public void export(HttpServletResponse response) {
         Map<String,Object> map = this.dealExportData();
         try{
-            WordUtils.exportWord(response,map,"企业信息","companyInfo.ftl");
+            WordUtil.exportWord(response,map,"企业信息","companyInfo.ftl");
         }catch(Exception e){
             e.printStackTrace();
         }

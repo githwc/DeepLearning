@@ -2,6 +2,8 @@ package com.yc.common.global.error;
 
 /**
  * 功能描述：异常代码枚举
+ *  [throw new ErrorException(DlError.RoleNoDelete);]
+ *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *

@@ -1,7 +1,5 @@
 package com.yc.practice;
 
-import cn.hutool.core.date.DateUtil;
-import com.yc.common.utils.RandomUtils;
 import com.yc.common.utils.YouBianCodeUtil;
 import com.yc.core.system.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static cn.hutool.core.date.DateUnit.HOUR;
-import static cn.hutool.core.date.DateUnit.MINUTE;
 
 @SpringBootTest
 @Slf4j

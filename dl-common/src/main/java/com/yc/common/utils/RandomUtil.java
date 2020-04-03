@@ -15,7 +15,7 @@ import java.util.UUID;
  * @Datetime: 2020-01-06
  * @Version: 1.0.0
  */
-public class RandomUtils {
+public class RandomUtil {
 
     public static final String NUMBERS_AND_LETTERS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String NUMBERS = "0123456789";
@@ -23,7 +23,7 @@ public class RandomUtils {
     public static final String CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String LOWER_CASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
 
-    private RandomUtils() {
+    private RandomUtil() {
         throw new Error("Do not need instantiate!");
     }
 

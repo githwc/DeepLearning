@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Datetime: 2019-09-25 13:48
  */
 @Component
-public class SpringContextUtils implements ApplicationContextAware {
+public class SpringContextUtil implements ApplicationContextAware {
 
 	/**
 	 * 上下文对象实例
