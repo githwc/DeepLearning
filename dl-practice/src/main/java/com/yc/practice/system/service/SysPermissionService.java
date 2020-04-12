@@ -3,6 +3,7 @@ package com.yc.practice.system.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysPermission;
+import com.yc.core.system.model.query.PermissionQuery;
 import com.yc.core.system.model.vo.SysPermissionTree;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,7 +58,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      *
      * @return
      */
-    Map<String,Object> queryTreeList();
+    Map<String,Object> queryTreeList(PermissionQuery query);
 
     /**
      * 添加

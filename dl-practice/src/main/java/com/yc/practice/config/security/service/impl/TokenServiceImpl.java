@@ -2,12 +2,12 @@ package com.yc.practice.config.security.service.impl;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.yc.common.constant.BaseConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.common.constant.BaseConstant;
-import com.yc.common.security.JwtTokenUtil;
-import com.yc.common.security.SecurityProperties;
+import com.yc.common.propertie.SecurityProperties;
 import com.yc.common.utils.DateTimeUtil;
+import com.yc.common.utils.JwtTokenUtil;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.practice.config.security.service.TokenService;
@@ -63,15 +63,16 @@ public class TokenServiceImpl implements TokenService {
             Date iatTime = jwt.getIssuedAt();
             Date expTime = jwt.getExpiresAt();
             Date renewTime = new Date(iatTime.getTime() + securityProperties.getJwtRenewTime());
-            log.debug("签发时间：{}", DateTimeUtil.dateToString(iatTime), "到期时间：{}", DateTimeUtil.dateToString(expTime),
-                    "续签时间：{}", DateTimeUtil.dateToString(renewTime));
+            log.debug("签发时间：{}", DateTimeUtil.dateToString(iatTime));
+            log.debug("到期时间：{}", DateTimeUtil.dateToString(expTime));
+            log.debug("续签时间：{}", DateTimeUtil.dateToString(renewTime));
             log.debug("Bearer " + token);
             // 满足续签条件
             if (now.compareTo(renewTime) >= 0) {
                 String newToken = this.create(jwtTokenUtil.getName(token));
                 response.addHeader(BaseConstant.HEADER_STRING, BaseConstant.TOKEN_PREFIX + " " + newToken);
-                response.setHeader("Access-Control-Allow-Headers", "Authorization");
-                response.setHeader("Access-Control-Expose-Headers", "Authorization");
+                response.setHeader("Access-Control-Allow-Headers", "authorization");
+                response.setHeader("Access-Control-Expose-Headers", "authorization");
             }
         } catch (TokenExpiredException e) {
             throw new ErrorException(Error.TokenError);

@@ -1,6 +1,7 @@
 package com.yc.core.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yc.core.cascadeList.CaseTopLevel;
 import com.yc.core.system.entity.SysPermission;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
@@ -32,6 +33,11 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
     List<SysPermission> queryPermissionByUser(@Param("loginName") String loginName);
 
     @Update("update sys_permission set is_leaf=#{leaf} where sys_permission_id = #{id}")
-    public int setMenuLeaf(@Param("id") String id,@Param("leaf") int leaf);
+    int setMenuLeaf(@Param("id") String id,@Param("leaf") int leaf);
 
+    /**
+     * 权限菜单级联list
+     * @return list
+     */
+    List<CaseTopLevel> caseList();
 }

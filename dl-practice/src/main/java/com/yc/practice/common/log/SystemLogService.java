@@ -5,7 +5,7 @@ import com.yc.common.utils.LocalHostUtil;
 import com.yc.core.system.entity.SysLog;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysLogMapper;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +29,10 @@ import java.time.LocalDateTime;
 public class SystemLogService {
 
     private final SysLogMapper sysLogMapper;
-    private final DaoApi daoApi;
 
     @Autowired
-    public SystemLogService(SysLogMapper sysLogMapper, DaoApi daoApi) {
+    public SystemLogService(SysLogMapper sysLogMapper) {
         this.sysLogMapper = sysLogMapper;
-        this.daoApi = daoApi;
     }
 
     boolean write(HttpServletRequest request,String opPosition,int opType,int logType,String requestMethod,
@@ -42,7 +40,7 @@ public class SystemLogService {
         String message = new String[] { "创建", "删除", "更新", "读取" }[opType] + "位置【" + opPosition + "】" + (opResult != 1
                 ? "成功" : "失败");
         String requestParams = JSONObject.toJSONString(request.getParameterMap());
-        return write(daoApi.getCurrUser(),opType,logType, requestMethod,request.getRequestURI(),
+        return write(UserUtil.getUser(),opType,logType, requestMethod,request.getRequestURI(),
                 request.getMethod(),requestParams,costTimeMillis,message);
     }
 

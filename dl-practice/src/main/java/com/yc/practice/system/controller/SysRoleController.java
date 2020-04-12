@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysRole;
 import com.yc.core.system.model.query.RoleQuery;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.system.service.SysRoleService;
 import io.swagger.annotations.Api;
@@ -35,12 +35,10 @@ import java.util.List;
 public class SysRoleController {
 
     private final SysRoleService service;
-    private final DaoApi daoApi;
 
     @Autowired
-    public SysRoleController(SysRoleService service, DaoApi daoApi) {
+    public SysRoleController(SysRoleService service) {
         this.service = service;
-        this.daoApi = daoApi;
     }
 
     @GetMapping(value = "/rolePage")
@@ -61,7 +59,7 @@ public class SysRoleController {
     @ApiOperation(value = "角色添加", notes = "角色添加")
     @WriteLog(opPosition = "角色添加", optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysRole sysRole) {
-        sysRole.setCreateUserId(daoApi.getCurrUserId());
+        sysRole.setCreateUserId(UserUtil.getUserId());
         service.save(sysRole);
     }
 

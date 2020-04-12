@@ -13,6 +13,7 @@ import com.yc.common.utils.PasswordCheckUtil;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.practice.config.security.service.LoginService;
 import com.yc.practice.config.security.service.TokenService;
+import com.yc.practice.system.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,14 +45,16 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final LoginService loginService;
     private final TokenService TokenService;
+    private final SysLogService sysLogService;
     private final RedisTemplate<String,String> redisTemplate;
 
     public SysUserLoginFilter(AuthenticationManager authenticationManager,
                               LoginService loginService, TokenService TokenService,
-                              RedisTemplate<String,String> redisTemplate) {
+                              RedisTemplate<String,String> redisTemplate,SysLogService sysLogService) {
         this.loginService = loginService;
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
+        this.sysLogService = sysLogService;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -116,6 +119,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
         jsonObject.put("token", jwtToken);
         jsonObject.put("pwdStrong", String.valueOf(PasswordCheckUtil.getPwdStrong(password)));
         String successMsg = RestResult.success().data(jsonObject).toJSONString();
+        sysLogService.addLog(request,"用户名: "+username+",登录成功！", CommonConstant.LOG_TYPE_1,username, "/login",
+                "loginName:"+username+",password:"+password);
         ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }
@@ -135,6 +140,8 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
             String msg = 5 - errorNum == 0 ? "当前账号密码您输入错误五次，请10分钟之后再登录!" : "账号密码输入错误,您还有" + (5 - errorNum) + "次机会!";
             errorMsg = RestResult.error(400, msg).toJSONString();
         }
+        sysLogService.addLog(request,"用户名: "+username+",登录失败！", CommonConstant.LOG_TYPE_1, username,"/login",
+                "loginName:"+username+",password:"+password);
         ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }

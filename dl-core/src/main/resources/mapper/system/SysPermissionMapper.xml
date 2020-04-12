@@ -16,4 +16,36 @@
 		   order by p.sort ASC
 	</select>
 
+    <resultMap id="permissionMap" type="com.yc.core.cascadeList.CaseTopLevel">
+        <id column="sys_permission_id" property="id" />
+        <result column="name" property="title" />
+        <result column="sys_permission_id" property="key" />
+        <result column="top_leaf" property="leaf" />
+        <collection property="children" ofType="com.yc.core.cascadeList.CaseSecondLevel">
+            <result column="second_name" property="title" />
+            <result column="second_id" property="key" />
+            <result column="second_leaf" property="leaf" />
+            <collection property="children" ofType="com.yc.core.cascadeList.CaseLastLevel">
+                <result column="last_name" property="title" />
+                <result column="last_id" property="key" />
+                <result column="last_leaf" property="leaf" />
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="caseList" resultMap="permissionMap">
+        select
+            a.sys_permission_id, a.name, a.is_leaf top_leaf,
+            b.name as second_name,b.sys_permission_id as second_id, b.is_leaf second_leaf,
+            c.name as last_name,c.sys_permission_id as last_id, c.is_leaf last_leaf
+        from sys_permission a
+        left join sys_permission b on a.sys_permission_id = b.parent_id AND b.menu_type = 1 and b.del_flag = 0
+        left join sys_permission c on b.sys_permission_id = c.parent_id  AND c.menu_type = 2 and c.del_flag = 0
+        where
+            a.menu_type = 0
+            and a.del_flag = 0
+        ORDER BY a.sort,b.sort,c.sort
+    </select>
+
+
 </mapper>

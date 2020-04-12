@@ -3,16 +3,12 @@ package com.yc.practice.system.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.practice.common.dao.DaoApi;
 import com.yc.common.utils.LocalHostUtil;
-import com.yc.common.utils.SpringContextUtil;
 import com.yc.core.system.entity.SysLog;
-import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysLogMapper;
 import com.yc.core.system.model.query.LogQuery;
 import com.yc.core.system.model.vo.SysLogVO;
 import com.yc.practice.system.service.SysLogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,28 +32,20 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> implements SysLogService {
 
-    private DaoApi daoApi;
-
-    @Autowired
-    public SysLogServiceImpl (DaoApi daoApi){
-        this.daoApi = daoApi;
-    }
-
     @Override
-    public void addLog(String LogContent, Integer logType, String requestMethod,String requestParams) {
+    public void addLog(HttpServletRequest request,String LogContent, Integer logType,String loginName,
+                       String requestMethod,String requestParams) {
         SysLog sysLog = new SysLog();
         sysLog.setLogContent(LogContent);
         sysLog.setLogType(logType);
         sysLog.setRequestMethod(requestMethod);
         sysLog.setRequestParam(requestParams);
         try {
-            HttpServletRequest request = SpringContextUtil.getHttpServletRequest();
             sysLog.setIpAddress(LocalHostUtil.getIpAddress(request));
         } catch (Exception e) {
             sysLog.setIpAddress("异常地址");
         }
-        SysUser currUser = daoApi.getCurrUser();
-        sysLog.setCreateUserId(currUser == null ? "" : currUser.getSysUserId());
+        sysLog.setCreateUserId(loginName);
         this.baseMapper.insert(sysLog);
     }
 

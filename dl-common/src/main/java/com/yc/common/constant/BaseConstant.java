@@ -16,7 +16,7 @@ public class BaseConstant {
     /**
      * 存放Token的Header Key
      */
-    public static final String HEADER_STRING = "Authorization";
+    public static final String HEADER_STRING = "authorization";
 
     /**
      * Token前缀

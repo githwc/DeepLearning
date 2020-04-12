@@ -1,0 +1,77 @@
+server:
+  port: 9091
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  #=====DataBase 相关===========
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: xieyc@mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置监控统计拦截的filters，'stat'用于监控统计;  'log4j'用于日志;  'wall'用于防火墙
+    druid:
+      filters: stat,wall,config
+      use-global-data-source-stat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      max-active: 100
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+  #=====Redis相关========
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    timeout: 10000ms    # 指定超时时间
+    jedis:
+      pool:
+        min-idle: 1     # 连接池最小空闲连接
+        max-idle: 5     # 连接池最大空闲连接
+        max-active: 10  # 连接池最大连接数(使用负值表示没有限制)
+        max-wait: -1    # 连接池最大阻塞等待时间(使用负值表示没有限制)
+  #=====thymeleaf相关=========
+  thymeleaf:
+    cache: false  # 将themilef的默认缓存禁用，热加载生效
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    mode: HTML5
+  #======静态资源相关 ===========
+  resource:
+      static-locations: classpath:/static/,classpath:/public/
+
+#===== Mybatis-plus 相关 =====
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*Mapper.xml
+  type-aliases-package: com.lh.modules.*.entity,com.lh.system.entity
+  configuration:
+    map-underscore-to-camel-case: true  # 驼峰
+  global-config:
+    banner: false #关闭MP 3.0 自带的banner
+
+##===== 权限相关 ===============
+dl:
+  security:
+    jwt-active-time: 3600000
+    jwt-renew-time: 2400000
+    jwt-secret: deepLearning-dev@123*
+    excludes:
+    - /
+    - /login
+    - /druid/**
+

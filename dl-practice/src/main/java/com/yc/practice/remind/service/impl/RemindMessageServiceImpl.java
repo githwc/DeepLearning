@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.webSocket.WebSocket;
 import com.yc.core.remind.entity.RemindMessage;
 import com.yc.core.remind.mapper.RemindMessageMapper;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.remind.service.RemindMessageReceiveService;
 import com.yc.practice.remind.service.RemindMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,11 @@ import java.time.LocalDateTime;
 public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, RemindMessage> implements RemindMessageService {
 
     private WebSocket webSocket;
-    private DaoApi daoApi;
     private RemindMessageReceiveService remindMessageReceiveService;
 
     @Autowired
-    public RemindMessageServiceImpl(WebSocket webSocket, DaoApi daoApi,RemindMessageReceiveService remindMessageReceiveService){
+    public RemindMessageServiceImpl(WebSocket webSocket, RemindMessageReceiveService remindMessageReceiveService){
         this.webSocket = webSocket;
-        this.daoApi = daoApi;
         this.remindMessageReceiveService = remindMessageReceiveService;
     }
 
@@ -59,8 +57,8 @@ public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, R
         remindMessage.setRid(rid);
         remindMessage.setSendState("1");
         remindMessage.setSendTime(LocalDateTime.now());
-        remindMessage.setCreateUser(daoApi.getCurrUser().getUserName());
-        remindMessage.setCreateUserId(daoApi.getCurrUserId());
+        remindMessage.setCreateUser(UserUtil.getUser().getUserName());
+        remindMessage.setCreateUserId(UserUtil.getUserId());
         int result = this.baseMapper.insert(remindMessage);
         if(result > 0){
             remindMessageReceiveService.insertRecord(userId,remindMessage.getRemindMessageId(),flag);
@@ -84,8 +82,8 @@ public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, R
         remindMessage.setRid(rid);
         remindMessage.setSendState("1");
         remindMessage.setSendTime(LocalDateTime.now());
-        remindMessage.setCreateUser(daoApi.getCurrUser().getUserName());
-        remindMessage.setCreateUserId(daoApi.getCurrUserId());
+        remindMessage.setCreateUser(UserUtil.getUser().getUserName());
+        remindMessage.setCreateUserId(UserUtil.getUserId());
         this.baseMapper.insert(remindMessage);
         /**
          * 群发消息不记录接收人

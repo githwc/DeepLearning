@@ -66,9 +66,13 @@ mybatis-plus:
 
 ##===== 权限相关 ===============
 dl:
+  upload:
+    root-path: D://dlupload
   security:
     jwt-active-time: 3600000
-    jwt-renew-time: 2400000
+    jwt-renew-time: 1800000
+#    jwt-active-time: 60000
+#    jwt-renew-time: 30000
     jwt-secret: deepLearning-dev@123*
     excludes:
     - /

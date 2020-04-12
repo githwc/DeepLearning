@@ -1,0 +1,18 @@
+${AnsiColor.BRIGHT_BLUE}
+         _________ _______           _______
+|\     /|\__   __/(  ____ \|\     /|(  ____ \
+( \   / )   ) (   | (    \/( \   / )| (    \/
+ \ (_) /    | |   | (__     \ (_) / | |
+  ) _ (     | |   |  __)     \   /  | |
+ / ( ) \    | |   | (         ) (   | |
+( /   \ )___) (___| (____/\   | |   | (____/\
+|/     \|\_______/(_______/   \_/   (_______/
+
+${AnsiColor.BRIGHT_GREEN}
+Application Version: ${application.version}${application.formatted-version}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
+${AnsiColor.BRIGHT_YELLOW}
+^^^^^^^^^^^^^^^^^^^^^^^^^^^ DL-TASK ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        CODE CHANGES THE WORLD
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^ DL-TASK ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+${AnsiColor.BLACK}

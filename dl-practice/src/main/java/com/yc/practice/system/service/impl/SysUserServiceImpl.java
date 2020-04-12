@@ -19,7 +19,7 @@ import com.yc.core.system.model.form.SysUserForm;
 import com.yc.core.system.model.query.UserQuery;
 import com.yc.core.system.model.vo.CurrUserVO;
 import com.yc.core.system.model.vo.SysUserVO;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysLogService;
 import com.yc.practice.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +54,6 @@ import java.util.List;
 @Slf4j
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
-    private final DaoApi daoApi;
     private final SysLogService sysLogService;
     private final SysUserRoleMapper sysUserRoleMapper;
     private RedisTemplate redisTemplate;
@@ -63,18 +62,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Autowired
     public SysUserServiceImpl(SysUserRoleMapper sysUserRoleMapper,
                               SysLogService sysLogService,RedisTemplate redisTemplate,
-                              DaoApi daoApi,PasswordEncoder passwordEncoder) {
+                              PasswordEncoder passwordEncoder) {
         this.sysUserRoleMapper = sysUserRoleMapper;
         this.passwordEncoder = passwordEncoder;
         this.redisTemplate = redisTemplate;
-        this.daoApi = daoApi;
         this.sysLogService = sysLogService;
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        CurrUserVO sysUser = daoApi.getCurrUser();
-        sysLogService.addLog("用户名: "+sysUser.getLoginName()+",退出成功！", CommonConstant.LOG_TYPE_1, "sysUser/logout","");
+        CurrUserVO sysUser = UserUtil.getUser();
+        // sysLogService.addLog(request,"用户名: "+sysUser.getLoginName()+",退出成功！", CommonConstant.LOG_TYPE_1, "sysUser" +
+        //         "/logout","");
         String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
         //清空用户Token缓存
         // redisTemplate.delete(CacheConstant.LOGIN_USER_TOKEN_ + token);
@@ -92,7 +91,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void add(JSONObject jsonObject) {
         SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
         user.setPassword(passwordEncoder.encode("123456"));
-        user.setCreateUserId(daoApi.getCurrUserId());
+        user.setCreateUserId(UserUtil.getUserId());
         user.setAge(IdcardUtil.getAgeByIdCard(user.getIdCard()));
         user.setSex(IdcardUtil.getSexByIdCard(user.getIdCard()));
         user.setBirthday(LocalDate.parse(IdcardUtil.getBirthByIdCard(user.getIdCard())));

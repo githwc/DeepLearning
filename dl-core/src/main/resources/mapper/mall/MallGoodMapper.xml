@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yc.core.mall.mapper.MallGoodMapper">
+
+    <select id="goodPage" resultType="com.yc.core.mall.entity.MallGood">
+        SELECT
+            good.*
+        FROM mall_good good
+        <where>
+            <if test="query.name != null and query.name != '' ">
+                and good.name like concat ('%',#{query.name},'%')
+            </if>
+        </where>
+        order by good.sale desc , good.sort
+    </select>
+</mapper>

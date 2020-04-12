@@ -35,7 +35,7 @@ public enum Error implements IError {
      * 资源已存在
      */
     Existed(400, 40200, "资源已存在"),
-    RoleExisted(400, 40201, "角色已存在"),
+    RoleExisted(400, 40202, "角色已存在"),
     UserExisted(400, 40203, "用户已存在"),
     DictExisted(400, 40204, "存在重复字典项,请重新填写"),
     FileExisted(400, 40205, "文件已存在"),
@@ -45,7 +45,7 @@ public enum Error implements IError {
      * 资源不存在
      */
     NotFound(404, 40400, "资源不存在"),
-    ResultNotFound(404, 40401, "结果不存在"),
+    FileNotFound(400, 40205, "文件已存在"),
     ParameterNotFound(404, 40402, "参数不存在"),
     UserNotFound(404, 40403, "用户不存在"),
     DeptNotFound(404, 40404, "部门不存在"),

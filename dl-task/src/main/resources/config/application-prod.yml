@@ -1,0 +1,100 @@
+server:
+  port: 8081
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /lion-herding
+spring:
+  #=====DataBase 相关===========
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/lionherding?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙，此处是filter修改的地方
+    druid:
+      filters: stat,wall,log4j,config
+      use-global-data-source-stat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      max-active: 100
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+  #=====Redis相关========
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    jedis:
+      pool:
+        min-idle: 1
+        max-idle: 5
+        max-active: 10
+  #=====thymeleaf相关=========
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+    encoding: utf-8
+    servlet:
+      content-type: text/html
+    mode: HTML5
+  #=====日期格式相关=========
+  #  mvc:
+  #    date-format: yyyy-MM-dd
+
+  #=====quartz相关==========
+  #  quartz:
+  #    job-store-type: jdbc
+  #      #相关属性配置
+  #    properties:
+  #      org:
+  #        quartz:
+  #          scheduler:
+  #            instanceName: clusteredScheduler
+  #            instanceId: AUTO
+  #          jobStore:
+  #            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+  #            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+  #            tablePrefix: QRTZ_
+  #            isClustered: true
+  #            clusterCheckinInterval: 10000
+  #            useProperties: false
+  #          threadPool:
+  #            class: org.quartz.simpl.SimpleThreadPool
+  #            threadCount: 10
+  #            threadPriority: 5
+  #            threadsInheritContextClassLoaderOfInitializingThread: true
+  #=====quartz相关==========
+
+#=====Mybatis相关=====
+mybatis-plus:
+  mapper-locations: /mapper/**/*Mapper.xml
+  type-aliases-package: com.lh.modules.model,com.lh.system.model
+  configuration:
+    map-underscore-to-camel-case: true
+
+#=====日志相关=========
+logging:
+  path: C://logback
+  level:
+    com.lh: DEBUG
+  config: classpath:logback-spring.xml
+
+#=====security相关======
+#lh:
+#  security:
+#    browser:
+#      loginPage: /demo-sign.html

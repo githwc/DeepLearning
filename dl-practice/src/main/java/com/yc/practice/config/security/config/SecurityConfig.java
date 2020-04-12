@@ -1,11 +1,12 @@
 package com.yc.practice.config.security.config;
 
-import com.yc.common.security.SecurityProperties;
+import com.yc.common.propertie.SecurityProperties;
 import com.yc.practice.config.security.filter.JwtAuthenticationTokenFilter;
 import com.yc.practice.config.security.filter.SysUserLoginFilter;
 import com.yc.practice.config.security.service.LoginService;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.config.security.service.impl.SysUserDetailsServiceImpl;
+import com.yc.practice.system.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,16 +44,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenService tokenService;
     private final RedisTemplate<String,String> redisTemplate;
     private final SysUserDetailsServiceImpl sysUserDetailsService;
+    private final SysLogService sysLogService;
 
     @Autowired
     public SecurityConfig (JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
-                           SecurityProperties securityProperties,
-                           LoginService loginService,
-                           RedisTemplate<String,String> redisTemplate,
-                           TokenService tokenService,
-                           SysUserDetailsServiceImpl sysUserDetailsService
-                           ){
+                           SecurityProperties securityProperties,RedisTemplate<String,String> redisTemplate,
+                           LoginService loginService,TokenService tokenService,
+                           SysUserDetailsServiceImpl sysUserDetailsService,SysLogService sysLogService){
         this.tokenService = tokenService;
+        this.sysLogService = sysLogService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
         this.redisTemplate = redisTemplate;
         this.loginService = loginService;
@@ -83,7 +83,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(securityProperties.getExcludes()).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterAt(new SysUserLoginFilter(authenticationManager(), loginService, tokenService,redisTemplate),UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(new SysUserLoginFilter(authenticationManager(), loginService, tokenService,redisTemplate
+                        ,sysLogService),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

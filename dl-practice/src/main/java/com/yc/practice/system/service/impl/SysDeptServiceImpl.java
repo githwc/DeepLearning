@@ -4,21 +4,20 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.error.Error;
-import com.yc.common.global.error.ErrorException;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.YouBianCodeUtil;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.mapper.SysDeptMapper;
 import com.yc.core.system.model.query.DeptQuery;
 import com.yc.core.tree.Tree;
 import com.yc.core.tree.TreeNode;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysDeptService;
 import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,14 +42,6 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
-    private DaoApi daoApi;
-
-    @Autowired
-    public SysDeptServiceImpl(DaoApi daoApi){
-        this.daoApi = daoApi;
-    }
-
-
     @Override
     public List<TreeNode> departTree(String departName) {
         List<TreeNode> list = this.baseMapper.departTree(departName);
@@ -65,7 +56,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     @Override
     @CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void editByDeptId(SysDept sysDept) {
-        sysDept.setUpdateUserId(daoApi.getCurrUserId());
+        sysDept.setUpdateUserId(UserUtil.getUserId());
         this.updateById(sysDept);
     }
 
@@ -107,7 +98,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());
             sysDept.setUniqueCoding(codeAndLevel[0]);
             sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
-            sysDept.setCreateUserId(daoApi.getCurrUserId());
+            sysDept.setCreateUserId(UserUtil.getUserId());
             if (StringUtils.isBlank(sysDept.getParentId())) {
                 sysDept.setParentId("root");
             }

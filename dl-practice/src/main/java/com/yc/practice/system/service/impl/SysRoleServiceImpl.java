@@ -92,9 +92,9 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     public void saveRolePermission(JSONObject json) {
         // 角色id
         String roleId = json.getString("sysRoleId");
-        // permissionIds 新权限点
+        // 新权限点
         String permissionIds = json.getString("permissionIds");
-        // lastPermissionIds 旧权限点
+        // 旧权限点
         String lastPermissionIds = json.getString("lastPermissionIds");
         List<String> add = getDiff(lastPermissionIds,permissionIds);
         if(CollectionUtils.isNotEmpty(add)) {

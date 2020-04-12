@@ -3,6 +3,7 @@ package com.yc.practice.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysPermission;
+import com.yc.core.system.model.query.PermissionQuery;
 import com.yc.core.system.model.vo.SysPermissionTree;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.system.service.SysPermissionService;
@@ -58,8 +59,8 @@ public class SysPermissionController {
     @GetMapping(value = "/queryTreeList")
     @ApiOperation(value = "获取权限树", notes = "获取权限树")
     @WriteLog(opPosition = "获取权限树")
-    public Map<String, Object> queryTreeList() {
-        return service.queryTreeList();
+    public Map<String, Object> queryTreeList(PermissionQuery query) {
+        return service.queryTreeList(query);
     }
 
     @PostMapping(value = "/add")

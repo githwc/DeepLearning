@@ -13,11 +13,10 @@ import com.yc.core.system.mapper.SysDictMapper;
 import com.yc.core.system.model.query.DictQuery;
 import com.yc.core.tree.Tree;
 import com.yc.core.tree.TreeNode;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,13 +40,6 @@ import java.util.List;
 @Slf4j
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
-    private final DaoApi daoApi;
-
-    @Autowired
-    public SysDictServiceImpl(DaoApi daoApi){
-        this.daoApi = daoApi;
-    }
-
     @Override
     public List<TreeNode> dictTree(String name) {
         List<TreeNode> list = this.baseMapper.dictTree(name);
@@ -70,7 +62,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
         if(ObjectUtil.isNotEmpty(sysDicts)){
             throw new RuntimeException("存在重复字典项,请重新填写！");
         }
-        sysDict.setUpdateUserId(daoApi.getCurrUserId());
+        sysDict.setUpdateUserId(UserUtil.getUserId());
         this.updateById(sysDict);
     }
 
@@ -107,7 +99,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     @Override
     public void create(SysDict sysDict) {
         if (sysDict != null) {
-            sysDict.setCreateUserId(daoApi.getCurrUserId());
+            sysDict.setCreateUserId(UserUtil.getUserId());
             if (StringUtils.isBlank(sysDict.getParentId())) {
                 sysDict.setParentId("root");
             }else{

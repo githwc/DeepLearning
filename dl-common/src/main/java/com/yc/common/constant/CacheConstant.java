@@ -34,18 +34,8 @@ public class CacheConstant {
 	public static final String SYS_DEPART_IDS_CACHE = "SYS_DEPART_IDS_CACHE";
 
     /**
-     * 登录用户TOKEN
+     * 今日订单号
      */
-    public static String LOGIN_USER_TOKEN_  = "LOGIN_USER_TOKEN_";
-
-    /**
-     * 登录用户角色缓存
-     */
-    public static String LOGIN_USER_ROLES_ = "LOGIN_USER_ROLES_";
-
-    /**
-     * 登录用户权限缓存KEY
-     */
-    public static String LOGIN_USER_PERMISSION_  = "LOGIN_USER_PERMISSION_";
+    public static final String ORDER_NO_TODAY_CACHE = "ORDER_NO_NOW_CACHE";
 
 }

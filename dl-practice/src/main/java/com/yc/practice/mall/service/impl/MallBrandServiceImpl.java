@@ -5,10 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.mall.entity.MallBrand;
 import com.yc.core.mall.mapper.MallBrandMapper;
 import com.yc.core.mall.model.query.BrandQuery;
-import com.yc.practice.common.dao.DaoApi;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallBrandService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,13 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class MallBrandServiceImpl extends ServiceImpl<MallBrandMapper, MallBrand> implements MallBrandService {
 
-    private final DaoApi daoApi;
-
-    @Autowired
-    public MallBrandServiceImpl(DaoApi daoApi){
-        this.daoApi = daoApi;
-    }
-
     @Override
     public Page<MallBrand> pageList(Page<MallBrand> page, BrandQuery query) {
         return this.baseMapper.page(page,query);
@@ -50,13 +42,13 @@ public class MallBrandServiceImpl extends ServiceImpl<MallBrandMapper, MallBrand
         if(StringUtils.isEmpty(mallBrand.getFirstLetter())){
             mallBrand.setFirstLetter(mallBrand.getName().substring(0,1));
         }
-        mallBrand.setUpdateUserId(daoApi.getCurrUserId());
+        mallBrand.setUpdateUserId(UserUtil.getUserId());
         this.baseMapper.updateById(mallBrand);
     }
 
     @Override
     public void addBrand(MallBrand mallBrand) {
-        mallBrand.setCreateUserId(daoApi.getCurrUserId());
+        mallBrand.setCreateUserId(UserUtil.getUserId());
         if(StringUtils.isEmpty(mallBrand.getFirstLetter())){
             mallBrand.setFirstLetter(mallBrand.getName().substring(0,1));
         }

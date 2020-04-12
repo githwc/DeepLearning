@@ -3,6 +3,7 @@ package com.yc.core.redisPractice.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.redisPractice.entity.RedisPubSub;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -21,5 +22,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RedisPubSubMapper extends BaseMapper<RedisPubSub> {
 
-    Page<RedisPubSub> pubSubPage(Page<RedisPubSub> page);
+    Page<RedisPubSub> pubSubPage(@Param("page")Page<RedisPubSub> page);
 }
