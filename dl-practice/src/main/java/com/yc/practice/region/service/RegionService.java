@@ -1,7 +1,11 @@
 package com.yc.practice.region.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yc.core.cascadeList.CaseTopLevel;
 import com.yc.core.region.entity.Region;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 /**
  * 功能描述：
@@ -17,4 +21,9 @@ import com.yc.core.region.entity.Region;
  */
 public interface RegionService extends IService<Region> {
 
+    /**
+     * 区域级联信息
+     * @return case list
+     */
+    List<CaseTopLevel> regionList();
 }

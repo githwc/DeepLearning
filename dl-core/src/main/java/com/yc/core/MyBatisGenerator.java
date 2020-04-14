@@ -43,7 +43,7 @@ public class MyBatisGenerator {
     /**
      * 要生成的表名
      */
-    private static final String[] TABLES = {"mall_good","mall_order","mall_order_operate_log","mall_order_good"};
+    private static final String[] TABLES = {"mall_order_log"};
 
     /**
      * 数据库配置四要素

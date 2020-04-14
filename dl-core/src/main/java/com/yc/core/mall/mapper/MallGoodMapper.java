@@ -29,4 +29,5 @@ public interface MallGoodMapper extends BaseMapper<MallGood> {
      * @return page
      */
     Page<MallGood> goodPage(@Param("page")Page<MallGood> page, @Param("query") GoodQuery query);
+
 }

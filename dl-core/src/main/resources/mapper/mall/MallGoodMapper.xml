@@ -10,7 +10,11 @@
             <if test="query.name != null and query.name != '' ">
                 and good.name like concat ('%',#{query.name},'%')
             </if>
+            <if test="query.stockFlag != null and query.stockFlag != '' ">
+                and good.stock > good.low_stock
+            </if>
         </where>
         order by good.sale desc , good.sort
     </select>
+
 </mapper>

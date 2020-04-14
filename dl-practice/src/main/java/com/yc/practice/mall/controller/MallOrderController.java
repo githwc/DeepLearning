@@ -1,8 +1,9 @@
 package com.yc.practice.mall.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.model.form.OrderForm;
+import com.yc.core.mall.model.query.OrderQuery;
 import com.yc.practice.mall.service.MallOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,8 @@ public class MallOrderController {
      * @return page
      */
     @GetMapping("/page")
-    public IPage<MallOrder> orderIpage(IPage<MallOrder>page){
-        return this.iMallOrderService.orderIpage(page);
+    public Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query){
+        return this.iMallOrderService.orderPage(page,query);
     }
 
 

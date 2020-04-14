@@ -1,9 +1,10 @@
 package com.yc.practice.mall.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.model.form.OrderForm;
+import com.yc.core.mall.model.query.OrderQuery;
 
 /**
  * 功能描述：
@@ -30,6 +31,6 @@ public interface MallOrderService extends IService<MallOrder> {
      * @param page 分页信息
      * @return page
      */
-    IPage<MallOrder> orderIpage(IPage<MallOrder>page);
+    Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query);
 
 }

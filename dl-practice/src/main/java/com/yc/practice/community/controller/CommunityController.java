@@ -32,4 +32,5 @@ public class CommunityController {
     public CommunityController(CommunityService service) {
         this.service = service;
     }
+
 }

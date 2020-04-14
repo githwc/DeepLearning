@@ -14,15 +14,15 @@ package com.yc.common.global.error;
  * @Version: 1.0.0
  */
 public enum DlError implements IError {
-    /**
-     * 字典异常
-     */
-    DictTypeNotFound(404, 40409, "字典类型不存在"),
 
     /**
-     * 续租开始时间要晚于原入驻结束时间
+     * 缺少商品
      */
-    RERENTDATEERROR(200,200006,"续租开始时间要晚于原入驻结束时间！"),
+    GoodNotFound(400, 40409, "请添加选购商品"),
+    /**
+     * 库存不足
+     */
+    StockLow(200,200006,"库存不足,请重新选购"),
     ;
     /**
      * HTTP状态码

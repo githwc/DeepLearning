@@ -47,5 +47,4 @@
         ORDER BY a.sort,b.sort,c.sort
     </select>
 
-
 </mapper>

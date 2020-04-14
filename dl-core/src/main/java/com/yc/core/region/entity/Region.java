@@ -65,25 +65,13 @@ public class Region implements Serializable {
      */
     private String regionInitial;
     /**
-     * 百度市编码
+     * 排序号
      */
-    private String cityCode;
+    private Integer sort;
     /**
      * 备注
      */
     private String remark;
-    /**
-     * 排序号
-     */
-    private Integer seqNum;
-    /**
-     * 备注
-     */
-    private String province;
-    /**
-     * 备注
-     */
-    private String city;
 
 
     /////////////////////////////// 非表字段 ///////////////////////////////

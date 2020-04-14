@@ -1,7 +1,6 @@
 package com.yc.common.global.response;
 
 import com.alibaba.fastjson.JSON;
-import com.yc.common.global.error.Error;
 
 import java.util.HashMap;
 

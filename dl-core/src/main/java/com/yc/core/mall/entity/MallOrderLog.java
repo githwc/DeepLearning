@@ -1,13 +1,12 @@
 package com.yc.core.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 功能描述：
@@ -16,48 +15,42 @@ import java.math.BigDecimal;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-04-08
+ * @Date 2020-04-14
  * @Version: 1.0.0
  *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class MallOrderGood implements Serializable {
+public class MallOrderLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 主键id
+     * 主键
      */
-    @TableId(value = "mall_order_good_id", type = IdType.UUID)
-    private String mallOrderGoodId;
+    @TableId(value = "log_id", type = IdType.UUID)
+    private String logId;
     /**
      * 订单id
      */
     private String mallOrderId;
     /**
-     * 订单编号
+     * 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
      */
-    private String orderNo;
+    private Integer state;
     /**
-     * 商品id
+     * 备注
      */
-    private String goodId;
+    private String remark;
     /**
-     * 商品图片
+     * 创建人
      */
-    private String goodPic;
+    private String createUserId;
     /**
-     * 商品名称
+     * 操作时间
      */
-    private String goodName;
-    /**
-     * 销售价格
-     */
-    private BigDecimal goodPrice;
-    /**
-     * 购买数量
-     */
-    private Integer goodNum;
+    private LocalDateTime createTime;
+
+
 
 }

@@ -2,9 +2,11 @@ package com.yc.core.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -45,7 +47,7 @@ public class MallOrder implements Serializable {
      */
     private BigDecimal payAmount;
     /**
-     * 支付方式：1->支付宝；2->微信
+     * 支付方式：0->支付宝；1->微信
      */
     private Integer payType;
     /**
@@ -71,15 +73,15 @@ public class MallOrder implements Serializable {
     /**
      * 省份/直辖市
      */
-    private String receiverProvince;
+    private String province;
     /**
      * 城市
      */
-    private String receiverCity;
+    private String city;
     /**
      * 区
      */
-    private String receiverRegion;
+    private String area;
     /**
      * 行政编码
      */
@@ -87,7 +89,7 @@ public class MallOrder implements Serializable {
     /**
      * 详细地址
      */
-    private String receiverDetailAddress;
+    private String address;
     /**
      * 订单备注
      */
@@ -99,6 +101,7 @@ public class MallOrder implements Serializable {
     /**
      * 支付时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime payTime;
     /**
      * 创建人

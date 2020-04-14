@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yc.core.mall.mapper.MallOrderMapper">
 
+    <select id="page" resultType="com.yc.core.mall.entity.MallOrder">
+        select
+            ord.*
+        FROM mall_order ord
+        <where>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                and ord.order_no like concat ('%',#{query.orderNo},'%')
+            </if>
+            <if test="query.payStartTime != null and query.payStartTime != ''">
+                and ord.pay_time &gt; #{query.payStartTime}
+            </if>
+            <if test="query.payEndTime != null and query.payEndTime != ''">
+                and ord.pay_time &lt; #{query.payEndTime}
+            </if>
+            <if test="query.createStartTime != null and query.createStartTime != ''">
+                and ord.create_time &gt; #{query.createStartTime}
+            </if>
+            <if test="query.createEndTime != null and query.createEndTime != ''">
+                and ord.create_time &lt; #{query.createEndTime}
+            </if>
+        </where>
+    </select>
 </mapper>
