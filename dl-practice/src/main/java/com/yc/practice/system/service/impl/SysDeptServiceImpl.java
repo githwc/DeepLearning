@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CacheConstant;
-import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.YouBianCodeUtil;
@@ -73,7 +73,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
             this.checkChildrenExists(id, idList);
             idList.forEach(currId->{
                 SysDept sysDept1 = new SysDept();
-                sysDept1.setDelFlag(CommonConstant.DEL_FLAG_1);
+                sysDept1.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
                 this.update(sysDept1,new LambdaQueryWrapper<SysDept>()
                         .eq(SysDept::getSysDeptId,currId)
                 );
@@ -114,7 +114,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     private void checkChildrenExists(String id, List<String> idList) {
         List<SysDept> departList = this.list(new LambdaQueryWrapper<SysDept>()
                 .eq(SysDept::getParentId,id)
-                .eq(SysDept::getDelFlag,CommonConstant.DEL_FLAG_0)
+                .eq(SysDept::getDelFlag,CommonEnum.DelFlag.NO_DEL.getCode())
         );
         if(departList != null && departList.size() > 0) {
             for(SysDept depart : departList) {

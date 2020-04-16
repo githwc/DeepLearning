@@ -1,11 +1,8 @@
-package com.yc.core.TestTemp.mapper;
+package com.yc.core.selfOffice.mapper;
 
+import com.yc.core.selfOffice.entity.WorkBench;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yc.core.TestTemp.entity.Test;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
-
 /**
  *
  * 功能描述：
@@ -15,12 +12,11 @@ import java.util.HashMap;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2019-09-29
+ * @Date 2020-04-15
  * @Version: 1.0.0
  *
  */
 @Repository
-public interface TestMapper extends BaseMapper<Test> {
+public interface WorkBenchMapper extends BaseMapper<WorkBench> {
 
-    HashMap testHashMap(String name);
 }

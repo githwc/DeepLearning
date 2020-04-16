@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.IdcardUtil;
@@ -144,7 +145,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         //删除用户
         SysUser user = new SysUser();
         user.setSysUserId(id);
-        user.setDelFlag(CommonConstant.DEL_FLAG_1);
+        user.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
         this.baseMapper.updateById(user);
     }
 

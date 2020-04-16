@@ -11,16 +11,10 @@
                 and ord.order_no like concat ('%',#{query.orderNo},'%')
             </if>
             <if test="query.payStartTime != null and query.payStartTime != ''">
-                and ord.pay_time &gt; #{query.payStartTime}
+                and ord.pay_time gt;= #{query.payStartTime}
             </if>
             <if test="query.payEndTime != null and query.payEndTime != ''">
-                and ord.pay_time &lt; #{query.payEndTime}
-            </if>
-            <if test="query.createStartTime != null and query.createStartTime != ''">
-                and ord.create_time &gt; #{query.createStartTime}
-            </if>
-            <if test="query.createEndTime != null and query.createEndTime != ''">
-                and ord.create_time &lt; #{query.createEndTime}
+                and ord.pay_time lt;= #{query.payEndTime}
             </if>
         </where>
     </select>

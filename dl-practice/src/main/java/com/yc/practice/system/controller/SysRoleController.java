@@ -3,6 +3,7 @@ package com.yc.practice.system.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.core.system.entity.SysRole;
 import com.yc.core.system.model.query.RoleQuery;
 import com.yc.practice.common.UserUtil;
@@ -76,7 +77,7 @@ public class SysRoleController {
     public void delete(@RequestParam("sysRoleId") String id) {
         SysRole sysRole = new SysRole();
         sysRole.setSysRoleId(id);
-        sysRole.setDelFlag(CommonConstant.DEL_FLAG_1);
+        sysRole.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
         service.updateById(sysRole);
     }
 
@@ -88,7 +89,7 @@ public class SysRoleController {
         listIds.forEach(curr -> {
             SysRole sysRole = new SysRole();
             sysRole.setSysRoleId(curr);
-            sysRole.setDelFlag(CommonConstant.DEL_FLAG_1);
+            sysRole.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
             service.updateById(sysRole);
         });
     }

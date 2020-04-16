@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.entity.SysDict;
@@ -78,7 +79,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
             this.checkChildrenExists(id, idList);
             idList.forEach(currId -> {
                 SysDict sysDict1 = new SysDict();
-                sysDict1.setDelFlag(CommonConstant.DEL_FLAG_1);
+                sysDict1.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
                 this.update(sysDict1, new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getSysDictId, currId)
                 );
@@ -125,7 +126,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     private void checkChildrenExists(String id, List<String> idList) {
         List<SysDict> dictList = this.list(new LambdaQueryWrapper<SysDict>()
                 .eq(SysDict::getParentId, id)
-                .eq(SysDict::getDelFlag, CommonConstant.DEL_FLAG_0)
+                .eq(SysDict::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
         );
         if (dictList != null && dictList.size() > 0) {
             for (SysDict dict : dictList) {

@@ -26,9 +26,4 @@ public class OrderQuery {
     private String payStartTime;
     private String payEndTime;
 
-    /**
-     * 创建时间
-     */
-    private String createStartTime;
-    private String createEndTime;
 }

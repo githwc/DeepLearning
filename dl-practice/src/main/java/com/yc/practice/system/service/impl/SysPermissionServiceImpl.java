@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.EncoderUtil;
@@ -279,7 +280,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     public List<SysPermissionTree> permissionlist() {
         List<SysPermission> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0)
+                .eq(SysPermission::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
                 .orderByAsc(SysPermission::getSort)
         );
         List<SysPermissionTree> treeList = new ArrayList<>();
@@ -293,7 +294,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         // 全部权限id
         List<String> ids = new ArrayList<>();
         List<SysPermission> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0)
+                .eq(SysPermission::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
                 .eq(SysPermission::getMenuType, query.getMenuType())
                 .orderByAsc(SysPermission::getSort)
         );
@@ -313,7 +314,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void addPermission(SysPermission sysPermission) {
         //判断是否是一级菜单，是的话清空父菜单
-        if (CommonConstant.MENU_TYPE_0.equals(sysPermission.getMenuType())) {
+        if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
             sysPermission.setParentId(null);
         }
         String pid = sysPermission.getParentId();
@@ -335,7 +336,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         } else {
             //----------------------------------------------------------------------
             //Step1.判断是否是一级菜单，是的话清空父菜单ID
-            if (CommonConstant.MENU_TYPE_0.equals(sysPermission.getMenuType())) {
+            if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
                 sysPermission.setParentId(null);
             }
             //Step2.判断菜单下级是否有菜单，无则设置为叶子节点
@@ -380,7 +381,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         // 该节点可能是子节点但也可能是其它节点的父节点,所以需要级联删除
         this.removeChildrenBy(sysPermission.getSysPermissionId());
         //执行逻辑删除
-        sysPermission.setDelFlag(CommonConstant.DEL_FLAG_1);
+        sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
         this.baseMapper.updateById(sysPermission);
     }
 
@@ -407,24 +408,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         //全部树ids
         resMap.put("ids", ids);
         return resMap;
-
-        // TODO: 2020/4/11  待删除
-        // List<String> ids = new ArrayList<>();
-        //         List<SysPermission> list = this.list(new LambdaQueryWrapper<SysPermission>()
-        //                .eq(SysPermission::getDelFlag, CommonConstant.DEL_FLAG_0)
-        //                 .orderByAsc(SysPermission::getSort)
-        //         );
-        //        for(SysPermission sysPer : list) {
-        //             ids.add(sysPer.getSysPermissionId());
-        //        }
-        //         List<TreeModel> treeList = new ArrayList<>();
-        //        this.getTreeModelList(treeList, list, null);
-        //         Map<String,Object> resMap = new HashMap<String,Object>();
-        //         //全部树节点数据
-        //         resMap.put("treeList", treeList);
-        //         //全部树ids
-        //         resMap.put("ids", ids);
-        //         return resMap;
     }
 
     /**
@@ -489,8 +472,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         );
         if (permissionList != null && permissionList.size() > 0) {
             SysPermission sysPermission = new SysPermission();
-            sysPermission.setDelFlag(CommonConstant.DEL_FLAG_1);
-            String id; // id
+            sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
+            String id;
             int num; // 查出的子级数量
             // 如果查出的集合不为空, 则先删除所有
             this.update(sysPermission, new LambdaQueryWrapper<SysPermission>()

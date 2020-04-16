@@ -85,31 +85,6 @@ public class CommonConstant {
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
 
-    // ================== 删除状态码 ===========================
-
-    /**
-     * 未删除
-     */
-    public static final Integer DEL_FLAG_0 = 0 ;
-
-    /**
-     * 已删除
-     */
-    public static final Integer DEL_FLAG_1 = 1;
-
-    //================ 菜单类型 ===========================
-    /**
-     *  0：一级菜单
-     */
-    public static final Integer MENU_TYPE_0  = 0;
-    /**
-     *  1：子菜单
-     */
-    public static final Integer MENU_TYPE_1  = 1;
-    /**
-     *  2：按钮权限
-     */
-    public static final Integer MENU_TYPE_2  = 2;
 
     // =============== 凭证相关 ==================
 
