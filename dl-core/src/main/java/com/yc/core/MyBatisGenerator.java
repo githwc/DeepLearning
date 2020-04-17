@@ -38,12 +38,12 @@ public class MyBatisGenerator {
     /**
      * 文件夹名
      */
-    private static final String MODEL_NAME = "timer";
+    private static final String MODEL_NAME = "demo";
     private static final String AUTHOR = "xieyc";
     /**
      * 要生成的表名
      */
-    private static final String[] TABLES = {"timer_record"};
+    private static final String[] TABLES = {"demo"};
 
     /**
      * 数据库配置四要素

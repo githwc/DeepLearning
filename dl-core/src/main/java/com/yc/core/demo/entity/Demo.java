@@ -1,4 +1,4 @@
-package com.yc.core.selfOffice.entity;
+package com.yc.core.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -14,38 +14,41 @@ import lombok.experimental.Accessors;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-04-15
+ * @Date 2020-04-17
  * @Version: 1.0.0
  *
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class WorkBench implements Serializable {
+public class Demo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
-    @TableId(value = "work_bench_id", type = IdType.UUID)
-    private String workBenchId;
+    @TableId(value = "demo_id", type = IdType.UUID)
+    private String demoId;
     /**
-     * 标题
+     * 名称
      */
-    private String title;
+    private String name;
     /**
-     * 图标
+     * 年龄
      */
-    private String avatar;
+    private Integer age;
     /**
-     * 描述
+     * 地址
      */
-    private String content;
+    private String address;
     /**
      * 排序
      */
     private Integer sort;
-
+    /**
+     * 备注
+     */
+    private String remark;
 
 
 }

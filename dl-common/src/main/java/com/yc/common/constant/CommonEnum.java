@@ -1,9 +1,11 @@
 package com.yc.common.constant;
 
 /**
- * 功能描述：公用参数
+ * 功能描述：公用枚举参数
+ *  枚举充当常量
+ *
  * <p>版权所有：</p>
- * 未经本公司许可，不得以任何方式复制或使用本程序任何部分
+ * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
  * @Company: 紫色年华
  * @Author: xieyc
@@ -57,6 +59,30 @@ public interface CommonEnum {
 
         public Integer getCode(){
             return code;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
+
+    enum Reports implements CommonEnum{
+        /**
+         * 报表信息
+         */
+        DEMO_REPORT("一级菜单","/demoExport.xlsx")
+
+        ;
+        private String name;
+        private String path;
+
+        Reports(String name,String path){
+            this.path = path;
+            this.name = name;
+        }
+
+        public String getPath(){
+            return path;
         }
 
         public String getName(){
