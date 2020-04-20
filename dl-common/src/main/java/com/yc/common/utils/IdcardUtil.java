@@ -298,6 +298,11 @@ public class IdcardUtil {
         return sCode;
     }
 
+    /**
+     * 根据身份证号获取年龄
+     * @param idCard 身份证号
+     * @return 年龄
+     */
     public static int getAgeByIdCard(String idCard) {
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
@@ -310,6 +315,11 @@ public class IdcardUtil {
         return iAge;
     }
 
+    /**
+     * 根据身份证号获取生日
+     * @param idCard 身份证号
+     * @return 生日
+     */
     public static String getBirthByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {

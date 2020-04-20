@@ -119,8 +119,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     /**
      * 从diff中找出main中没有的元素
-     * @param main 上一次权限点
-     * @param diff 本次权限点
+     * @param main 权限点
+     * @param diff 权限点
      * @return list
      */
     private List<String> getDiff(String main,String diff){
