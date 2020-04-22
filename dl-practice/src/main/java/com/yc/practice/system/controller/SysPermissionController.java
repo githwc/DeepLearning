@@ -67,7 +67,6 @@ public class SysPermissionController {
     @ApiOperation(value = "添加菜单", notes = "添加菜单")
     @WriteLog(opPosition = "添加菜单", optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysPermission permission) {
-        permission = PermissionOPUtil.intelligentProcessData(permission);
         service.addPermission(permission);
     }
 
@@ -75,7 +74,6 @@ public class SysPermissionController {
     @ApiOperation(value = "编辑菜单", notes = "编辑菜单")
     @WriteLog(opPosition = "编辑菜单", optype = CommonConstant.OPTYPE_UPDATE)
     public void edit(@RequestBody SysPermission permission) {
-        permission = PermissionOPUtil.intelligentProcessData(permission);
         service.editPermission(permission);
     }
 

@@ -18,11 +18,16 @@ public enum DlError implements IError {
     /**
      * 缺少商品
      */
-    GoodNotFound(400, 40409, "请添加选购商品"),
+    GoodNotFound(200, 40409, "请添加选购商品"),
     /**
      * 库存不足
      */
     StockLow(200,200006,"库存不足,请重新选购"),
+    /**
+     * 存在重复路径
+     */
+    URLNotUnique(200,200006,"存在重复路径,请修改!"),
+
     ;
     /**
      * HTTP状态码

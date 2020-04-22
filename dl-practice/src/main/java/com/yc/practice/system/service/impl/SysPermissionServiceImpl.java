@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CacheConstant;
-import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
+import com.yc.common.global.error.DlError;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.EncoderUtil;
@@ -20,6 +20,7 @@ import com.yc.core.system.model.vo.TreeModel;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysPermissionService;
 import com.yc.practice.system.utils.PermissionOPUtil;
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -78,7 +80,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         List<SysPermission> allAuthList = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
                 .eq(SysPermission::getDelFlag, 0)
                 .eq(SysPermission::getMenuType, 2)
-                .eq(SysPermission::getStatus, "1")
         );
         JSONArray allauthjsonArray = new JSONArray();
         this.getAllAuthJsonArray(allauthjsonArray, allAuthList);
@@ -167,19 +168,16 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 json.put("path", permission.getUrl());
             }
             // 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
-            if (StringUtils.isNotEmpty(permission.getComponentName())) {
-                json.put("name", permission.getComponentName());
-            } else {
-                json.put("name", urlToRouteName(permission.getUrl()));
-            }
+            json.put("name", urlToRouteName(permission.getUrl()));
+            // TODO: 2020/4/22 待删除
             // 是否隐藏路由，默认都是显示的
-            if (permission.getHidden().equals(1)) {
-                json.put("hidden", true);
-            }
+            // if (permission.getHidden().equals(1)) {
+            //     json.put("hidden", true);
+            // }
             // 聚合路由
-            if (permission.getAlwaysShow() != null && permission.getAlwaysShow()) {
-                json.put("alwaysShow", true);
-            }
+            // if (permission.getAlwaysShow() != null && permission.getAlwaysShow()) {
+            //     json.put("alwaysShow", true);
+            // }
             json.put("component", permission.getComponent());
             JSONObject meta = new JSONObject();
             // 默认所有的菜单都加路由缓存，提高系统性能
@@ -187,7 +185,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             meta.put("title", permission.getName());
             if (StringUtils.isEmpty(permission.getParentId())) {
                 // 一级菜单跳转地址
-                json.put("redirect", permission.getRedirect());
                 if (StringUtils.isNotEmpty(permission.getIcon())) {
                     meta.put("icon", permission.getIcon());
                 }
@@ -217,10 +214,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 continue;
             }
             JSONObject json = null;
-            if (permission.getMenuType() == 2 && "1".equals(permission.getStatus())) {
+            if (permission.getMenuType() == 2) {
                 json = new JSONObject();
                 json.put("action", permission.getPermsCode());
-                json.put("type", permission.getPermsType());
                 json.put("describe", permission.getName());
                 jsonArray.add(json);
             }
@@ -238,8 +234,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         for (SysPermission permission : allList) {
             json = new JSONObject();
             json.put("action", permission.getPermsCode());
-            json.put("status", permission.getStatus());
-            json.put("type", permission.getPermsType());
             json.put("describe", permission.getName());
             jsonArray.add(json);
         }
@@ -279,6 +273,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public List<SysPermissionTree> permissionlist() {
+        List<SysPermission> list2 =  this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
+            .eq(SysPermission::getMenuType,1)
+        );
+        for (SysPermission sysPermission : list2) {
+            this.addDefaultPermission(sysPermission);
+        }
         List<SysPermission> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
                 .eq(SysPermission::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
                 .orderByAsc(SysPermission::getSort)
@@ -313,24 +313,48 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     @Override
     @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void addPermission(SysPermission sysPermission) {
+        sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
+        String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+        int count = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
+            .eq(SysPermission::getMenuType,sysPermission.getMenuType())
+                .eq(SysPermission::getPermsCode,code)
+        );
+        if(count > 0){
+            throw new ErrorException(DlError.URLNotUnique);
+        }
+        sysPermission.setPermsCode(code);
         //判断是否是一级菜单，是的话清空父菜单
         if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
             sysPermission.setParentId(null);
         }
-        String pid = sysPermission.getParentId();
         //设置父节点不为叶子节点
-        if (StringUtils.isNotEmpty(pid)) {
-            this.baseMapper.setMenuLeaf(pid, 0);
+        if (StringUtils.isNotEmpty(sysPermission.getParentId())) {
+            this.baseMapper.setMenuLeaf(sysPermission.getParentId(), 0);
         }
         sysPermission.setIsLeaf(true);
         sysPermission.setCreateUserId(UserUtil.getUser().getSysUserId());
         this.save(sysPermission);
+        // 如果是二级菜单，添加默认增删改查按钮权限
+        if(1 == sysPermission.getMenuType()){
+            this.addDefaultPermission(sysPermission);
+        }
     }
 
     @Override
     @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void editPermission(SysPermission sysPermission) {
+        sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
         SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
+        String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+        int codeCount = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
+                .eq(SysPermission::getMenuType,sysPermission.getMenuType())
+                .eq(SysPermission::getPermsCode,code)
+                .ne(SysPermission::getSysPermissionId,oldPer.getSysPermissionId())
+        );
+        if(codeCount > 0){
+            throw new ErrorException(DlError.URLNotUnique);
+        }
+        sysPermission.setPermsCode(code);
         if (oldPer == null) {
             throw new ErrorException(Error.PermissionNotFound);
         } else {
@@ -421,12 +445,14 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         for (SysPermission permission : metaList) {
             String tempPid = permission.getParentId();
             SysPermissionTree tree = new SysPermissionTree(permission);
+            System.out.println("a"+tree.getName());
             if (temp == null && StringUtils.isEmpty(tempPid)) {
                 treeList.add(tree);
                 if (!tree.isLeaf()) {
                     getTreeList(treeList, metaList, tree);
                 }
             } else if (temp != null && tempPid != null && tempPid.equals(temp.getId())) {
+                System.out.println("b"+tree.getName());
                 temp.getChildren().add(tree);
                 if (!tree.isLeaf()) {
                     getTreeList(treeList, metaList, tree);
@@ -489,4 +515,48 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         }
     }
+
+
+    /**
+     * 初始化二级菜单按钮权限
+     * @param sysPermission 二级菜单信息
+     */
+    private void addDefaultPermission(SysPermission sysPermission){
+        String [] permissionArr = new String[]{"ADD","UPDATE","DEL","QUERY"};
+        for (int i = 0 ; i< permissionArr.length; i++){
+            SysPermission buttonPermission = new SysPermission();
+            buttonPermission.setParentId(sysPermission.getSysPermissionId());
+            switch (i){
+                case 0:
+                    buttonPermission.setName("添加");
+                    break;
+                case 1:
+                    buttonPermission.setName("修改");
+                    break;
+                case 2:
+                    buttonPermission.setName("删除");
+                    break;
+                case 3:
+                    buttonPermission.setName("查询");
+                    break;
+                    default:
+                        buttonPermission.setName("添加");
+                        break;
+            }
+            // isystem:user:add
+            String code = (sysPermission.getUrl().substring(1)+":"+permissionArr[i]).replace("/",":");
+            buttonPermission.setPermsCode(code.toUpperCase());
+            buttonPermission.setMenuType(2);
+            buttonPermission.setSort(i);
+            buttonPermission.setIsRoute(false);
+            buttonPermission.setIsLeaf(true);
+            buttonPermission.setKeepAlive(false);
+            buttonPermission.setDelFlag(0);
+            buttonPermission.setCreateUserId(UserUtil.getUserId());
+            this.baseMapper.insert(buttonPermission);
+        }
+        //设置父节点不为叶子节点
+        this.baseMapper.setMenuLeaf(sysPermission.getSysPermissionId(), 0);
+    }
+
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 功能描述：
+ * 功能描述：权限
  *  <p>版权所有：</p>
  *  未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -48,14 +48,6 @@ public class SysPermission implements Serializable {
      */
     private String component;
     /**
-     * 组件名字
-     */
-    private String componentName;
-    /**
-     * 一级菜单跳转地址
-     */
-    private String redirect;
-    /**
      * 菜单类型(0:一级菜单; 1:子菜单:2:按钮)
      */
     private Integer menuType;
@@ -64,17 +56,9 @@ public class SysPermission implements Serializable {
      */
     private String permsCode;
     /**
-     * 权限策略1显示2禁用
-     */
-    private String permsType;
-    /**
      * 菜单排序
      */
     private Integer sort;
-    /**
-     * 聚合子路由: 1是0否
-     */
-    private Boolean alwaysShow;
     /**
      * 菜单图标
      */
@@ -88,19 +72,13 @@ public class SysPermission implements Serializable {
      */
     private Boolean isLeaf;
     /**
-     * 是否隐藏路由: 0否,1是
-     */
-    private Integer hidden;
-
-    /**
      * 是否缓存页面: 0:不是  1:是（默认值1）
      */
     private Boolean keepAlive;
-
     /**
-     * 描述
+     * 删除状态 0正常 1已删除
      */
-    private String description;
+    private Integer delFlag;
     /**
      * 创建人
      */
@@ -117,18 +95,6 @@ public class SysPermission implements Serializable {
      * 更新时间
      */
     private LocalDateTime updateTime;
-    /**
-     * 删除状态 0正常 1已删除
-     */
-    private Integer delFlag;
-    /**
-     * 是否添加数据权限 1是 0否
-     */
-    private Integer ruleFlag;
-    /**
-     * 按钮权限状态(0无效1有效)
-     */
-    private String status;
 
 
     /////////////////////////////// 非表字段 ///////////////////////////////
@@ -144,12 +110,9 @@ public class SysPermission implements Serializable {
             this.icon="home";
             this.menuType=0;
             this.sort=0;
-            this.ruleFlag=0;
             this.delFlag=0;
-            this.alwaysShow=false;
             this.isRoute=true;
             this.isLeaf=true;
-            this.hidden=0;
         }
     }
 

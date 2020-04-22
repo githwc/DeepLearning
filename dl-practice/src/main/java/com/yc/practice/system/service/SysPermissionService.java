@@ -26,6 +26,7 @@ import java.util.Set;
 public interface SysPermissionService extends IService<SysPermission> {
 
     /**
+     * // TODO: 2020/4/22 没调用方就删除
      * 获取用户权限码 例如：admin,guest,xxx
      * @param loginName
      * @return
@@ -33,6 +34,7 @@ public interface SysPermissionService extends IService<SysPermission> {
     Set<String> getUserPermCodes(String loginName);
 
     /**
+     * // TODO: 2020/4/22 没调用方就删除
      * 获取用户权限码 例如：admin,guest,xxx
      * @param loginName
      * @return

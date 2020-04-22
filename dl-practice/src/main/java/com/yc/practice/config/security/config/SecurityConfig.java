@@ -81,6 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(securityProperties.getExcludes()).permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .logout()
+                .invalidateHttpSession(true)
+                .and()
                 .addFilterAt(new SysUserLoginFilter(authenticationManager(), loginService, tokenService,redisTemplate
                         ,sysLogService),UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -18,6 +18,13 @@ public class ErrorException extends RuntimeException {
     private Integer httpStatusCode;
     private String msg;
 
+    public ErrorException(Integer code,Integer httpStatusCode,String msg) {
+        super(msg);
+        this.code = code;
+        this.httpStatusCode = httpStatusCode;
+        this.msg = msg;
+    }
+
     public ErrorException(IError error) {
         super(error.getMsg());
         this.code = error.getCode();

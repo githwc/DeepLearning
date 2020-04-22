@@ -6,7 +6,7 @@ import com.yc.core.system.model.vo.CurrUserVO;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * 功能描述：
+ * 功能描述：Security 会话管理
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *

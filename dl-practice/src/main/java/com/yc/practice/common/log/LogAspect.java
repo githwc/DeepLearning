@@ -1,6 +1,7 @@
 package com.yc.practice.common.log;
 
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.ErrorException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -53,8 +55,8 @@ public class LogAspect {
             service.write(request,log.opPosition(),log.optype(),log.logType(),
                     jp.getSignature().getDeclaringTypeName()+"."+jp.getSignature().getName(),
                     costTimeMillis,CommonConstant.OPSTATE_FAILURE);
-            throwable.printStackTrace();
-            throw new RuntimeException(throwable.getMessage());
+            ErrorException error = (ErrorException)throwable;
+            throw new ErrorException(error.getCode(),error.getHttpStatusCode(),error.getMsg());
         }
     }
 
