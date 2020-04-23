@@ -13,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -45,6 +46,7 @@ public class SysRoleController {
     @GetMapping(value = "/rolePage")
     @ApiOperation(value = "查询所有角色", notes = "加载所有角色(分页)")
     @WriteLog(opPosition = "查询所有角色")
+    @PreAuthorize("hasAuthority('p1')")
     public Page<SysRole> rolePage(Page<SysRole> page, RoleQuery roleQuery) {
         return service.rolePage(page, roleQuery);
     }

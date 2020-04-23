@@ -34,6 +34,7 @@ import org.springframework.web.cors.CorsUtils;
  * @Version: 1.0.0
  */
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;

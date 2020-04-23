@@ -9,7 +9,6 @@ import com.yc.core.system.model.vo.SysPermissionTree;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 功能描述：
@@ -26,20 +25,11 @@ import java.util.Set;
 public interface SysPermissionService extends IService<SysPermission> {
 
     /**
-     * // TODO: 2020/4/22 没调用方就删除
      * 获取用户权限码 例如：admin,guest,xxx
-     * @param loginName
-     * @return
+     * @param loginName 登录名称
+     * @return 权限码
      */
-    Set<String> getUserPermCodes(String loginName);
-
-    /**
-     * // TODO: 2020/4/22 没调用方就删除
-     * 获取用户权限码 例如：admin,guest,xxx
-     * @param loginName
-     * @return
-     */
-    List<SysPermission> getUserPerm(String loginName);
+    List<String> getUserPerm(String loginName);
 
     /**
      * 根据Token获取用户拥有的权限

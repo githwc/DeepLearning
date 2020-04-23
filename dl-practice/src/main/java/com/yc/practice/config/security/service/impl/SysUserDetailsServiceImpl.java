@@ -1,21 +1,19 @@
 package com.yc.practice.config.security.service.impl;
 
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;
+import com.yc.practice.system.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * 功能描述：SpringSecurity定义的核心接口，用于根据用户名获取用户信息
@@ -32,9 +30,13 @@ import java.util.Collection;
 public class SysUserDetailsServiceImpl implements UserDetailsService {
 
     private final SysUserMapper sysUserMapper;
+    private final SysPermissionService sysPermissionService;
+
+
     @Autowired
-    public SysUserDetailsServiceImpl(SysUserMapper sysUserMapper) {
+    public SysUserDetailsServiceImpl(SysUserMapper sysUserMapper,SysPermissionService sysPermissionService) {
         this.sysUserMapper = sysUserMapper;
+        this.sysPermissionService = sysPermissionService;
     }
 
     @Override
@@ -47,9 +49,12 @@ public class SysUserDetailsServiceImpl implements UserDetailsService {
         } */else if (userVO.getState() == CommonConstant.PublicState.DISABLE) {
             throw new ErrorException(Error.UserDisabled);
         } else if (userVO.getState() == CommonConstant.PublicState.ENABLE) {
-            Collection<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(userVO.getSysUserId()));
-            return new User(userVO.getLoginName(), userVO.getPassword(), authorities);
+            List<String> permissions = sysPermissionService.getUserPerm(userVO.getLoginName());
+            String[] perarray = new String[permissions.size()];
+            permissions.toArray(perarray);
+            UserDetails userDetail =
+                    User.withUsername(userVO.getLoginName()).password(userVO.getPassword()).authorities("p1").build();
+            return userDetail;
         } else {
             throw new ErrorException(Error.UserError);
         }

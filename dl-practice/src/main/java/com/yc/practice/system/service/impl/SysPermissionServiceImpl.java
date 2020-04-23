@@ -20,7 +20,6 @@ import com.yc.core.system.model.vo.TreeModel;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysPermissionService;
 import com.yc.practice.system.utils.PermissionOPUtil;
-import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,8 +27,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能描述：
@@ -48,20 +49,11 @@ import java.util.*;
 public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, SysPermission> implements SysPermissionService {
 
     @Override
-    public Set<String> getUserPermCodes(String loginName) {
-        Set<String> permissionSet = new HashSet<String>();
-        List<SysPermission> permissionList = this.baseMapper.queryPermissionByUser(loginName);
-        for (SysPermission po : permissionList) {
-            if (StringUtils.isNotEmpty(po.getPermsCode())) {
-                permissionSet.add(po.getPermsCode());
-            }
-        }
-        return permissionSet;
-    }
-
-    @Override
-    public List<SysPermission> getUserPerm(String loginName) {
-        return this.baseMapper.queryPermissionByUser(loginName);
+    public List<String> getUserPerm(String loginName) {
+        List<String> list = new ArrayList<>();
+        List<SysPermission> permissions = this.baseMapper.queryPermissionByUser(loginName);
+        permissions.forEach(i->list.add(i.getPermsCode()));
+        return list;
     }
 
     @Override
@@ -273,12 +265,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public List<SysPermissionTree> permissionlist() {
-        List<SysPermission> list2 =  this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
-            .eq(SysPermission::getMenuType,1)
-        );
-        for (SysPermission sysPermission : list2) {
-            this.addDefaultPermission(sysPermission);
-        }
         List<SysPermission> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
                 .eq(SysPermission::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
                 .orderByAsc(SysPermission::getSort)
@@ -445,14 +431,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         for (SysPermission permission : metaList) {
             String tempPid = permission.getParentId();
             SysPermissionTree tree = new SysPermissionTree(permission);
-            System.out.println("a"+tree.getName());
             if (temp == null && StringUtils.isEmpty(tempPid)) {
                 treeList.add(tree);
                 if (!tree.isLeaf()) {
                     getTreeList(treeList, metaList, tree);
                 }
             } else if (temp != null && tempPid != null && tempPid.equals(temp.getId())) {
-                System.out.println("b"+tree.getName());
                 temp.getChildren().add(tree);
                 if (!tree.isLeaf()) {
                     getTreeList(treeList, metaList, tree);
