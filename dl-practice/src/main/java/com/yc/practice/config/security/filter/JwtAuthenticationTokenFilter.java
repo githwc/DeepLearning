@@ -25,10 +25,15 @@ import java.nio.charset.Charset;
 
 /**
  * 功能描述：JWT登录授权过滤器
- *  [ 在用户名和密码校验前添加的过滤器
- *  如果请求中有jwt的token且有效，会取出token中的用户名
- *  然后调用SpringSecurity的API进行登录操作]
- *
+ *  [
+ *       1、在用户名和密码校验前添加的过滤器
+ *      如果请求中有jwt的token且有效，会取出token中的用户名
+ *      然后调用SpringSecurity的API进行登录操作
+ *  ]
+ *  [
+ *      2、OncePerRequestFilter:让重复执行的filter实现一次执行过程(一次请求执行一次)
+ *      解决在使用SpringSecurity过程中，SpringSecurity中的Filter被加载了两次或多次的情况
+ *  ]
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *

@@ -27,14 +27,14 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class SysUserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final SysUserMapper sysUserMapper;
     private final SysPermissionService sysPermissionService;
 
 
     @Autowired
-    public SysUserDetailsServiceImpl(SysUserMapper sysUserMapper,SysPermissionService sysPermissionService) {
+    public UserDetailsServiceImpl(SysUserMapper sysUserMapper, SysPermissionService sysPermissionService) {
         this.sysUserMapper = sysUserMapper;
         this.sysPermissionService = sysPermissionService;
     }

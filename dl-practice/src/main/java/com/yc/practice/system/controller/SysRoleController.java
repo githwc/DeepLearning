@@ -46,7 +46,6 @@ public class SysRoleController {
     @GetMapping(value = "/rolePage")
     @ApiOperation(value = "查询所有角色", notes = "加载所有角色(分页)")
     @WriteLog(opPosition = "查询所有角色")
-    @PreAuthorize("hasAuthority('p1')")
     public Page<SysRole> rolePage(Page<SysRole> page, RoleQuery roleQuery) {
         return service.rolePage(page, roleQuery);
     }

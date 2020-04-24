@@ -10,8 +10,8 @@ import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
 import com.yc.common.utils.PasswordCheckUtil;
+import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.core.system.model.vo.CurrUserVO;
-import com.yc.practice.config.security.service.LoginService;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.system.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,20 +41,20 @@ import java.util.concurrent.TimeUnit;
  * @Version: 1.0.0
  */
 @Slf4j
-public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAuthenticationFilter {
 
-    private final LoginService loginService;
+    private final SysUserMapper sysUserMapper;
     private final TokenService TokenService;
     private final SysLogService sysLogService;
     private final RedisTemplate<String,String> redisTemplate;
 
-    public SysUserLoginFilter(AuthenticationManager authenticationManager,
-                              LoginService loginService, TokenService TokenService,
-                              RedisTemplate<String,String> redisTemplate,SysLogService sysLogService) {
-        this.loginService = loginService;
+    public UsernamePasswordAuthenticationFilterSelf(AuthenticationManager authenticationManager,
+                                                    SysUserMapper sysUserMapper,TokenService TokenService,
+                                                    RedisTemplate<String,String> redisTemplate, SysLogService sysLogService) {
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
+        this.sysUserMapper = sysUserMapper;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -112,7 +112,7 @@ public class SysUserLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) {
         JSONObject jsonObject = new JSONObject();
-        CurrUserVO currUserVo = loginService.loginSuccess(authResult.getName());
+        CurrUserVO currUserVo = sysUserMapper.loginByName(authResult.getName());
         jsonObject.put("userInfo", currUserVo);
         String jwtToken = TokenService.create(authResult.getName());
         jwtToken = BaseConstant.TOKEN_PREFIX + " " + jwtToken;

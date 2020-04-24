@@ -1,11 +1,11 @@
 package com.yc.practice.config.security.config;
 
 import com.yc.common.propertie.SecurityProperties;
+import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.practice.config.security.filter.JwtAuthenticationTokenFilter;
-import com.yc.practice.config.security.filter.SysUserLoginFilter;
-import com.yc.practice.config.security.service.LoginService;
+import com.yc.practice.config.security.filter.UsernamePasswordAuthenticationFilterSelf;
 import com.yc.practice.config.security.service.TokenService;
-import com.yc.practice.config.security.service.impl.SysUserDetailsServiceImpl;
+import com.yc.practice.config.security.service.impl.UserDetailsServiceImpl;
 import com.yc.practice.system.service.SysLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsUtils;
 
 /**
- * 功能描述：
+ * 功能描述：Security 核心配置类
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -39,22 +38,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     private final SecurityProperties securityProperties;
-    private final LoginService loginService;
+    private final SysUserMapper sysUserMapper;
     private final TokenService tokenService;
     private final RedisTemplate<String,String> redisTemplate;
-    private final SysUserDetailsServiceImpl sysUserDetailsService;
+    private final UserDetailsServiceImpl sysUserDetailsService;
     private final SysLogService sysLogService;
 
     @Autowired
     public SecurityConfig (JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
-                           SecurityProperties securityProperties,RedisTemplate<String,String> redisTemplate,
-                           LoginService loginService,TokenService tokenService,
-                           SysUserDetailsServiceImpl sysUserDetailsService,SysLogService sysLogService){
+                           SecurityProperties securityProperties, RedisTemplate<String,String> redisTemplate,
+                           SysUserMapper sysUserMapper,TokenService tokenService,
+                           UserDetailsServiceImpl sysUserDetailsService, SysLogService sysLogService){
         this.tokenService = tokenService;
         this.sysLogService = sysLogService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
         this.redisTemplate = redisTemplate;
-        this.loginService = loginService;
+        this.sysUserMapper = sysUserMapper;
         this.sysUserDetailsService = sysUserDetailsService;
         this.securityProperties = securityProperties;
     }
@@ -85,11 +84,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .invalidateHttpSession(true)
                 .and()
-                .addFilterAt(new SysUserLoginFilter(authenticationManager(), loginService, tokenService,redisTemplate
-                        ,sysLogService),UsernamePasswordAuthenticationFilter.class)
+                .addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
+                                sysUserMapper, tokenService,redisTemplate,sysLogService),
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * 开放静态资源
+     * @param web web
+     */
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers( "/css/**",
