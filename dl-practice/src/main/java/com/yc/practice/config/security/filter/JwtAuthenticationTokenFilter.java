@@ -2,10 +2,10 @@ package com.yc.practice.config.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
+import com.yc.common.constant.BaseConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
-import com.yc.common.constant.BaseConstant;
 import com.yc.practice.config.security.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

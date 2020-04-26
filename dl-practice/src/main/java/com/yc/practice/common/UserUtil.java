@@ -23,7 +23,6 @@ public class UserUtil {
      */
     public static UserDetailsSelf getUser() {
         try {
-            System.out.println((UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             return (UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e) {
             throw new ErrorException(Error.TokenError);

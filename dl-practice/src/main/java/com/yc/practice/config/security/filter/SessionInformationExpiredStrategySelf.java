@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * 功能描述：同账号异地登录拦截
  * <p>版权所有：</p>
- * 未经本公司许可，不得以任何方式复制或使用本程序任何部分
+ * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
  * @Company: 紫色年华
  * @Author: xieyc
@@ -24,12 +24,6 @@ public class SessionInformationExpiredStrategySelf implements SessionInformation
 
     @Override
     public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
-        System.out.println("=============进入了==================");
-        System.out.println("=============进入了==================");
-        System.out.println("=============进入了==================");
-        System.out.println("=============进入了==================");
-        System.out.println("=============进入了==================");
-        System.out.println("=============进入了==================");
         throw new ErrorException(Error.AuthError);
     }
 }
