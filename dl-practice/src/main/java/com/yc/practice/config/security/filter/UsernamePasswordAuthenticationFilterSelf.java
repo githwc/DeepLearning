@@ -1,5 +1,6 @@
 package com.yc.practice.config.security.filter;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
@@ -10,8 +11,9 @@ import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
 import com.yc.common.utils.PasswordCheckUtil;
+import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
-import com.yc.core.system.model.vo.CurrUserVO;
+import com.yc.practice.config.security.auth.UserDetailsSelf;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.system.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -112,8 +114,10 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authResult) {
         JSONObject jsonObject = new JSONObject();
-        CurrUserVO currUserVo = sysUserMapper.loginByName(authResult.getName());
-        jsonObject.put("userInfo", currUserVo);
+        SysUser sysUser = sysUserMapper.loginByName(authResult.getName());
+        UserDetailsSelf userDetailsSelf = new UserDetailsSelf();
+        BeanUtil.copyProperties(sysUser,userDetailsSelf);
+        jsonObject.put("userInfo", userDetailsSelf);
         String jwtToken = TokenService.create(authResult.getName());
         jwtToken = BaseConstant.TOKEN_PREFIX + " " + jwtToken;
         jsonObject.put("token", jwtToken);
@@ -137,7 +141,7 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
             String cacheErrNum = redisTemplate.opsForValue().get(key);
             int errorNum = StringUtils.isBlank(cacheErrNum) ? 1 : Integer.parseInt(cacheErrNum) + 1;
             redisTemplate.opsForValue().set(key, String.valueOf(errorNum), 10, TimeUnit.MINUTES);
-            String msg = 5 - errorNum == 0 ? "当前账号密码您输入错误五次，请10分钟之后再登录!" : "账号密码输入错误,您还有" + (5 - errorNum) + "次机会!";
+            String msg = 5 - errorNum == 0 ? "当前用户密码您输入错误五次，请10分钟之后再登录!" : "用户密码输入错误,您还有" + (5 - errorNum) + "次机会!";
             errorMsg = RestResult.error(400, msg).toJSONString();
         }
         sysLogService.addLog(request,"用户名: "+username+",登录失败！", CommonConstant.LOG_TYPE_1, username,"/login",

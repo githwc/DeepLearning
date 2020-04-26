@@ -98,12 +98,18 @@ public class SysUserController {
         return service.queryUserRole(userId);
     }
 
-
     @PostMapping(value = "/resetPassword")
     @ApiOperation(value = "重置密码", notes = "重置密码")
     @WriteLog(opPosition = "重置密码", optype = CommonConstant.OPTYPE_UPDATE)
     public void resetPassword(@RequestBody SysUser sysUser) {
         service.resetPassword(sysUser.getSysUserId());
+    }
+
+    @PutMapping(value = "/updatePassword")
+    @ApiOperation(value = "修改密码", notes = "修改密码")
+    @WriteLog(opPosition = "修改密码", optype = CommonConstant.OPTYPE_UPDATE)
+    public String updatePassword(@RequestBody SysUser sysUser) {
+        return service.updatePassword(sysUser);
     }
 
 }

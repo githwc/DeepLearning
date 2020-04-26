@@ -22,12 +22,15 @@ public enum DlError implements IError {
     /**
      * 库存不足
      */
-    StockLow(200,200006,"库存不足,请重新选购"),
+    StockLow(200,200001,"库存不足,请重新选购"),
     /**
      * 存在重复路径
      */
-    URLNotUnique(200,200006,"存在重复路径,请修改!"),
-
+    URLNotUnique(200,200002,"存在重复路径,请修改!"),
+    /**
+     * 原密码输入错误
+     */
+    OldPasswordError(200,20000,"原密码输入错误!"),
     ;
     /**
      * HTTP状态码

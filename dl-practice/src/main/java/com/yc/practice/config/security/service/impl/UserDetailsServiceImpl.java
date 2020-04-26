@@ -3,20 +3,24 @@ package com.yc.practice.config.security.service.impl;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
+import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
-import com.yc.core.system.model.vo.CurrUserVO;
-import com.yc.practice.system.service.SysPermissionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * 功能描述：SpringSecurity定义的核心接口，用于根据用户名获取用户信息
+ *      [登录时校验用户信息,认证成功后将认证信息存入SecurityContextHolder上下文,后续操作会跳过过滤器，无需鉴权]
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -30,31 +34,27 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final SysUserMapper sysUserMapper;
-    private final SysPermissionService sysPermissionService;
-
 
     @Autowired
-    public UserDetailsServiceImpl(SysUserMapper sysUserMapper, SysPermissionService sysPermissionService) {
+    public UserDetailsServiceImpl(SysUserMapper sysUserMapper) {
         this.sysUserMapper = sysUserMapper;
-        this.sysPermissionService = sysPermissionService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String loginName) {
-        CurrUserVO userVO = sysUserMapper.loginByName(loginName);
-        if (userVO == null) {
+        if(StringUtils.isEmpty(loginName)){
+            throw new ErrorException(Error.LoginNameIsNull);
+        }
+        SysUser sysUser = sysUserMapper.loginByName(loginName);
+        if (sysUser == null) {
             throw new ErrorException(Error.UserNotFound);
-        } /*else if (StringUtils.isBlank(userVO.getRoleId())) {
-            throw new ErrorException(Error.NoAccess);
-        } */else if (userVO.getState() == CommonConstant.PublicState.DISABLE) {
+        } else if (sysUser.getState() == CommonConstant.PublicState.DISABLE) {
             throw new ErrorException(Error.UserDisabled);
-        } else if (userVO.getState() == CommonConstant.PublicState.ENABLE) {
-            List<String> permissions = sysPermissionService.getUserPerm(userVO.getLoginName());
-            String[] perarray = new String[permissions.size()];
-            permissions.toArray(perarray);
-            UserDetails userDetail =
-                    User.withUsername(userVO.getLoginName()).password(userVO.getPassword()).authorities("p1").build();
-            return userDetail;
+        } else if (sysUser.getState() == CommonConstant.PublicState.ENABLE) {
+
+            Collection<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(sysUser.getSysUserId()));
+            return new User(sysUser.getLoginName(), sysUser.getPassWord(), authorities);
         } else {
             throw new ErrorException(Error.UserError);
         }

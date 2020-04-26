@@ -53,7 +53,7 @@ public class SysUser implements Serializable {
     /**
      * 密码
      */
-    private String password;
+    private String passWord;
     /**
      * 年龄
      */
@@ -134,4 +134,11 @@ public class SysUser implements Serializable {
      */
     @TableField(exist = false)
     private String tempArgs;
+
+    /**
+     * 旧密码
+     */
+    @TableField(exist = false)
+    private String oldPassword;
+
 }

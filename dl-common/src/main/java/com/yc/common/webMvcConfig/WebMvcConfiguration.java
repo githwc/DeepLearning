@@ -3,14 +3,17 @@ package com.yc.common.webMvcConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.List;
  * @Version: 1.0.0
  */
 @Configuration
-public class WebMvcConfiguration extends WebMvcConfigurationSupport {
+public class WebMvcConfiguration implements WebMvcConfigurer {
 
     /**
      * 跨域设置
@@ -44,11 +47,16 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         return source;
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(0, new MappingJackson2HttpMessageConverter());
+    }
+
     // TODO: 2020/4/21 待删除
     // @Override
-    // protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    // public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     //     super.configureMessageConverters(converters);
-    //
+    //     converters.add(0, new MappingJackson2HttpMessageConverter());
     //     FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
     //
     //     List<MediaType> supportedMediaTypes = new ArrayList<>();

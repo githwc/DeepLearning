@@ -27,7 +27,7 @@ public enum Error implements IError {
     /**
      * 安全认证
      */
-    AuthError(401, 40100, "认证错误"),
+    AuthError(401, 40100, "您的账号已在异地登录,请注意个人信息安全!"),
     SignError(401, 40101, "签名错误"),
     TokenError(401, 40103, "登录信息已失效，请重新登录！"),
 
@@ -56,6 +56,7 @@ public enum Error implements IError {
      */
     UserError(400, 42000, "用户错误"),
     AccountLock(400, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
+    LoginNameIsNull(400, 42002, "用户名不能为空"),
     UserDisabled(400, 42004, "用户已禁用"),
     LoginNameOrPwdError(400, 42010, "用户名或密码错误"),
     LoginPwdError(400, 42011, "用户密码错误"),

@@ -84,5 +84,10 @@ public interface SysUserService extends IService<SysUser> {
      */
     void resetPassword(String sysUserId);
 
+    /**
+     * 修改密码
+     * @param sysUser 用户信息
+     */
+    String updatePassword(SysUser sysUser);
 
 }

@@ -1,6 +1,7 @@
 package com.yc.common.global.response;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashMap;
 
@@ -26,11 +27,6 @@ public class RestResult extends HashMap<String,Object> {
     public RestResult put(String key, Object value) {
         super.put(key, value);
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return this.toJSONString();
     }
 
     public RestResult(){
@@ -74,8 +70,17 @@ public class RestResult extends HashMap<String,Object> {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return this.toJSONString();
+    }
+
     public String toJSONString() {
         return JSON.toJSONString(this);
+    }
+
+    public JSONObject toJSONObject() {
+        return JSON.parseObject(this.toJSONString());
     }
 
     /**

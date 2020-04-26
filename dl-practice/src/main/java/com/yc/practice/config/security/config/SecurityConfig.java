@@ -3,6 +3,7 @@ package com.yc.practice.config.security.config;
 import com.yc.common.propertie.SecurityProperties;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.practice.config.security.filter.JwtAuthenticationTokenFilter;
+import com.yc.practice.config.security.filter.SessionInformationExpiredStrategySelf;
 import com.yc.practice.config.security.filter.UsernamePasswordAuthenticationFilterSelf;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.config.security.service.impl.UserDetailsServiceImpl;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +35,7 @@ import org.springframework.web.cors.CorsUtils;
  * @Version: 1.0.0
  */
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -41,26 +44,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final SysUserMapper sysUserMapper;
     private final TokenService tokenService;
     private final RedisTemplate<String,String> redisTemplate;
-    private final UserDetailsServiceImpl sysUserDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final SysLogService sysLogService;
 
     @Autowired
     public SecurityConfig (JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
                            SecurityProperties securityProperties, RedisTemplate<String,String> redisTemplate,
                            SysUserMapper sysUserMapper,TokenService tokenService,
-                           UserDetailsServiceImpl sysUserDetailsService, SysLogService sysLogService){
+                           UserDetailsServiceImpl userDetailsService, SysLogService sysLogService){
         this.tokenService = tokenService;
         this.sysLogService = sysLogService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
         this.redisTemplate = redisTemplate;
         this.sysUserMapper = sysUserMapper;
-        this.sysUserDetailsService = sysUserDetailsService;
+        this.userDetailsService = userDetailsService;
         this.securityProperties = securityProperties;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Bean
@@ -74,17 +77,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable().authorizeRequests()
+        httpSecurity.cors().and().csrf().disable();
+        httpSecurity.authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // 处理跨域请求中的Preflight请求
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(securityProperties.getExcludes()).permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .logout()
+                // 登出
+                .and().logout()
+                .permitAll()
                 .invalidateHttpSession(true)
-                .and()
-                .addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
+                // 会话管理
+                .and().sessionManagement()
+                .maximumSessions(1)
+                .expiredSessionStrategy(new SessionInformationExpiredStrategySelf());
+        httpSecurity.addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
                                 sysUserMapper, tokenService,redisTemplate,sysLogService),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

@@ -18,9 +18,9 @@
         order by u.sort
     </select>
 
-    <select id="loginByName" resultType="com.yc.core.system.model.vo.CurrUserVO">
+    <select id="loginByName" resultType="com.yc.core.system.entity.SysUser">
         SELECT
-               sys.*
+            sys.*
         FROM
              sys_user AS sys
         where login_name = #{loginName}

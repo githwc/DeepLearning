@@ -1,5 +1,6 @@
 package com.yc.practice.config.security.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.yc.common.constant.BaseConstant;
@@ -8,17 +9,21 @@ import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.SecurityProperties;
 import com.yc.common.utils.DateTimeUtil;
 import com.yc.common.utils.JwtTokenUtil;
+import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
-import com.yc.core.system.model.vo.CurrUserVO;
+import com.yc.practice.config.security.auth.UserDetailsSelf;
 import com.yc.practice.config.security.service.TokenService;
+import com.yc.practice.system.service.SysPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 功能描述：JWT
@@ -38,13 +43,15 @@ public class TokenServiceImpl implements TokenService {
     private final SysUserMapper sysUserMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final SecurityProperties securityProperties;
+    private final SysPermissionService sysPermissionService;
 
     @Autowired
     public TokenServiceImpl(SysUserMapper sysUserMapper, JwtTokenUtil jwtTokenUtil,
-                            SecurityProperties securityProperties) {
+                            SecurityProperties securityProperties, SysPermissionService sysPermissionService) {
         this.sysUserMapper = sysUserMapper;
         this.jwtTokenUtil = jwtTokenUtil;
         this.securityProperties = securityProperties;
+        this.sysPermissionService = sysPermissionService;
     }
 
     @Override
@@ -55,7 +62,13 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public UsernamePasswordAuthenticationToken verify(HttpServletResponse response, String token) {
         String loginName = jwtTokenUtil.getName(token);
-        CurrUserVO currUserVO = sysUserMapper.loginByName(loginName);
+        SysUser sysUser = sysUserMapper.loginByName(loginName);
+        UserDetailsSelf userDetailsSelf = new UserDetailsSelf();
+        BeanUtil.copyProperties(sysUser,userDetailsSelf);
+        List<String> permissions = sysPermissionService.getUserPerm(userDetailsSelf.getLoginName());
+        userDetailsSelf.setAuthorities(
+                AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",permissions))
+                     );
         try {
             jwtTokenUtil.validateToken(token);
             DecodedJWT jwt = jwtTokenUtil.getDecodedJWT(token);
@@ -77,6 +90,6 @@ public class TokenServiceImpl implements TokenService {
         } catch (TokenExpiredException e) {
             throw new ErrorException(Error.TokenError);
         }
-        return new UsernamePasswordAuthenticationToken(currUserVO, currUserVO.getPassword(), null);
+        return new UsernamePasswordAuthenticationToken(userDetailsSelf, userDetailsSelf.getPassWord(), AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",permissions)));
     }
 }

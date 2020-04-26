@@ -2,7 +2,7 @@ package com.yc.practice.common;
 
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.core.system.model.vo.CurrUserVO;
+import com.yc.practice.config.security.auth.UserDetailsSelf;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -21,9 +21,10 @@ public class UserUtil {
      * 获取当前用户信息
      * @return 用户信息
      */
-    public static CurrUserVO getUser() {
+    public static UserDetailsSelf getUser() {
         try {
-            return (CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            System.out.println((UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+            return (UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e) {
             throw new ErrorException(Error.TokenError);
         }
@@ -35,7 +36,7 @@ public class UserUtil {
      */
     public static String getUserId() {
         try {
-            return ((CurrUserVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
+            return ((UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
         }catch (Exception e) {
             throw new ErrorException(Error.TokenError);
         }
