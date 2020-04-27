@@ -2,7 +2,6 @@ package com.yc.practice.config.security.filter;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
-import com.yc.common.constant.BaseConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
@@ -58,14 +57,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         log.debug("TOKEN校验 - 请求地址：{}", request.getRequestURI());
-        String token = request.getHeader(BaseConstant.HEADER_STRING);
+        String token = request.getHeader(CommonConstant.HEADER_STRING);
         // 不合规的Token格式不予处理
-        if (StringUtils.isBlank(token) || !token.startsWith(BaseConstant.TOKEN_PREFIX)) {
+        if (StringUtils.isBlank(token) || !token.startsWith(CommonConstant.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
         //设置返回客户端响应头以及json类型
-        token = StringUtils.remove(token, BaseConstant.TOKEN_PREFIX).trim();
+        token = StringUtils.remove(token, CommonConstant.TOKEN_PREFIX).trim();
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
         try {
             usernamePasswordAuthenticationToken = tokenService.verify(response, token);

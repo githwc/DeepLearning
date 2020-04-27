@@ -3,7 +3,7 @@ package com.yc.practice.config.security.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.yc.common.constant.BaseConstant;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.SecurityProperties;
@@ -83,7 +83,7 @@ public class TokenServiceImpl implements TokenService {
             // 满足续签条件
             if (now.compareTo(renewTime) >= 0) {
                 String newToken = this.create(jwtTokenUtil.getName(token));
-                response.addHeader(BaseConstant.HEADER_STRING, BaseConstant.TOKEN_PREFIX + " " + newToken);
+                response.addHeader(CommonConstant.HEADER_STRING, CommonConstant.TOKEN_PREFIX + " " + newToken);
                 response.setHeader("Access-Control-Allow-Headers", "authorization");
                 response.setHeader("Access-Control-Expose-Headers", "authorization");
             }

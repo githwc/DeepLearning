@@ -39,6 +39,31 @@ public interface CommonEnum {
         }
     }
 
+    enum State implements CommonEnum{
+        /**
+         * 冻结状态
+         */
+        Disabled(1,"冻结"),
+        enabled(0,"正常")
+        ;
+
+        private Integer code;
+        private String  name;
+
+        State(Integer code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode(){
+            return code;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
+
     enum MenuType implements CommonEnum{
         /**
          * 菜单类型

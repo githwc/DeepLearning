@@ -1,7 +1,7 @@
 package com.yc.common.constant;
 
 /**
- * 功能描述：
+ * 功能描述：全局常量
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -12,64 +12,49 @@ package com.yc.common.constant;
  */
 public class CommonConstant {
 
-    /**
-     * 通用状态(0停用1正常/启用)
-     */
-    public static final class PublicState {
-        /**
-         * 冻结
-         */
-        public static final int DISABLE = 1;
-        /**
-         * 正常
-         */
-        public static final int ENABLE = 0;
-    }
-
     // =============== 系统日志 START ====================
     /**
-     * 系统日志类型： 操作
+     * 日志类型： 普通操作
      */
     public static final int  LOG_TYPE_0 = 0;
 
     /**
-     * 系统日志类型： 登录 & 登出
+     * 日志类型： 登录 & 登出
      */
     public static final int LOG_TYPE_1 = 1;
 
     /**
-     * 系统日志类型： 定时
+     * 日志类型： 定时任务
      */
     public static final int LOG_TYPE_2 = 2;
 
     /**
-     * 系统日志操作结果 成功
+     * 日志操作结果 成功
      */
     public final static int OPSTATE_SUCCESS = 0;
     /**
-     * 系统日志操作结果 失败
+     * 日志操作结果 失败
      */
     public final static int OPSTATE_FAILURE = 1;
 
     /**
-     * 系统日志操作类型 增加
+     * 日志操作类型 增加
      */
     public final static int OPTYPE_CREATE = 0;
     /**
-     * 系统日志操作类型 删除
+     * 日志操作类型 删除
      */
     public final static int OPTYPE_DELETE = 1;
     /**
-     * 系统日志操作类型 修改
+     * 日志操作类型 修改
      */
     public final static int OPTYPE_UPDATE = 2;
     /**
-     * 系统日志操作类型 读取
+     * 日志操作类型 读取
      */
-    public final static int OPTYPE_READ   = 3;
+    public final static int OPTYPE_READ  = 3;
 
     // ================== 编码格式 ===========================
-
 
     /** 文本编码 */
     public static String TEXT_CONTENTTYPE = "text/plain;charset=UTF-8";
@@ -89,4 +74,41 @@ public class CommonConstant {
     // =============== 凭证相关 ==================
 
     public static String X_ACCESS_TOKEN = "X-Access-Token";
+
+    /**
+     * 存放Token的Header Key
+     */
+    public static final String HEADER_STRING = "authorization";
+
+    /**
+     * Token前缀
+     */
+    public static final String TOKEN_PREFIX = "Bearer";
+
+    // ===================== 缓存key /key前缀 ======================
+
+    /**
+     * 用户信息
+     */
+    public final static  String SYS_USERS_CACHE = "SYS_USERS_CACHE";
+
+    /**
+     * 用户权限
+     */
+    public static final String SYS_PERMISSIONS_CACHE = "SYS_PERMISSIONS_CACHE";
+
+    /**
+     * 部门信息
+     */
+    public static final String SYS_DEPARTS_CACHE = "SYS_DEPARTS_CACHE";
+
+    /**
+     * 全部部门ids缓存
+     */
+    public static final String SYS_DEPART_IDS_CACHE = "SYS_DEPART_IDS_CACHE";
+
+    /**
+     * 今日订单号
+     */
+    public static final String ORDER_NO_TODAY_CACHE = "ORDER_NO_NOW_CACHE";
 }

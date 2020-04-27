@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CacheConstant;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
@@ -54,14 +54,14 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    @CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
+    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void editByDeptId(SysDept sysDept) {
         sysDept.setUpdateUserId(UserUtil.getUserId());
         this.updateById(sysDept);
     }
 
     @Override
-    @CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
+    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void deleteAlone(String id) {
         List<String> idList = new ArrayList<String>();
         SysDept sysDept = this.getById(id);
@@ -92,7 +92,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    @CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
+    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void create(SysDept sysDept) {
         if (sysDept != null ) {
             String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());

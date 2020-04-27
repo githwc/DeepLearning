@@ -40,7 +40,7 @@ public class SystemLogService {
         String message = new String[] { "创建", "删除", "更新", "读取" }[opType] + "位置【" + opPosition + "】" + (opResult != 1
                 ? "成功" : "失败");
         String requestParams = JSONObject.toJSONString(request.getParameterMap());
-        return write(UserUtil.getUser(),opType,logType, requestMethod,request.getRequestURI(),
+        return write(UserUtil.getUser(),opType,logType,requestMethod,request.getRequestURI(),
                 request.getMethod(),requestParams,costTimeMillis,message);
     }
 

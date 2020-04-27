@@ -4,8 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CacheConstant;
-import com.yc.common.global.error.DlError;
+import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.MallGood;
 import com.yc.core.mall.entity.MallOrder;
@@ -86,11 +86,11 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         List<MallOrderGood> goodList = orderForm.getGoodsInfo();
         goodList.forEach(curr->{
             if(StringUtils.isBlank(curr.getGoodId())){
-                throw new ErrorException(DlError.GoodNotFound);
+                throw new ErrorException(Error.GoodNotFound);
             }
             MallGood mallGood = this.mallGoodMapper.selectById(curr.getGoodId());
             if(mallGood.getStock()<curr.getGoodNum()){
-                throw new ErrorException(DlError.StockLow);
+                throw new ErrorException(Error.StockLow);
             }
             mallGood.setSale(curr.getGoodNum()+mallGood.getSale());
             mallGood.setStock(mallGood.getStock()-curr.getGoodNum());
@@ -126,7 +126,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         Long nowLong = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));
         sb.append(nowLong.toString());
         String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String key = CacheConstant.ORDER_NO_TODAY_CACHE + date;
+        String key = CommonConstant.ORDER_NO_TODAY_CACHE + date;
         Long increment = redisTemplate.opsForValue().increment(key,1);
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 6) {

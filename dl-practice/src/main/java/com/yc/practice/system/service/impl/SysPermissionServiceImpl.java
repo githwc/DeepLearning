@@ -5,9 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CacheConstant;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
-import com.yc.common.global.error.DlError;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.EncoderUtil;
@@ -161,15 +160,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
             // 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
             json.put("name", urlToRouteName(permission.getUrl()));
-            // TODO: 2020/4/22 待删除
-            // 是否隐藏路由，默认都是显示的
-            // if (permission.getHidden().equals(1)) {
-            //     json.put("hidden", true);
-            // }
-            // 聚合路由
-            // if (permission.getAlwaysShow() != null && permission.getAlwaysShow()) {
-            //     json.put("alwaysShow", true);
-            // }
             json.put("component", permission.getComponent());
             JSONObject meta = new JSONObject();
             // 默认所有的菜单都加路由缓存，提高系统性能
@@ -297,7 +287,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 
     @Override
-    @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
+    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void addPermission(SysPermission sysPermission) {
         sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
         String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
@@ -306,7 +296,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .eq(SysPermission::getPermsCode,code)
         );
         if(count > 0){
-            throw new ErrorException(DlError.URLNotUnique);
+            throw new ErrorException(Error.URLNotUnique);
         }
         sysPermission.setPermsCode(code);
         //判断是否是一级菜单，是的话清空父菜单
@@ -327,7 +317,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
+    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void editPermission(SysPermission sysPermission) {
         sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
         SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
@@ -338,7 +328,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 .ne(SysPermission::getSysPermissionId,oldPer.getSysPermissionId())
         );
         if(codeCount > 0){
-            throw new ErrorException(DlError.URLNotUnique);
+            throw new ErrorException(Error.URLNotUnique);
         }
         sysPermission.setPermsCode(code);
         if (oldPer == null) {
@@ -374,7 +364,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    @CacheEvict(value = CacheConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
+    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void deletePermission(String id) {
         SysPermission sysPermission = this.getById(id);
         if (sysPermission == null) {

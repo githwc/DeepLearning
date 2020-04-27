@@ -3,7 +3,6 @@ package com.yc.practice.config.security.config;
 import com.yc.common.propertie.SecurityProperties;
 import com.yc.core.system.mapper.SysUserMapper;
 import com.yc.practice.config.security.filter.JwtAuthenticationTokenFilter;
-import com.yc.practice.config.security.filter.SessionInformationExpiredStrategySelf;
 import com.yc.practice.config.security.filter.UsernamePasswordAuthenticationFilterSelf;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.config.security.service.impl.UserDetailsServiceImpl;
@@ -19,6 +18,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -77,23 +77,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors().and().csrf().disable();
+        // 关闭跨域请求防护及不使用session
+        httpSecurity.cors().and().csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.authorizeRequests()
+                //允许跨域请求的OPTIONS请求
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // 处理跨域请求中的Preflight请求
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(securityProperties.getExcludes()).permitAll()
-                .anyRequest().authenticated()
-                // 登出
-                .and().logout()
-                .permitAll()
-                .invalidateHttpSession(true)
-                // 会话管理
-                .and().sessionManagement()
-                .maximumSessions(1)
-                .expiredSessionStrategy(new SessionInformationExpiredStrategySelf());
+                .anyRequest().authenticated();
         httpSecurity.addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
-                                sysUserMapper, tokenService,redisTemplate,sysLogService),
+                                sysUserMapper,tokenService,redisTemplate,sysLogService),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

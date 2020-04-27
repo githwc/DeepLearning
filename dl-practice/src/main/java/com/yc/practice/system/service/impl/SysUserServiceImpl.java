@@ -6,10 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CacheConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
-import com.yc.common.global.error.DlError;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.utils.IdcardUtil;
@@ -28,7 +26,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,31 +53,23 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserRoleMapper sysUserRoleMapper;
-    private RedisTemplate redisTemplate;
     private SysLogService sysLogService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public SysUserServiceImpl(SysUserRoleMapper sysUserRoleMapper,
-                              SysLogService sysLogService,RedisTemplate redisTemplate,
+                              SysLogService sysLogService,
                               PasswordEncoder passwordEncoder) {
         this.sysUserRoleMapper = sysUserRoleMapper;
         this.passwordEncoder = passwordEncoder;
-        this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-        // CurrUserVO sysUser = UserUtil.getUser();
-        // sysLogService.addLog(request,"用户名: "+sysUser.getLoginName()+",退出成功！", CommonConstant.LOG_TYPE_1, "sysUser" +
-        //         "/logout","");
-        String token = request.getHeader(CommonConstant.X_ACCESS_TOKEN);
-        //清空用户Token缓存
-        // redisTemplate.delete(CacheConstant.LOGIN_USER_TOKEN_ + token);
-        //清空用户权限缓存：权限Perms和角色集合
-        // redisTemplate.delete(CacheConstant.LOGIN_USER_ROLES_+ sysUser.getLoginName());
-        // redisTemplate.delete(CacheConstant.LOGIN_USER_PERMISSION_+ sysUser.getLoginName());
+        String token = StringUtils.remove(request.getHeader(CommonConstant.HEADER_STRING), CommonConstant.TOKEN_PREFIX).trim();
+        sysLogService.addLog(request,"用户名: "+UserUtil.getUser().getLoginName()+",退出成功！",CommonConstant.LOG_TYPE_1,UserUtil.getUser().getLoginName(),
+                "/sysUser/logout",token);
     }
 
     @Override
@@ -136,7 +125,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    @CacheEvict(value={CacheConstant.SYS_USERS_CACHE}, allEntries=true)
+    @CacheEvict(value={CommonConstant.SYS_USERS_CACHE}, allEntries=true)
     public void deleteUser(String id) {
         // 删除用户角色关联关系
         sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
@@ -189,7 +178,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             int result = this.baseMapper.updateById(sysUser);
             return result > 0 ? "success" : "error";
         } else {
-            throw new ErrorException(DlError.OldPasswordError);
+            throw new ErrorException(Error.OldPasswordError);
         }
     }
 

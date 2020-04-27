@@ -45,6 +45,9 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
         } catch (Exception e) {
             sysLog.setIpAddress("异常地址");
         }
+        sysLog.setCostTime(0L);
+        sysLog.setRequestType(request.getMethod());
+        sysLog.setRequestUrl(request.getRequestURI());
         sysLog.setCreateUserId(loginName);
         this.baseMapper.insert(sysLog);
     }

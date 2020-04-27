@@ -1,6 +1,6 @@
 package com.yc.practice.config.security.service.impl;
 
-import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.entity.SysUser;
@@ -48,15 +48,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SysUser sysUser = sysUserMapper.loginByName(loginName);
         if (sysUser == null) {
             throw new ErrorException(Error.UserNotFound);
-        } else if (sysUser.getState() == CommonConstant.PublicState.DISABLE) {
+        } else if (sysUser.getDelFlag().equals(CommonEnum.DelFlag.DEL.getCode())) {
+            throw new ErrorException(Error.UserDeleted);
+        } else if (sysUser.getState().equals(CommonEnum.State.Disabled.getCode())) {
             throw new ErrorException(Error.UserDisabled);
-        } else if (sysUser.getState() == CommonConstant.PublicState.ENABLE) {
-
+        } else {
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(sysUser.getSysUserId()));
             return new User(sysUser.getLoginName(), sysUser.getPassWord(), authorities);
-        } else {
-            throw new ErrorException(Error.UserError);
         }
     }
 }

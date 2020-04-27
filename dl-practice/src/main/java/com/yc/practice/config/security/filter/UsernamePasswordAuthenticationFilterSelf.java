@@ -5,7 +5,6 @@ import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yc.common.constant.BaseConstant;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
@@ -119,7 +118,7 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
         BeanUtil.copyProperties(sysUser,userDetailsSelf);
         jsonObject.put("userInfo", userDetailsSelf);
         String jwtToken = TokenService.create(authResult.getName());
-        jwtToken = BaseConstant.TOKEN_PREFIX + " " + jwtToken;
+        jwtToken = CommonConstant.TOKEN_PREFIX + " " + jwtToken;
         jsonObject.put("token", jwtToken);
         jsonObject.put("pwdStrong", String.valueOf(PasswordCheckUtil.getPwdStrong(password)));
         String successMsg = RestResult.success().data(jsonObject).toJSONString();
