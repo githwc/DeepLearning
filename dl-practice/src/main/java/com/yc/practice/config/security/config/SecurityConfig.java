@@ -106,7 +106,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/v2/**",
                 "/swagger-resources/**",
-                "/deeplearning/**");
+                "/file/**",
+                "/image/**");
     }
 
 }

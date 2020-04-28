@@ -17,10 +17,10 @@ public enum Error implements IError {
     /**
      * 安全认证
      */
-    AuthError(401, 40100, "您的账号已在异地登录,请注意个人信息安全!"),
-    TokenError(401, 40103, "登录信息已失效，请重新登录！"),
-    ParameterNotFound(404, 40402, "请求参数错误"),
-    CheckCodeError(400, 40001, "验证码错误"),
+    AuthError(403, 40100, "您的账号已在异地登录,请注意个人信息安全!"),
+    CheckCodeError(403, 40101, "验证码错误"),
+    ParameterNotFound(403, 40102, "请求参数错误"),
+    TokenError(403, 40103, "登录信息已失效，请重新登录！"),
 
     /**
      * 用户异常
@@ -80,9 +80,17 @@ public enum Error implements IError {
      */
     UploadImgError(200,20004,"请选择要上传的图片!"),
     /**
+     * 请选择要上传的文件
+     */
+    UploadFileError(200,20004,"请选择要上传的文件!"),
+    /**
      * 请选择要上传的图片
      */
-    ImgFormatError(200,20004," 请选择jpg,jpeg,gif,png格式的图片!"),
+    ImgFormatError(200,20005,"请选择jpg,jpeg,gif,png格式的图片!"),
+    /**
+     * 保存文件异常
+     */
+    SaveImgError(200,20006,"保存文件异常!"),
     ;
 
     /**

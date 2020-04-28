@@ -2,10 +2,11 @@ package com.yc.core.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * 功能描述：
@@ -38,6 +39,14 @@ public class Demo implements Serializable {
      */
     private Integer age;
     /**
+     * 文件名称
+     */
+    private String documentName;
+    /**
+     * 文件路径
+     */
+    private String documentUrl;
+    /**
      * 地址
      */
     private String address;
@@ -49,6 +58,5 @@ public class Demo implements Serializable {
      * 备注
      */
     private String remark;
-
 
 }

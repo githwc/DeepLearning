@@ -13,8 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 功能描述：
@@ -45,35 +47,53 @@ public class UploadServiceImpl implements UploadService {
         if (file == null) {
             throw new ErrorException(Error.UploadImgError);
         }
-        if (file.getSize() > 1024 * 1024 * 10) {
-            throw new ErrorException(200,50001,"文件大小不能大于10M");
+        if (file.getSize() > 1024 * 1024 * 5) {
+            throw new ErrorException(200,50001,"文件大小不能大于5M");
         }
         //获取文件后缀
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         if (!CommonConstant.IMG_FORMAT.toUpperCase().contains(suffix.toUpperCase())) {
             throw new ErrorException(Error.ImgFormatError);
         }
-        String savePath = uploadProperties.getImgFilePath();
+        String savePath = uploadProperties.getImgSavePath();
         File savePathFile = new File(savePath);
+        // 若不存在该目录，则创建目录
         if (!savePathFile.exists()) {
-            //若不存在该目录，则创建目录
             savePathFile.mkdir();
         }
-        //通过日期加自增序号生成唯一文件名
-        String filename = generateOrderNo() + "." + suffix;
+        // 通过日期加自增序号生成唯一文件名
+        String imgName = generateOrderNo() + "." + suffix;
         try {
-            //将文件保存指定目录
-            file.transferTo(new File(savePath + filename));
+            // 将文件保存指定目录
+            file.transferTo(new File(savePath + imgName));
         } catch (Exception e) {
-            e.printStackTrace();
-            // 保存文件异常
-            throw new ErrorException(Error.UserExisted);
+            throw new ErrorException(Error.SaveImgError);
         }
-        //返回文件名称
-        return filename;
+        // 返回文件名称
+        return imgName;
     }
 
+    @Override
+    public String uploadFile(HttpServletRequest request, MultipartFile file) {
+        if (file == null) {
+            throw new ErrorException(Error.UploadFileError);
+        }
+        String realPath = uploadProperties.getFileSavePath();
+        File folder = new File(realPath);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        String oldName = file.getOriginalFilename();
+        String newName = generateOrderNo()+ oldName.substring(oldName.lastIndexOf("."));
+        try {
+            file.transferTo(new File(folder,newName));
+        } catch (IOException e) {
+            throw new ErrorException(Error.SaveImgError);
+        }
+        return newName;
+    }
 
+    // ====================== 私有方法 =====================
     /**
      * 生成唯一文件名称
      *  [20200427171843000001]

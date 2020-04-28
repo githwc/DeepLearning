@@ -27,4 +27,23 @@ public interface DemoService extends IService<Demo> {
      */
     Page<Demo> demoPage(Page<Demo> page, DemoQuery query);
 
+    /**
+     * 数据添加
+     * @param demo 添加信息
+     */
+    void add(Demo demo);
+
+    /**
+     * 修改
+     * @param demo 修改信息
+     */
+    void editById(Demo demo);
+
+    /**
+     * 删除
+     * @param demoId
+     */
+    void deleteAlone(String demoId);
+
+
 }

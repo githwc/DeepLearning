@@ -20,14 +20,24 @@ import org.springframework.stereotype.Component;
 public class UploadProperties {
 
     /**
+     * 图片保存路径
+     */
+    private String imgSavePath;
+
+    /**
+     * 图片访问路径
+     */
+    private String imgAccessPath;
+
+    /**
      * 文件保存路径
      */
-    private String imgFilePath;
+    private String fileSavePath;
 
     /**
      * 文件访问路径
      */
-    private String imgAccessPath;
+    private String fileAccessPath;
 
 
 }

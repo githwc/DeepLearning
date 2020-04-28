@@ -68,8 +68,10 @@ mybatis-plus:
 ##===== 权限相关 ===============
 dl:
   upload:
-      img-file-path: D://upload//image//
-      img-access-path: /deeplearning/**
+      img-save-path: D://upload//image//
+      img-access-path: /image/**
+      file-save-path: D://upload//file//
+      file-access-path: /file/**
   security:
     jwt-active-time: 3600000
     jwt-renew-time: 1800000

@@ -1,6 +1,5 @@
 package com.yc.common.upload.controller;
 
-import com.yc.common.propertie.UploadProperties;
 import com.yc.common.upload.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/upload")
 public class UploadController {
 
-
     private final UploadService uploadService;
 
     @Autowired
@@ -42,9 +40,18 @@ public class UploadController {
     @PostMapping("/img")
     public String uploadImg(HttpServletRequest request,
                          @RequestParam(name = "file") MultipartFile file) {
-
         return uploadService.uploadImg(request,file);
     }
 
+    /**
+     * 文件上传(单文件)
+     * @param request 请求信息
+     * @param file 文件
+     * @return 路径
+     */
+    @PostMapping("/file")
+    public String uploadFile(HttpServletRequest request,MultipartFile file) {
+        return uploadService.uploadFile(request,file);
+    }
 
 }

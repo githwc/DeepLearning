@@ -30,4 +30,20 @@ public class DemoServiceImpl extends ServiceImpl<DemoMapper, Demo> implements De
         return this.baseMapper.demoPage(page,query);
     }
 
+    @Override
+    public void add(Demo demo) {
+        this.baseMapper.insert(demo);
+    }
+
+    @Override
+    public void editById(Demo demo) {
+        this.baseMapper.updateById(demo);
+    }
+
+    @Override
+    public void deleteAlone(String demoId) {
+        this.baseMapper.deleteById(demoId);
+    }
+
+
 }

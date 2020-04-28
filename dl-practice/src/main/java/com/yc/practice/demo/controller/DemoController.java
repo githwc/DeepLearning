@@ -6,9 +6,7 @@ import com.yc.core.demo.model.DemoQuery;
 import com.yc.practice.demo.service.DemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 功能描述：Demo 控制层
@@ -43,6 +41,31 @@ public class DemoController {
         return service.demoPage(page,query);
     }
 
+    /**
+     * 数据添加
+     * @param demo 添加信息
+     */
+    @PostMapping(value = "/add")
+    public void add(@RequestBody Demo demo) {
+        service.add(demo);
+    }
 
+    /**
+     * 修改
+     * @param demo 修改信息
+     */
+    @PutMapping(value = "/edit")
+    public void edit(@RequestBody Demo demo) {
+        service.editById(demo);
+    }
+
+    /**
+     * 删除
+     * @param demoId
+     */
+    @DeleteMapping(value = "/delete")
+    public void delete(@RequestParam("demoId") String demoId) {
+        service.deleteAlone(demoId);
+    }
 
 }
