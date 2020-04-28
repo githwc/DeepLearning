@@ -125,7 +125,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         StringBuilder sb = new StringBuilder();
         Long nowLong = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));
         sb.append(nowLong.toString());
-        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
         String key = CommonConstant.ORDER_NO_TODAY_CACHE + date;
         Long increment = redisTemplate.opsForValue().increment(key,1);
         String incrementStr = increment.toString();

@@ -1,8 +1,7 @@
 package com.yc.common.upload.controller;
 
-import com.yc.common.global.error.Error;
-import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.UploadProperties;
+import com.yc.common.upload.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.UUID;
 
 /**
  * 功能描述：上传文件 控制层
@@ -28,44 +25,26 @@ import java.util.UUID;
 @RequestMapping("/upload")
 public class UploadController {
 
-    private final UploadProperties uploadProperties;
+
+    private final UploadService uploadService;
 
     @Autowired
-    public UploadController(UploadProperties uploadProperties){
-        this.uploadProperties = uploadProperties;
+    public UploadController(UploadService uploadService){
+        this.uploadService = uploadService;
     }
+
+    /**
+     * 图片上传(单张)
+     * @param request 请求信息
+     * @param file 文件
+     * @return 文件名称
+     */
     @PostMapping("/img")
-    public String upload(@RequestParam(name = "file") MultipartFile file,
-                             HttpServletRequest request) {
-        if (file == null) {
-            throw new ErrorException(Error.UploadImgError);
-        }
-        if (file.getSize() > 1024 * 1024 * 10) {
-            throw new ErrorException(200,50001,"文件大小不能大于10M");
-        }
-        //获取文件后缀
-        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1, file.getOriginalFilename().length());
-        if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
-            throw new ErrorException(Error.ImgFormatError);
-        }
-        String savePath = uploadProperties.getImgFilePath();
-        File savePathFile = new File(savePath);
-        if (!savePathFile.exists()) {
-            //若不存在该目录，则创建目录
-            savePathFile.mkdir();
-        }
-        //通过UUID生成唯一文件名
-        String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
-        try {
-            //将文件保存指定目录
-            file.transferTo(new File(savePath + filename));
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 保存文件异常
-            throw new ErrorException(Error.UserExisted);
-        }
-        //返回文件名称
-        return filename;
+    public String uploadImg(HttpServletRequest request,
+                         @RequestParam(name = "file") MultipartFile file) {
+
+        return uploadService.uploadImg(request,file);
     }
+
 
 }

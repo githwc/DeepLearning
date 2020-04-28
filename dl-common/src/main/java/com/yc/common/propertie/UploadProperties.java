@@ -16,13 +16,18 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "dl.upload.img")
+@ConfigurationProperties(prefix = "dl.upload")
 public class UploadProperties {
 
     /**
      * 文件保存路径
      */
     private String imgFilePath;
+
+    /**
+     * 文件访问路径
+     */
+    private String imgAccessPath;
 
 
 }

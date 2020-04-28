@@ -111,4 +111,11 @@ public class CommonConstant {
      * 今日订单号
      */
     public static final String ORDER_NO_TODAY_CACHE = "ORDER_NO_NOW_CACHE";
+
+    // ====================== 图片格式 ======================
+    /**
+     * 图片格式
+     */
+    public final static  String IMG_FORMAT = "jpg,jpeg,gif,png";
+
 }

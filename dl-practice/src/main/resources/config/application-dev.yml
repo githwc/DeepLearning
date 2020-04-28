@@ -42,6 +42,7 @@ spring:
         max-active: 10  # 连接池最大连接数(使用负值表示没有限制)
         max-wait: -1    # 连接池最大阻塞等待时间(使用负值表示没有限制)
   #=====thymeleaf相关=========
+  # 待删除
 #  thymeleaf:
 #    cache: false  # 将themilef的默认缓存禁用，热加载生效
 #    prefix: classpath:/templates/
@@ -52,8 +53,8 @@ spring:
 #      content-type: text/html
 #    mode: HTML5
   #======静态资源相关 ===========
-  resource:
-      static-locations: classpath:/static/,classpath:/public/
+#  resource:
+#      static-locations: classpath:/static/,classpath:/public/
 
 #===== Mybatis-plus 相关 =====
 mybatis-plus:
@@ -67,8 +68,8 @@ mybatis-plus:
 ##===== 权限相关 ===============
 dl:
   upload:
-    img:
       img-file-path: D://upload//image//
+      img-access-path: /deeplearning/**
   security:
     jwt-active-time: 3600000
     jwt-renew-time: 1800000
