@@ -1,4 +1,4 @@
-package com.yc.practice.redisPractice.config;
+package com.yc.practice.redis.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

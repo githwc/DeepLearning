@@ -1,9 +1,9 @@
-package com.yc.practice.redisPractice.controller;
+package com.yc.practice.redis.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.redisPractice.entity.RedisUser;
 import com.yc.core.redisPractice.model.RedisUserQuery;
-import com.yc.practice.redisPractice.service.RedisUserService;
+import com.yc.practice.redis.service.RedisUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,9 @@ public class RedisUserController {
         this.iRedisUserService = iRedisUserService;
     }
 
-    // ========= Redis Cache 1.0 START ===========
+    /**
+     * ========= Redis Cache 1.0 START ===========
+     */
     @GetMapping("/userPage")
     public Page<RedisUser> userPage(Page<RedisUser> page, RedisUserQuery query){
         return iRedisUserService.userPage(page,query);
@@ -59,7 +61,9 @@ public class RedisUserController {
         iRedisUserService.deleteUserById(id);
     }
 
-    // ========= Redis Cache 2.0 (缓存过期时间) START ===========
+    /**
+     * ========= Redis Cache 2.0 (缓存过期时间) START ===========
+     */
 
     /**
      * 设置缓存过期时间

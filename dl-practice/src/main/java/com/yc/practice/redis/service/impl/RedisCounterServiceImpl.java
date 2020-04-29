@@ -1,7 +1,7 @@
-package com.yc.practice.redisPractice.service.impl;
+package com.yc.practice.redis.service.impl;
 
-import com.yc.practice.redisPractice.constant.RedisConstant;
-import com.yc.practice.redisPractice.service.RedisCounterService;
+import com.yc.practice.redis.constant.RedisConstant;
+import com.yc.practice.redis.service.RedisCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

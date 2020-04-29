@@ -1,4 +1,4 @@
-package com.yc.practice.redisPractice.service;
+package com.yc.practice.redis.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;

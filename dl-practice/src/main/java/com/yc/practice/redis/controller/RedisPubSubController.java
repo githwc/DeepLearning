@@ -1,8 +1,8 @@
-package com.yc.practice.redisPractice.controller;
+package com.yc.practice.redis.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.redisPractice.entity.RedisPubSub;
-import com.yc.practice.redisPractice.service.RedisPubSubService;
+import com.yc.practice.redis.service.RedisPubSubService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

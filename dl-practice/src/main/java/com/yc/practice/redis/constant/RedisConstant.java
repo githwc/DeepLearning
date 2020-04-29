@@ -1,4 +1,4 @@
-package com.yc.practice.redisPractice.constant;
+package com.yc.practice.redis.constant;
 
 /**
  * 功能描述: 缓存key /key前缀

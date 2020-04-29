@@ -73,7 +73,7 @@ public class SysUser implements Serializable {
     /**
      * 头像
      */
-    private String picture;
+    private String headImg;
     /**
      * 身份证
      */

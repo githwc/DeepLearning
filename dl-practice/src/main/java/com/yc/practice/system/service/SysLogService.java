@@ -39,7 +39,7 @@ public interface SysLogService extends IService<SysLog> {
      * 获取系统日志
      * @return
      */
-    JSONObject logInfo();
+    JSONObject logInfo(HttpServletRequest request);
 
     /**
      * 分页查询系统日志

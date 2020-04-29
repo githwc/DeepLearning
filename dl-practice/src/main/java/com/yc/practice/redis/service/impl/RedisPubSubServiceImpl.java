@@ -1,11 +1,11 @@
-package com.yc.practice.redisPractice.service.impl;
+package com.yc.practice.redis.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.redisPractice.entity.RedisPubSub;
 import com.yc.core.redisPractice.mapper.RedisPubSubMapper;
 import com.yc.practice.common.UserUtil;
-import com.yc.practice.redisPractice.service.RedisPubSubService;
+import com.yc.practice.redis.service.RedisPubSubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

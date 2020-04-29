@@ -1,6 +1,5 @@
 package com.yc.practice.config.security.filter;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.http.ContentType;
 import com.alibaba.fastjson.JSON;
@@ -12,7 +11,6 @@ import com.yc.common.global.response.RestResult;
 import com.yc.common.utils.PasswordCheckUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
-import com.yc.practice.config.security.auth.UserDetailsSelf;
 import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.system.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +45,11 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     private final SysUserMapper sysUserMapper;
     private final TokenService TokenService;
     private final SysLogService sysLogService;
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public UsernamePasswordAuthenticationFilterSelf(AuthenticationManager authenticationManager,
-                                                    SysUserMapper sysUserMapper,TokenService TokenService,
-                                                    RedisTemplate<String,String> redisTemplate, SysLogService sysLogService) {
+                                                    SysUserMapper sysUserMapper, TokenService TokenService,
+                                                    RedisTemplate<String, String> redisTemplate, SysLogService sysLogService) {
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
@@ -85,11 +83,29 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
         username = loginData.getString("loginName");
         password = loginData.getString("password");
 
+        String verifyCode = loginData.getString("verifyCode");
+        String verifyKey = loginData.getString("verifyKey");
+
+        if (redisTemplate.hasKey(verifyKey)) {
+            if (!StringUtils.equalsIgnoreCase(redisTemplate.opsForValue().get(verifyKey), verifyCode)) {
+                String errorMsg =
+                        RestResult.error(Error.CheckCodeError.getCode(), Error.CheckCodeError.getMsg()).toJSONString();
+                ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                        Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+                return null;
+            }
+        } else {
+            String errorMsg =
+                    RestResult.error(Error.GetCodeAgain.getCode(), Error.GetCodeAgain.getMsg()).toJSONString();
+            ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
+                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+            return null;
+        }
         // 失败次数拦截
-        String cacheErrNum = redisTemplate.opsForValue().get(username+ "_errorNumber");
-        if(StringUtils.isNotEmpty(cacheErrNum)){
+        String cacheErrNum = redisTemplate.opsForValue().get(username + "_errorNumber");
+        if (StringUtils.isNotEmpty(cacheErrNum)) {
             int errorNum = Integer.parseInt(cacheErrNum);
-            if(errorNum >= 5 ){
+            if (errorNum >= 5) {
                 String errorMsg =
                         RestResult.error(Error.AccountLock.getCode(), Error.AccountLock.getMsg()).toJSONString();
                 ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
@@ -104,9 +120,9 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     /**
      * 认证成功返回
      *
-     * @param request req
-     * @param response res
-     * @param chain chain
+     * @param request    req
+     * @param response   res
+     * @param chain      chain
      * @param authResult auth
      */
     @Override
@@ -114,16 +130,14 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
                                             FilterChain chain, Authentication authResult) {
         JSONObject jsonObject = new JSONObject();
         SysUser sysUser = sysUserMapper.loginByName(authResult.getName());
-        UserDetailsSelf userDetailsSelf = new UserDetailsSelf();
-        BeanUtil.copyProperties(sysUser,userDetailsSelf);
-        jsonObject.put("userInfo", userDetailsSelf);
+        jsonObject.put("userInfo", sysUser);
         String jwtToken = TokenService.create(authResult.getName());
         jwtToken = CommonConstant.TOKEN_PREFIX + " " + jwtToken;
         jsonObject.put("token", jwtToken);
         jsonObject.put("pwdStrong", String.valueOf(PasswordCheckUtil.getPwdStrong(password)));
         String successMsg = RestResult.success().data(jsonObject).toJSONString();
-        sysLogService.addLog(request,"用户名: "+username+",登录成功！", CommonConstant.LOG_TYPE_1,username, "/login",
-                "loginName:"+username+",password:"+password);
+        sysLogService.addLog(request, "用户名: " + username + ",登录成功！", CommonConstant.LOG_TYPE_1, username, "/login",
+                "loginName:" + username + ",password:" + password);
         ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }
@@ -143,8 +157,8 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
             String msg = 5 - errorNum == 0 ? "当前用户密码您输入错误五次，请10分钟之后再登录!" : "用户密码输入错误,您还有" + (5 - errorNum) + "次机会!";
             errorMsg = RestResult.error(400, msg).toJSONString();
         }
-        sysLogService.addLog(request,"用户名: "+username+",登录失败！", CommonConstant.LOG_TYPE_1, username,"/login",
-                "loginName:"+username+",password:"+password);
+        sysLogService.addLog(request, "用户名: " + username + ",登录失败！", CommonConstant.LOG_TYPE_1, username, "/login",
+                "loginName:" + username + ",password:" + password);
         ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
     }

@@ -1,6 +1,7 @@
 package com.yc.practice.system.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.utils.LocalHostUtil;
@@ -8,6 +9,7 @@ import com.yc.core.system.entity.SysLog;
 import com.yc.core.system.mapper.SysLogMapper;
 import com.yc.core.system.model.query.LogQuery;
 import com.yc.core.system.model.vo.SysLogVO;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,12 +55,20 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLog> impleme
     }
 
     @Override
-    public JSONObject logInfo() {
+    public JSONObject logInfo(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("totalVisitCount", 120);
-        map.put("todayVisitCount", 19);
-        map.put("todayIp", "192.168.0.283");
+        SysLog syslog = this.baseMapper.selectOne(new LambdaQueryWrapper<SysLog>()
+            .like(SysLog::getLogContent,UserUtil.getUser().getLoginName())
+                .orderByDesc(SysLog::getCreateTime)
+                .last("limit 1")
+        );
+        map.put("lastLoginTime", syslog.getCreateTime());
+        int visitCount = this.baseMapper.selectCount(new LambdaQueryWrapper<SysLog>()
+            .eq(SysLog::getCreateUserId, UserUtil.getUserId())
+        );
+        map.put("visitCount", visitCount);
+        map.put("ipAddress", LocalHostUtil.getIpAddress(request));
         jsonObject.put("logInfo",map);
         return jsonObject;
     }

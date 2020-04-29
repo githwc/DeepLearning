@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version: 1.0.0
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class LoginController {
 
     private final LoginService loginService;
@@ -38,4 +38,6 @@ public class LoginController {
     public JSONObject getImageVerify() {
         return loginService.getImageVerify();
     }
+
+
 }

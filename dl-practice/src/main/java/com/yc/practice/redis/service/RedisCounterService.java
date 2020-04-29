@@ -1,4 +1,4 @@
-package com.yc.practice.redisPractice.service;
+package com.yc.practice.redis.service;
 
 
 /**

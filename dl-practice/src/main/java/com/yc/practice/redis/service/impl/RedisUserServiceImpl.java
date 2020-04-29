@@ -1,4 +1,4 @@
-package com.yc.practice.redisPractice.service.impl;
+package com.yc.practice.redis.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.redisPractice.entity.RedisUser;
 import com.yc.core.redisPractice.mapper.RedisUserMapper;
 import com.yc.core.redisPractice.model.RedisUserQuery;
-import com.yc.practice.redisPractice.constant.RedisConstant;
-import com.yc.practice.redisPractice.service.RedisUserService;
+import com.yc.practice.redis.constant.RedisConstant;
+import com.yc.practice.redis.service.RedisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;

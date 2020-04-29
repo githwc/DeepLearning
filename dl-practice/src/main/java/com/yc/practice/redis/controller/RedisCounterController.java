@@ -1,6 +1,6 @@
-package com.yc.practice.redisPractice.controller;
+package com.yc.practice.redis.controller;
 
-import com.yc.practice.redisPractice.service.RedisCounterService;
+import com.yc.practice.redis.service.RedisCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
