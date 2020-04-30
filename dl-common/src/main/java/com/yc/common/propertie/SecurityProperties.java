@@ -1,10 +1,11 @@
 package com.yc.common.propertie;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 功能描述：安全配置
+ * 功能描述：安全认证配置
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * @Datetime: 2020-03-23
  * @Version: 1.0.0
  */
+@Data
 @Component
 @ConfigurationProperties(prefix = "dl.security")
 public class SecurityProperties {
@@ -50,39 +52,4 @@ public class SecurityProperties {
         return jwtSecret;
     }
 
-    public void setJwtSecret(String jwtSecret) {
-        this.jwtSecret = jwtSecret;
-    }
-
-    public Integer getJwtActiveTime() {
-        return jwtActiveTime;
-    }
-
-    public void setJwtActiveTime(Integer jwtActiveTime) {
-        this.jwtActiveTime = jwtActiveTime;
-    }
-
-    public Integer getJwtRenewTime() {
-        return jwtRenewTime;
-    }
-
-    public void setJwtRenewTime(Integer jwtRenewTime) {
-        this.jwtRenewTime = jwtRenewTime;
-    }
-
-    public String[] getExcludes() {
-        return excludes;
-    }
-
-    public void setExcludes(String[] excludes) {
-        this.excludes = excludes;
-    }
-
-    public String getDefaultLoginName() {
-        return defaultLoginName;
-    }
-
-    public void setDefaultLoginName(String defaultLoginName) {
-        this.defaultLoginName = defaultLoginName;
-    }
 }

@@ -56,13 +56,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.debug("TOKEN校验 - 请求地址：{}", request.getRequestURI());
         String token = request.getHeader(CommonConstant.HEADER_STRING);
         // 不合规的Token格式不予处理
         if (StringUtils.isBlank(token) || !token.startsWith(CommonConstant.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
         }
+        log.debug("TOKEN校验 - 请求地址：{}", request.getRequestURI());
         //设置返回客户端响应头以及json类型
         token = StringUtils.remove(token, CommonConstant.TOKEN_PREFIX).trim();
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
@@ -84,4 +84,5 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);
     }
+
 }

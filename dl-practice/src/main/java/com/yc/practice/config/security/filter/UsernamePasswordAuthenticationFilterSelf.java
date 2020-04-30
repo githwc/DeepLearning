@@ -154,7 +154,7 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
             String cacheErrNum = redisTemplate.opsForValue().get(key);
             int errorNum = StringUtils.isBlank(cacheErrNum) ? 1 : Integer.parseInt(cacheErrNum) + 1;
             redisTemplate.opsForValue().set(key, String.valueOf(errorNum), 10, TimeUnit.MINUTES);
-            String msg = 5 - errorNum == 0 ? "当前用户密码您输入错误五次，请10分钟之后再登录!" : "用户密码输入错误,您还有" + (5 - errorNum) + "次机会!";
+            String msg = 5 - errorNum == 0 ? "当前用户密码输入错误五次，请10分钟之后再登录!" : "用户密码输入错误,您还有" + (5 - errorNum) + "次机会!";
             errorMsg = RestResult.error(400, msg).toJSONString();
         }
         sysLogService.addLog(request, "用户名: " + username + ",登录失败！", CommonConstant.LOG_TYPE_1, username, "/login",
