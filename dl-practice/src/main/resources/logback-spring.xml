@@ -60,9 +60,10 @@
     <logger name="org.mybatis" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="org.apache.ibatis.io" level="warn"/>
-    <logger name="org.hibernate" level="warn"/>
     <logger name="com.alibaba.druid" level="warn"/>
     <logger name="com.baomidou.mybatisplus" level="warn"/>
+    <logger name="springfox" level="warn"/>
+    <logger name="io.netty" level="warn"/>
     <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="warn"/>
 
     <!--开发环境:打印控制台-->

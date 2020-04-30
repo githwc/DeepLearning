@@ -49,12 +49,12 @@ public interface MallBrandService extends IService<MallBrand> {
      *
      * @param mallBrand 商品品牌信息
      */
-    public void addBrand(@RequestBody MallBrand mallBrand);
+    void addBrand(@RequestBody MallBrand mallBrand);
 
     /**
      * 删除商品品牌信息
      *
      * @param brandId 商品品牌ID
      */
-    public void delBrand(String brandId);
+    void delBrand(String brandId);
 }
