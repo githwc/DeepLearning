@@ -19,7 +19,6 @@
         <module>dl-common</module>
         <module>dl-core</module>
         <module>dl-practice</module>
-        <module>dl-task</module>
     </modules>
 
     <packaging>pom</packaging>

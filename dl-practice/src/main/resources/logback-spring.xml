@@ -26,17 +26,16 @@
 
 
     <!-- 日志输出到文件设置 -->
-    <!-- 输出位置   -->
+    <!-- 输出位置 -->
     <property name="log.path" value="D:/logs" />
-    <property name="PROJECT_NAME" value="lionherding"/>
-<!--    <property name="MODEL_NAME" value="lionherding_"/>-->
+    <property name="PROJECT_NAME" value="deeplearning"/>
 
-    <springProfile name="test,uat,pro">
+    <springProfile name="test,uat,pro,dev">
         <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 日志归档 -->
-                <fileNamePattern>${log.path}/${PROJECT_NAME}<!--/${MODEL_NAME}-->-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>${log.path}/${PROJECT_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                     <maxFileSize>10MB</maxFileSize>
                 </timeBasedFileNamingAndTriggeringPolicy>
@@ -76,7 +75,6 @@
     <!--生产环境:输出到文件-->
     <springProfile name="test,uat,pro">
         <root level="info">
-            <appender-ref ref="CONSOLE" />
             <appender-ref ref="file" />
         </root>
     </springProfile>
