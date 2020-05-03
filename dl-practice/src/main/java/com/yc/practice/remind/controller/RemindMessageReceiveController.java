@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/remind/remind-message-receive")
+@RequestMapping("/remindMessageReceive")
 @Slf4j
 @Api(tags = "消息提醒接收")
 public class RemindMessageReceiveController {

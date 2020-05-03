@@ -43,7 +43,8 @@ public class RemindMessageServiceImpl extends ServiceImpl<RemindMessageMapper, R
     @Override
     public void sendUser(String userId, String content,String level,String type,String modelType,String rid) {
         JSONObject obj = new JSONObject();
-        obj.put("content", content);//消息内容
+        //消息内容
+        obj.put("content", content);
         boolean flag = webSocket.sendOneMessage(userId, obj.toJSONString());
         /*记录推送消息*/
         RemindMessage remindMessage = new RemindMessage();

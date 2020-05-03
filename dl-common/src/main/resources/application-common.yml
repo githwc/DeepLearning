@@ -2,14 +2,17 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
-  #=====DataBase \u76F8\u5173===========
+  #=====DataBase 相关 ===========
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+#    url: jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+#    username: root
+#    password: xieyc@mysql
+    url: jdbc:mysql://192.168.45.130:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
-    password: xieyc@mysql
+    password: Xieyc@mysql1.>
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    # \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C'stat'\u7528\u4E8E\u76D1\u63A7\u7EDF\u8BA1;  'log4j'\u7528\u4E8E\u65E5\u5FD7;  'wall'\u7528\u4E8E\u9632\u706B\u5899
+    # 配置监控统计拦截的filters，'stat'用于监控统计;  'log4j'用于日志;  'wall'用于防火墙
     druid:
       filters: stat,wall,config,log4j
       use-global-data-source-stat: true
@@ -27,7 +30,7 @@ spring:
       pool-prepared-statements: true
       max-open-prepared-statements: 50
       max-pool-prepared-statement-per-connection-size: 20
-  #=====Redis\u76F8\u5173========
+  #=====Redis 相关========
   redis:
     host: 127.0.0.1
     port: 6379
@@ -36,22 +39,22 @@ spring:
     timeout: 10000ms    # \u6307\u5B9A\u8D85\u65F6\u65F6\u95F4
     jedis:
       pool:
-        min-idle: 1     # \u8FDE\u63A5\u6C60\u6700\u5C0F\u7A7A\u95F2\u8FDE\u63A5
-        max-idle: 5     # \u8FDE\u63A5\u6C60\u6700\u5927\u7A7A\u95F2\u8FDE\u63A5
-        max-active: 10  # \u8FDE\u63A5\u6C60\u6700\u5927\u8FDE\u63A5\u6570(\u4F7F\u7528\u8D1F\u503C\u8868\u793A\u6CA1\u6709\u9650\u5236)
-        max-wait: -1    # \u8FDE\u63A5\u6C60\u6700\u5927\u963B\u585E\u7B49\u5F85\u65F6\u95F4(\u4F7F\u7528\u8D1F\u503C\u8868\u793A\u6CA1\u6709\u9650\u5236)
+        min-idle: 1     # 连接池最小空闲连接
+        max-idle: 5     # 连接池最大空闲连接
+        max-active: 10  # 连接池最大连接数(使用负值表示没有限制)
+        max-wait: -1    # 连接池最大阻塞等待时间(使用负值表示没有限制)
 
-#===== Mybatis-plus \u76F8\u5173 =====
+#===== Mybatis-plus 相关 =====
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*Mapper.xml
   type-aliases-package: com.yc.core.*.entity
   configuration:
     map-underscore-to-camel-case: true  # \u9A7C\u5CF0
   global-config:
-    banner: false #\u5173\u95EDMP 3.0 \u81EA\u5E26\u7684banner
+    banner: false #关闭MP 3.0 自带的banner
 
 dl:
-  #===== \u4E0A\u4F20\u4E0B\u8F7D \u76F8\u5173 =====
+  #===== 权限相关 =====
   upload:
     img-save-path: D://upload//image//
     img-access-path: /image/**

@@ -12,3 +12,4 @@ dl:
       - /auth/**
       - /druid/**
       - /upload/**
+      - /websocket/**

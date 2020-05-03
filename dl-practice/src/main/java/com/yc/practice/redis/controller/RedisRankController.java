@@ -106,7 +106,7 @@ public class RedisRankController {
         iRedisRankService.addScore();
     }
 
-    @Scheduled(cron="0 0/1 * * * ?")
+    // @Scheduled(cron="0 0/1 * * * ?")
     private void cancelTimeOutOrder() {
         log.debug("123Nih你好");
         log.info("123Nih你好");
