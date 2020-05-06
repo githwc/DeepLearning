@@ -1,11 +1,35 @@
+spring:
+  #=====DataBase 相关 ===========
+  datasource:
+    url: jdbc:mysql://192.168.45.130:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: root
+    password: Xieyc@mysql1.>
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 配置监控统计拦截的filters，'stat'用于监控统计;  'log4j'用于日志;  'wall'用于防火墙
+    druid:
+      filters: stat,wall,config,log4j
+      use-global-data-source-stat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      max-active: 100
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
 ##===== 权限相关 ===============
 dl:
   security:
     jwt-active-time: 3600000
     jwt-renew-time: 1800000
-    #    jwt-active-time: 60000
-    #    jwt-renew-time: 30000
-    jwt-secret: deepLearning-dev@123*
+    jwt-secret: deepLearning-test@123*
     excludes:
       - /
       - /login
@@ -13,3 +37,9 @@ dl:
       - /druid/**
       - /upload/**
       - /websocket/**
+  #===== 文件相关 =====
+  upload:
+    img-save-path: /www/upload/image/
+    img-access-path: /image/**
+    file-save-path: /www/upload/file/
+    file-access-path: /file/**
