@@ -38,6 +38,11 @@ public class DemoController {
      */
     @GetMapping("/page")
     public Page<Demo> demoPage(Page<Demo> page, DemoQuery query){
+        log.trace("======trace");
+        log.debug("======debug");
+        log.info("======info");
+        log.warn("======warn");
+        log.error("======error");
         return service.demoPage(page,query);
     }
 
@@ -45,7 +50,7 @@ public class DemoController {
      * 数据添加
      * @param demo 添加信息
      */
-    @PostMapping(value = "/add")
+    @PostMapping
     public void add(@RequestBody Demo demo) {
         service.add(demo);
     }
@@ -54,7 +59,7 @@ public class DemoController {
      * 修改
      * @param demo 修改信息
      */
-    @PutMapping(value = "/edit")
+    @PutMapping
     public void edit(@RequestBody Demo demo) {
         service.editById(demo);
     }
@@ -63,7 +68,7 @@ public class DemoController {
      * 删除
      * @param demoId
      */
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping
     public void delete(@RequestParam("demoId") String demoId) {
         service.deleteAlone(demoId);
     }

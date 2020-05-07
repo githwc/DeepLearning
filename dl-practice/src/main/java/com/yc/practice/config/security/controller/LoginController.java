@@ -34,7 +34,7 @@ public class LoginController {
      *
      * @return 返回图片验证码
      */
-    @GetMapping("/getImageVerify")
+    @GetMapping("/imageVerifyCode")
     public JSONObject getImageVerify() {
         return loginService.getImageVerify();
     }

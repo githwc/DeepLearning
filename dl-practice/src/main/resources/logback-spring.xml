@@ -20,7 +20,6 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
-            <charset>UTF-8</charset>
         </encoder>
     </appender>
 
@@ -50,7 +49,6 @@
             </filter>
             <encoder>
                 <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
-                <charset>UTF-8</charset> <!-- 设置字符集 -->
             </encoder>
         </appender>
     </springProfile>
