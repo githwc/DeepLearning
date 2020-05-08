@@ -1,6 +1,6 @@
 package com.yc.practice.mall.service;
 
-import com.yc.core.mall.entity.MallOrderGood;
+import com.yc.core.mall.entity.MallOrderItem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -15,6 +15,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Version: 1.0.0
  *
  */
-public interface MallOrderGoodService extends IService<MallOrderGood> {
+public interface MallOrderGoodService extends IService<MallOrderItem> {
 
 }

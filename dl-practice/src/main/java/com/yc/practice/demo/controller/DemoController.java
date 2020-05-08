@@ -38,11 +38,6 @@ public class DemoController {
      */
     @GetMapping("/page")
     public Page<Demo> demoPage(Page<Demo> page, DemoQuery query){
-        log.trace("======trace");
-        log.debug("======debug");
-        log.info("======info");
-        log.warn("======warn");
-        log.error("======error");
         return service.demoPage(page,query);
     }
 

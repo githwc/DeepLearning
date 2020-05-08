@@ -9,7 +9,7 @@ import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.MallGood;
 import com.yc.core.mall.entity.MallOrder;
-import com.yc.core.mall.entity.MallOrderGood;
+import com.yc.core.mall.entity.MallOrderItem;
 import com.yc.core.mall.entity.MallOrderLog;
 import com.yc.core.mall.mapper.MallGoodMapper;
 import com.yc.core.mall.mapper.MallOrderLogMapper;
@@ -77,13 +77,13 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         mallOrder.setState(1);
         mallOrder.setPayType(0);
         // 处理收货地址
-        mallOrder.setProvince(getRegionInfo(orderForm.getProvinceCode()).getRegionName());
-        mallOrder.setCity(getRegionInfo(orderForm.getCityCode()).getRegionName());
-        mallOrder.setArea(getRegionInfo(orderForm.getAreaCode()).getRegionName());
-        mallOrder.setRegionCode(orderForm.getAreaCode());
+        // mallOrder.setProvince(getRegionInfo(orderForm.getProvinceCode()).getRegionName());
+        // mallOrder.setCity(getRegionInfo(orderForm.getCityCode()).getRegionName());
+        // mallOrder.setArea(getRegionInfo(orderForm.getAreaCode()).getRegionName());
+        // mallOrder.setRegionCode(orderForm.getAreaCode());
         this.baseMapper.insert(mallOrder);
         // ========= 保存订单商品信息 ========
-        List<MallOrderGood> goodList = orderForm.getGoodsInfo();
+        List<MallOrderItem> goodList = orderForm.getGoodsInfo();
         goodList.forEach(curr->{
             if(StringUtils.isBlank(curr.getGoodId())){
                 throw new ErrorException(Error.GoodNotFound);

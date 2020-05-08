@@ -39,7 +39,7 @@ public interface SysUserService extends IService<SysUser> {
      * @param userQuery 查询条件
      * @return 分页数据
      */
-    Page<SysUserVO> userList(Page<SysUserVO> page, UserQuery userQuery);
+    Page<SysUserVO> userList(Page<SysUser> page, UserQuery userQuery);
 
     /**
      * 添加用户
@@ -87,7 +87,15 @@ public interface SysUserService extends IService<SysUser> {
     /**
      * 修改密码
      * @param sysUser 用户信息
+     * @return success || error
      */
     String updatePassword(SysUser sysUser);
+
+    /**
+     * 获取聊天对象
+     * @param page 分页信息
+     * @return list
+     */
+    Page<SysUserVO> chatPage(Page<SysUser> page);
 
 }

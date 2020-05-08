@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -47,11 +46,15 @@ public class MallOrder implements Serializable {
      */
     private BigDecimal payAmount;
     /**
+     * 运费
+     */
+    private BigDecimal postage;
+    /**
      * 支付方式：0->支付宝；1->微信
      */
     private Integer payType;
     /**
-     * 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
+     * 订单状态：0-已取消-10-未付款，20-已付款(待发货)，40-已发货，50-交易成功，60-交易关闭  70-无效订单
      */
     private Integer state;
     /**
@@ -59,37 +62,9 @@ public class MallOrder implements Serializable {
      */
     private Integer orderType;
     /**
-     * 收货人姓名
+     * 收货信息
      */
-    private String receiverName;
-    /**
-     * 收货人电话
-     */
-    private String receiverPhone;
-    /**
-     * 收货人邮编
-     */
-    private String receiverPostCode;
-    /**
-     * 省份/直辖市
-     */
-    private String province;
-    /**
-     * 城市
-     */
-    private String city;
-    /**
-     * 区
-     */
-    private String area;
-    /**
-     * 行政编码
-     */
-    private String regionCode;
-    /**
-     * 详细地址
-     */
-    private String address;
+    private String shippingId;
     /**
      * 订单备注
      */
@@ -103,6 +78,21 @@ public class MallOrder implements Serializable {
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime payTime;
+    /**
+     * 发货时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private LocalDateTime sendTime;
+    /**
+     * 交易完成时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private LocalDateTime endTime;
+    /**
+     * 关闭时间
+     */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private LocalDateTime closeTime;
     /**
      * 创建人
      */

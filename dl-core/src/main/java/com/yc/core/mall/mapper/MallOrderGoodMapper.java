@@ -1,6 +1,6 @@
 package com.yc.core.mall.mapper;
 
-import com.yc.core.mall.entity.MallOrderGood;
+import com.yc.core.mall.entity.MallOrderItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 /**
@@ -17,6 +17,6 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface MallOrderGoodMapper extends BaseMapper<MallOrderGood> {
+public interface MallOrderGoodMapper extends BaseMapper<MallOrderItem> {
 
 }

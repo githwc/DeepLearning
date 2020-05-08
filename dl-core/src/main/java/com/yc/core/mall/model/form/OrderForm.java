@@ -1,7 +1,7 @@
 package com.yc.core.mall.model.form;
 
 import com.yc.core.mall.entity.MallOrder;
-import com.yc.core.mall.entity.MallOrderGood;
+import com.yc.core.mall.entity.MallOrderItem;
 import lombok.Data;
 
 import java.util.List;
@@ -37,6 +37,6 @@ public class OrderForm extends MallOrder {
     /**
      * 订单商品
      */
-    private List<MallOrderGood> goodsInfo;
+    private List<MallOrderItem> goodsInfo;
 
 }

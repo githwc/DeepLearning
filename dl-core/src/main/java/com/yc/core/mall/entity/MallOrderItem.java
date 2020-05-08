@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class MallOrderGood implements Serializable {
+public class MallOrderItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -31,6 +31,10 @@ public class MallOrderGood implements Serializable {
      */
     @TableId(value = "mall_order_good_id", type = IdType.UUID)
     private String mallOrderGoodId;
+    /**
+     * 用户id
+     */
+    private String sysUserId;
     /**
      * 订单id
      */

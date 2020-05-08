@@ -47,9 +47,4 @@ public class SecurityProperties {
      */
     private String defaultLoginName;
 
-
-    public String getJwtSecret() {
-        return jwtSecret;
-    }
-
 }

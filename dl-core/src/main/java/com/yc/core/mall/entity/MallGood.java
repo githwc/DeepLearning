@@ -35,6 +35,14 @@ public class MallGood implements Serializable {
      */
     private String name;
     /**
+     * 分类ID
+     */
+    private String classId;
+    /**
+     * 商品状态(0:待售 1:上架 2-下架 3-删除)
+     */
+    private String state;
+    /**
      * 图片
      */
     private String pic;

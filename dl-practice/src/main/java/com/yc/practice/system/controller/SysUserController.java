@@ -52,7 +52,7 @@ public class SysUserController {
     @GetMapping(value = "/userList")
     @ApiOperation(value = "查询用户", notes = "查询某个部门下的有效用户")
     @WriteLog(opPosition = "查询用户")
-    public Page<SysUserVO> userList(Page<SysUserVO> page, UserQuery userQuery) {
+    public Page<SysUserVO> userList(Page<SysUser> page, UserQuery userQuery) {
         return service.userList(page, userQuery);
     }
 
@@ -112,4 +112,11 @@ public class SysUserController {
         return service.updatePassword(sysUser);
     }
 
+
+    @GetMapping("/chatPage")
+    @ApiOperation(value = "获取聊天对象", notes = "聊天功能")
+    @WriteLog(opPosition = "获取聊天对象", optype = CommonConstant.OPTYPE_UPDATE)
+    public Page<SysUserVO> chatPage(Page<SysUser> page){
+        return service.chatPage(page);
+    }
 }

@@ -1,6 +1,6 @@
 package com.yc.practice.mall.service.impl;
 
-import com.yc.core.mall.entity.MallOrderGood;
+import com.yc.core.mall.entity.MallOrderItem;
 import com.yc.core.mall.mapper.MallOrderGoodMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.practice.mall.service.MallOrderGoodService;
@@ -21,6 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class MallOrderGoodServiceImpl extends ServiceImpl<MallOrderGoodMapper, MallOrderGood> implements MallOrderGoodService {
+public class MallOrderGoodServiceImpl extends ServiceImpl<MallOrderGoodMapper, MallOrderItem> implements MallOrderGoodService {
 
 }

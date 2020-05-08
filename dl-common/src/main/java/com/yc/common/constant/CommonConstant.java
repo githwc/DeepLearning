@@ -90,22 +90,7 @@ public class CommonConstant {
     /**
      * 用户信息
      */
-    public final static  String SYS_USERS_CACHE = "SYS_USERS_CACHE";
-
-    /**
-     * 用户权限
-     */
-    public static final String SYS_PERMISSIONS_CACHE = "SYS_PERMISSIONS_CACHE";
-
-    /**
-     * 部门信息
-     */
-    public static final String SYS_DEPARTS_CACHE = "SYS_DEPARTS_CACHE";
-
-    /**
-     * 全部部门ids缓存
-     */
-    public static final String SYS_DEPART_IDS_CACHE = "SYS_DEPART_IDS_CACHE";
+    public final static  String SYS_USERS_CACHE = "SYS_USERS_CACHE_";
 
     /**
      * 今日订单号
@@ -117,5 +102,13 @@ public class CommonConstant {
      * 图片格式
      */
     public final static  String IMG_FORMAT = "jpg,jpeg,gif,png";
+
+    // ====================== 默认数据 ======================
+    /**
+     * 默认密码
+     */
+    public final static  String DEFAULT_PASSWORD = "123456";
+
+
 
 }

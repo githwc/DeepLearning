@@ -54,14 +54,12 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void editByDeptId(SysDept sysDept) {
         sysDept.setUpdateUserId(UserUtil.getUserId());
         this.updateById(sysDept);
     }
 
     @Override
-    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void deleteAlone(String id) {
         List<String> idList = new ArrayList<String>();
         SysDept sysDept = this.getById(id);
@@ -92,7 +90,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    @CacheEvict(value= {CommonConstant.SYS_DEPARTS_CACHE,CommonConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
     public void create(SysDept sysDept) {
         if (sysDept != null ) {
             String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());

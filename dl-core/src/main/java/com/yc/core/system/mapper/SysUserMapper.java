@@ -30,7 +30,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @param userQuery
      * @return
      */
-    Page<SysUserVO> userList(@Param("page") Page<SysUserVO> page, @Param("query") UserQuery userQuery);
+    Page<SysUserVO> userList(@Param("page") Page<SysUser> page, @Param("query") UserQuery userQuery);
 
     /**
      * 根据登录账号获取用户信息

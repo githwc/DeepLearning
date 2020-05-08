@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,14 +72,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public Page<SysUserVO> userList(Page<SysUserVO> page, UserQuery userQuery) {
+    public Page<SysUserVO> userList(Page<SysUser> page, UserQuery userQuery) {
         return this.baseMapper.userList(page,userQuery);
     }
 
     @Override
     public void add(JSONObject jsonObject) {
         SysUser user = JSON.parseObject(jsonObject.toJSONString(), SysUser.class);
-        user.setPassWord(passwordEncoder.encode("123456"));
+        user.setPassWord(passwordEncoder.encode(CommonConstant.DEFAULT_PASSWORD));
         user.setCreateUserId(UserUtil.getUserId());
         user.setAge(IdcardUtil.getAgeByIdCard(user.getIdCard()));
         user.setSex(IdcardUtil.getSexByIdCard(user.getIdCard()));
@@ -125,7 +124,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    @CacheEvict(value={CommonConstant.SYS_USERS_CACHE}, allEntries=true)
     public void deleteUser(String id) {
         // 删除用户角色关联关系
         sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
@@ -166,7 +164,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void resetPassword(String sysUserId) {
         SysUser user = this.baseMapper.selectById(sysUserId);
-        user.setPassWord(passwordEncoder.encode("123456"));
+        user.setPassWord(passwordEncoder.encode(CommonConstant.DEFAULT_PASSWORD));
         this.baseMapper.updateById(user);
     }
 
@@ -180,6 +178,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         } else {
             throw new ErrorException(Error.OldPasswordError);
         }
+    }
+
+    @Override
+    public Page<SysUserVO> chatPage(Page<SysUser> page) {
+        Page<SysUserVO> pRecord = this.baseMapper.userList(page,null);
+        pRecord.getRecords().forEach(i->{
+
+        });
+        return pRecord;
     }
 
 }

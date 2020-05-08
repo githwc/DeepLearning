@@ -45,11 +45,11 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     private final SysUserMapper sysUserMapper;
     private final TokenService TokenService;
     private final SysLogService sysLogService;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String,String> redisTemplate;
 
     public UsernamePasswordAuthenticationFilterSelf(AuthenticationManager authenticationManager,
                                                     SysUserMapper sysUserMapper, TokenService TokenService,
-                                                    RedisTemplate<String, String> redisTemplate, SysLogService sysLogService) {
+                                                    RedisTemplate<String,String> redisTemplate,SysLogService sysLogService) {
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;

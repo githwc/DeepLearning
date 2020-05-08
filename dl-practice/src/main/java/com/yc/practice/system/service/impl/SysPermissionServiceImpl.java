@@ -287,7 +287,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 
     @Override
-    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void addPermission(SysPermission sysPermission) {
         sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
         String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
@@ -317,7 +316,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void editPermission(SysPermission sysPermission) {
         sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
         SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
@@ -364,7 +362,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    @CacheEvict(value = CommonConstant.SYS_PERMISSIONS_CACHE, allEntries = true)
     public void deletePermission(String id) {
         SysPermission sysPermission = this.getById(id);
         if (sysPermission == null) {

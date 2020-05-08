@@ -54,7 +54,6 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
     public RedisUser findUserById(String id) {
         String key = RedisConstant.USER_BY_ID_ + id;
         ValueOperations<String,RedisUser> operations = redisTemplate.opsForValue();
-        Long a = 10L;
         // 判断redis中是否有键为key的缓存
         if(redisTemplate.hasKey(key)){
             //从缓存中获得数据
