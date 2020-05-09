@@ -3,6 +3,7 @@ package com.yc.core.system.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -69,6 +70,7 @@ public class SysUser implements Serializable {
     /**
      * 生日
      */
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private LocalDate birthday;
     /**
      * 头像

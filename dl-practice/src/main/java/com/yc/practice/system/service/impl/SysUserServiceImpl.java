@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,21 +53,24 @@ import java.util.List;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
 
     private final SysUserRoleMapper sysUserRoleMapper;
-    private SysLogService sysLogService;
-    private PasswordEncoder passwordEncoder;
+    private final SysLogService sysLogService;
+    private final PasswordEncoder passwordEncoder;
+    private final RedisTemplate<String,String> redisTemplate;
 
     @Autowired
     public SysUserServiceImpl(SysUserRoleMapper sysUserRoleMapper,
-                              SysLogService sysLogService,
+                              SysLogService sysLogService,RedisTemplate<String,String> redisTemplate,
                               PasswordEncoder passwordEncoder) {
         this.sysUserRoleMapper = sysUserRoleMapper;
         this.passwordEncoder = passwordEncoder;
+        this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
     }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         String token = StringUtils.remove(request.getHeader(CommonConstant.HEADER_STRING), CommonConstant.TOKEN_PREFIX).trim();
+        redisTemplate.delete(CommonConstant.SYS_USERS_CACHE+UserUtil.getUserId());
         sysLogService.addLog(request,"用户名: "+UserUtil.getUser().getLoginName()+",退出成功！",CommonConstant.LOG_TYPE_1,UserUtil.getUser().getLoginName(),
                 "/sysUser/logout",token);
     }
@@ -182,9 +186,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUserVO> chatPage(Page<SysUser> page) {
-        Page<SysUserVO> pRecord = this.baseMapper.userList(page,null);
+        Page<SysUserVO> pRecord = this.baseMapper.chatPage(page);
         pRecord.getRecords().forEach(i->{
-
+            if(redisTemplate.hasKey(CommonConstant.SYS_USERS_CACHE+i.getSysUserId())){
+                i.setOnline("1");
+            }else {
+                i.setOnline("0");
+            }
         });
         return pRecord;
     }

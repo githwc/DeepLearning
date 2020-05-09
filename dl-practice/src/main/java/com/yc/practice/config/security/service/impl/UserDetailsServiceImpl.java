@@ -34,13 +34,10 @@ import java.util.Collection;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final SysUserMapper sysUserMapper;
-    // private final RedisTemplate redisTemplate2Obj;
 
     @Autowired
-    public UserDetailsServiceImpl(SysUserMapper sysUserMapper
-                                  /*RedisTemplate redisTemplate2Obj*/) {
+    public UserDetailsServiceImpl(SysUserMapper sysUserMapper) {
         this.sysUserMapper = sysUserMapper;
-        // this.redisTemplate2Obj = redisTemplate2Obj;
     }
 
     @Override
@@ -56,13 +53,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else if (sysUser.getState().equals(CommonEnum.State.Disabled.getCode())) {
             throw new ErrorException(Error.UserDisabled);
         } else {
-            // 在线用户放入redis
-            // ValueOperations operations = redisTemplate2Obj.opsForValue();
-            // operations.set(CommonConstant.SYS_USERS_CACHE,sysUser);
-            //
-            // ValueOperations<String,SysUser> operationsObj = redisTemplate2Obj.opsForValue();
-            // SysUser s = operationsObj.get(CommonConstant.SYS_USERS_CACHE+sysUser.getSysUserId());
-            // System.out.println(s);
             Collection<GrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority(sysUser.getSysUserId()));
             return new User(sysUser.getLoginName(), sysUser.getPassWord(), authorities);

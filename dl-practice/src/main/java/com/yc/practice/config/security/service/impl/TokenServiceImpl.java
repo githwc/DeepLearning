@@ -16,6 +16,7 @@ import com.yc.practice.config.security.service.TokenService;
 import com.yc.practice.system.service.SysPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述：JWT
@@ -44,12 +46,15 @@ public class TokenServiceImpl implements TokenService {
     private final JwtTokenUtil jwtTokenUtil;
     private final SecurityProperties securityProperties;
     private final SysPermissionService sysPermissionService;
+    private final RedisTemplate<String,String> redisTemplate;
 
     @Autowired
     public TokenServiceImpl(SysUserMapper sysUserMapper, JwtTokenUtil jwtTokenUtil,
+                            RedisTemplate<String,String> redisTemplate,
                             SecurityProperties securityProperties, SysPermissionService sysPermissionService) {
         this.sysUserMapper = sysUserMapper;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.redisTemplate = redisTemplate;
         this.securityProperties = securityProperties;
         this.sysPermissionService = sysPermissionService;
     }
@@ -86,6 +91,9 @@ public class TokenServiceImpl implements TokenService {
                 response.addHeader(CommonConstant.HEADER_STRING, CommonConstant.TOKEN_PREFIX + " " + newToken);
                 response.setHeader("Access-Control-Allow-Headers", "authorization");
                 response.setHeader("Access-Control-Expose-Headers", "authorization");
+                // 续签缓存
+                redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE+sysUser.getSysUserId(), sysUser.getSysUserId(),
+                        securityProperties.getJwtActiveTime(), TimeUnit.MILLISECONDS);
             }
         } catch (TokenExpiredException e) {
             throw new ErrorException(Error.TokenError);

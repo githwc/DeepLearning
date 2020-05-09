@@ -22,4 +22,9 @@ public class SysUserVO extends SysUser {
      * 部门名称
      */
     private String departName;
+
+    /**
+     * 在线状态[0:离线 1:在线 2:隐身]
+     */
+    private String online;
 }

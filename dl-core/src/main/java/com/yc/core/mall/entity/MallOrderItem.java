@@ -1,13 +1,12 @@
 package com.yc.core.mall.entity;
 
+import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 功能描述：
@@ -16,7 +15,7 @@ import java.math.BigDecimal;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-04-08
+ * @Date 2020-05-08
  * @Version: 1.0.0
  *
  */
@@ -27,7 +26,7 @@ public class MallOrderItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
-     * 主键id
+     * 主键
      */
     @TableId(value = "mall_order_good_id", type = IdType.UUID)
     private String mallOrderGoodId;
@@ -48,20 +47,22 @@ public class MallOrderItem implements Serializable {
      */
     private String goodId;
     /**
-     * 商品图片
-     */
-    private String goodPic;
-    /**
      * 商品名称
      */
     private String goodName;
     /**
-     * 销售价格
+     * 商品图片
+     */
+    private String goodPic;
+    /**
+     * 单价
      */
     private BigDecimal goodPrice;
     /**
      * 购买数量
      */
     private Integer goodNum;
+
+
 
 }

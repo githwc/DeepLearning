@@ -8,6 +8,7 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.global.response.RestResult;
+import com.yc.common.propertie.SecurityProperties;
 import com.yc.common.utils.PasswordCheckUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
@@ -46,14 +47,17 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     private final TokenService TokenService;
     private final SysLogService sysLogService;
     private final RedisTemplate<String,String> redisTemplate;
+    private final SecurityProperties securityProperties;
 
     public UsernamePasswordAuthenticationFilterSelf(AuthenticationManager authenticationManager,
                                                     SysUserMapper sysUserMapper, TokenService TokenService,
+                                                    SecurityProperties securityProperties,
                                                     RedisTemplate<String,String> redisTemplate,SysLogService sysLogService) {
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
         this.sysUserMapper = sysUserMapper;
+        this.securityProperties = securityProperties;
         setAuthenticationManager(authenticationManager);
     }
 
@@ -140,6 +144,9 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
                 "loginName:" + username + ",password:" + password);
         ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+        // 在线用户放入redis 1.登出时消除缓存 2.随jwtToken一起存在，续签时重新续期缓存
+        redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE+sysUser.getSysUserId(), sysUser.getSysUserId(),
+                securityProperties.getJwtActiveTime(),TimeUnit.MILLISECONDS);
     }
 
     @Override

@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(securityProperties.getExcludes()).permitAll()
                 .anyRequest().authenticated();
         httpSecurity.addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
-                                sysUserMapper,tokenService,redisTemplate,sysLogService),
+                                sysUserMapper,tokenService,securityProperties,redisTemplate,sysLogService),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

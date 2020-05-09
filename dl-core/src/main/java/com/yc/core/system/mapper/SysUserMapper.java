@@ -26,9 +26,9 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     /**
      * 用户查询
-     * @param page
-     * @param userQuery
-     * @return
+     * @param page 分页信息
+     * @param userQuery 入参
+     * @return 返回
      */
     Page<SysUserVO> userList(@Param("page") Page<SysUser> page, @Param("query") UserQuery userQuery);
 
@@ -39,6 +39,13 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return 用户信息
      */
     SysUser loginByName(@Param("loginName") String loginName);
+
+    /**
+     * 用户查询
+     * @param page 分页信息
+     * @return 用户page
+     */
+    Page<SysUserVO> chatPage(@Param("page") Page<SysUser> page);
 
 
 }
