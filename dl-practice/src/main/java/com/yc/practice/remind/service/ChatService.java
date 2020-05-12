@@ -1,5 +1,9 @@
 package com.yc.practice.remind.service;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
+
 /**
  * 功能描述：
  *
@@ -14,5 +18,16 @@ package com.yc.practice.remind.service;
  */
 public interface ChatService  {
 
+    /**
+     * 发送消息
+     * @param jsonObject 入参
+     */
+    List<Object> message(JSONObject jsonObject);
+
+    /**
+     * 查看聊天记录
+     * @param receiveUserId 接收人
+     */
+    List<Object> message(String receiveUserId);
 
 }

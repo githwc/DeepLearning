@@ -97,6 +97,11 @@ public class CommonConstant {
      */
     public static final String ORDER_NO_TODAY_CACHE = "ORDER_NO_NOW_CACHE";
 
+    /**
+     * 聊天对象集合
+     */
+    public static final String CHAT_OBJECT = "CHAT_OBJECT";
+
     // ====================== 图片格式 ======================
     /**
      * 图片格式

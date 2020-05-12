@@ -84,7 +84,6 @@ public class TokenServiceImpl implements TokenService {
             log.debug("签发时间：{}", DateTimeUtil.dateToString(iatTime));
             log.debug("到期时间：{}", DateTimeUtil.dateToString(expTime));
             log.debug("续签时间：{}", DateTimeUtil.dateToString(renewTime));
-            log.debug("Bearer " + token);
             // 满足续签条件
             if (now.compareTo(renewTime) >= 0) {
                 String newToken = this.create(jwtTokenUtil.getName(token));
