@@ -30,7 +30,6 @@
         <swagger.version>2.7.0</swagger.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <fastjson.version>1.2.58</fastjson.version>
-        <freemarker.version>2.3.29</freemarker.version>
         <jwt.version>3.7.0</jwt.version>
         <hutool.version>4.5.10</hutool.version>
         <okhttp.version>3.11.0</okhttp.version>

@@ -41,7 +41,7 @@ public class ChatServiceImpl implements ChatService{
         /**
          * 0、产生历史第一次聊天信息(创建聊天对象)
          * 1、从聊天对象缓存集合中查询是否存在 ATOB 或者 BTOA
-         * 2、有追加，没有新建聊天对象和聊天记录(时间,内容,头像)
+         * 2、有追加，没有新建聊天对象和聊天记录(时间,内容,头像,发送人)
          * 3、推送消息给接收人
          * 4、返回历史聊天记录给发送人
          */
@@ -49,6 +49,7 @@ public class ChatServiceImpl implements ChatService{
         map.put("content",jsonObject.getString("content"));
         map.put("headImg",UserUtil.getUser().getHeadImg());
         map.put("time",DateTimeUtil.dateToString(new Date()));
+        map.put("sysUserId",UserUtil.getUserId());
         String key = UserUtil.getUserId()+"TO"+jsonObject.getString("receiveUserId");
         String key_sub = jsonObject.getString("receiveUserId")+"TO"+UserUtil.getUserId();
         if(redisTemplate.hasKey(CommonConstant.CHAT_OBJECT)){
