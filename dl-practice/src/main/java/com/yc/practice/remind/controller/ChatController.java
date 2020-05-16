@@ -33,6 +33,7 @@ public class ChatController {
     /**
      * 发送消息
      * @param jsonObject 入参
+     *                     [content,receiveUserId]
      */
     @PostMapping("/sendMessage")
     public List<Object> message(@RequestBody JSONObject jsonObject) {

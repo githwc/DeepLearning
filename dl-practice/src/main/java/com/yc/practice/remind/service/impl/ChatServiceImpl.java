@@ -3,8 +3,10 @@ package com.yc.practice.remind.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.utils.DateTimeUtil;
+import com.yc.common.webSocket.WebSocket;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.remind.service.ChatService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -25,15 +27,18 @@ import java.util.Set;
  * @Datetime: 2020-05-12
  * @Version: 1.0.0
  */
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ChatServiceImpl implements ChatService{
 
+    private WebSocket webSocket;
     private final RedisTemplate redisTemplate;
 
     @Autowired
-    public ChatServiceImpl (RedisTemplate redisTemplate){
+    public ChatServiceImpl (RedisTemplate redisTemplate,WebSocket webSocket){
         this.redisTemplate = redisTemplate;
+        this.webSocket = webSocket;
     }
 
     @Override
@@ -48,6 +53,7 @@ public class ChatServiceImpl implements ChatService{
         HashMap<String,Object> map = new HashMap<>();
         map.put("content",jsonObject.getString("content"));
         map.put("headImg",UserUtil.getUser().getHeadImg());
+        map.put("userName",UserUtil.getUser().getUsername());
         map.put("time",DateTimeUtil.dateToString(new Date()));
         map.put("sysUserId",UserUtil.getUserId());
         String key = UserUtil.getUserId()+"TO"+jsonObject.getString("receiveUserId");
@@ -61,6 +67,11 @@ public class ChatServiceImpl implements ChatService{
             redisTemplate.opsForSet().add(CommonConstant.CHAT_OBJECT,key);
         }
         redisTemplate.opsForList().rightPush(key, map);
+        // 推送消息给接收人
+        JSONObject obj = new JSONObject();
+        obj.put("content", jsonObject.getString("content"));
+        webSocket.sendOneMessage(jsonObject.getString("receiveUserId"), obj.toJSONString());
+        // 返回聊天记录给发送人
         Long size = redisTemplate.opsForList().size(key);
         return redisTemplate.opsForList().range(key,0,size);
     }

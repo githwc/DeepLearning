@@ -3,10 +3,8 @@ package com.yc.practice.redis.controller;
 import com.yc.practice.redis.service.RedisRankService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -105,17 +103,4 @@ public class RedisRankController {
     public void addScore(){
         iRedisRankService.addScore();
     }
-
-    // @Scheduled(cron="0 0/1 * * * ?")
-    private void cancelTimeOutOrder() {
-        log.debug("123Nih你好");
-        log.info("123Nih你好");
-        log.warn("123Nih你好");
-        log.trace("123Nih你好");
-        System.out.println(LocalDateTime.now());
-        System.out.println(System.currentTimeMillis());
-        System.out.println(System.currentTimeMillis());
-        log.info("取消订单，并根据sku编号释放锁定库存");
-    }
-
 }

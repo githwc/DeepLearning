@@ -52,7 +52,6 @@ public class RemindMessageController {
         );
     }
 
-
     @PostMapping("/sendAll")
     @ApiOperation(value = "群发消息", notes = "发送消息给多个人")
     @WriteLog(opPosition = "群发消息" ,optype = CommonConstant.OPTYPE_CREATE)
