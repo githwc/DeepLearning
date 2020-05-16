@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallGoodClass;
 import com.yc.core.tree.TreeNode;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,6 +37,6 @@ public interface MallGoodClassMapper extends BaseMapper<MallGoodClass> {
      * @param parentId 父级ID
      * @return page
      */
-    Page<MallGoodClass> childrenClass(Page<MallGoodClass> page, String parentId);
+    Page<MallGoodClass> childrenClass(@Param("page") Page<MallGoodClass> page, @Param("parentId") String parentId);
 
 }

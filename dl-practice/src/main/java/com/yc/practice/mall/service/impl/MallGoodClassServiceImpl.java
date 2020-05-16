@@ -74,6 +74,8 @@ public class MallGoodClassServiceImpl extends ServiceImpl<MallGoodClassMapper, M
                 this.updateById(item);
             });
         }
+        mallGoodClass.setState(1);
+        this.baseMapper.updateById(mallGoodClass);
     }
 
     @Override

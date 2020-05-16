@@ -16,11 +16,11 @@
 
     <select id="childrenClass" resultType="com.yc.core.mall.entity.MallGoodClass">
         select
-            sd.*
+            *
         from mall_good_class
         where
             state = 0
-        and parent_id = #{query.parentId}
+        and parent_id = #{parentId}
         order by sort
     </select>
 

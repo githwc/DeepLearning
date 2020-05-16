@@ -1,7 +1,6 @@
 package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.core.cascadeList.CaseTopLevel;
 import com.yc.core.mall.entity.MallGoodClass;
 import com.yc.core.tree.TreeNode;
 import com.yc.practice.mall.service.MallGoodClassService;
