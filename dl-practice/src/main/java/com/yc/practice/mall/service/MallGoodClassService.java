@@ -52,4 +52,10 @@ public interface MallGoodClassService extends IService<MallGoodClass> {
      * @param mallGoodClassId 类目ID
      */
     void deleteAlone(String mallGoodClassId);
+
+    /**
+     * 类目级联信息
+     * @return case list
+     */
+    List<MallGoodClass> classList();
 }

@@ -2,6 +2,7 @@ package com.yc.core.mall.entity;
 
 import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import lombok.Data;
@@ -75,6 +76,12 @@ public class MallGood implements Serializable {
      */
     private String remark;
 
+    // ============= 非表字段 ===============
 
+    /**
+     * 父级类目
+     */
+    @TableField(exist = false)
+    private String pClassId;
 
 }

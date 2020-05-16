@@ -1,6 +1,7 @@
 package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yc.core.cascadeList.CaseTopLevel;
 import com.yc.core.mall.entity.MallGoodClass;
 import com.yc.core.tree.TreeNode;
 import com.yc.practice.mall.service.MallGoodClassService;
@@ -28,8 +29,7 @@ import java.util.List;
 @RequestMapping("/mallGoodClass")
 public class MallGoodClassController {
 
-
-    public final MallGoodClassService iMallGoodClassService;
+    private final MallGoodClassService iMallGoodClassService;
 
     @Autowired
     public MallGoodClassController(MallGoodClassService iMallGoodClassService){
@@ -49,7 +49,7 @@ public class MallGoodClassController {
      * 添加类目
      * @param mallGoodClass 类目信息
      */
-    @PostMapping(value = "/add")
+    @PostMapping
     public void add(@RequestBody MallGoodClass mallGoodClass) {
         iMallGoodClassService.add(mallGoodClass);
     }
@@ -60,7 +60,7 @@ public class MallGoodClassController {
      * @param parentId 父级类别ID
      * @return page
      */
-    @GetMapping("/childrenDept")
+    @GetMapping("/childrenClass")
     public Page<MallGoodClass> childrenClass(Page<MallGoodClass> page, String parentId){
         return iMallGoodClassService.childrenClass(page,parentId);
     }
@@ -81,6 +81,15 @@ public class MallGoodClassController {
     @DeleteMapping
     public void delete(@RequestParam("mallGoodClassId") String mallGoodClassId) {
         iMallGoodClassService.deleteAlone(mallGoodClassId);
+    }
+
+    /**
+     * 类目级联信息
+     * @return case list
+     */
+    @GetMapping("/classList")
+    public List<MallGoodClass> classList(){
+        return iMallGoodClassService.classList();
     }
 
 }

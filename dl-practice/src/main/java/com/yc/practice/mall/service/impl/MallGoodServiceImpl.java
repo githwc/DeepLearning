@@ -1,11 +1,15 @@
 package com.yc.practice.mall.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.mall.entity.MallGood;
+import com.yc.core.mall.entity.MallGoodClass;
+import com.yc.core.mall.mapper.MallGoodClassMapper;
 import com.yc.core.mall.mapper.MallGoodMapper;
 import com.yc.core.mall.model.query.GoodQuery;
 import com.yc.practice.mall.service.MallGoodService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +29,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = Exception.class)
 public class MallGoodServiceImpl extends ServiceImpl<MallGoodMapper, MallGood> implements MallGoodService {
 
+    private final MallGoodClassMapper mallGoodClassMapper;
+
+    @Autowired
+    public MallGoodServiceImpl(MallGoodClassMapper mallGoodClassMapper){
+        this.mallGoodClassMapper = mallGoodClassMapper;
+    }
     @Override
     public Page<MallGood> mallPage(Page<MallGood> page, GoodQuery query) {
-        return this.baseMapper.goodPage(page,query);
+        Page<MallGood> goodPage = this.baseMapper.goodPage(page,query);
+        goodPage.getRecords().forEach(i->{
+            MallGoodClass mallGoodClass = this.mallGoodClassMapper.selectById(i.getClassId());
+            i.setPClassId(mallGoodClass.getParentId());
+        });
+        return goodPage;
     }
 
     @Override

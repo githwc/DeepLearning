@@ -76,5 +76,21 @@ public class MallGoodClassServiceImpl extends ServiceImpl<MallGoodClassMapper, M
         }
     }
 
+    @Override
+    public List<MallGoodClass> classList() {
+        List<MallGoodClass> list = this.baseMapper.selectList(new LambdaQueryWrapper<MallGoodClass>()
+            .eq(MallGoodClass::getParentId,"root")
+                .eq(MallGoodClass::getState,"0")
+        );
+        list.forEach(i->{
+            List<MallGoodClass> item = this.baseMapper.selectList(new LambdaQueryWrapper<MallGoodClass>()
+                .eq(MallGoodClass::getParentId,i.getMallGoodClassId())
+                    .eq(MallGoodClass::getState,"0")
+            );
+            i.setChildren(item);
+        });
+        return list;
+    }
+
 
 }

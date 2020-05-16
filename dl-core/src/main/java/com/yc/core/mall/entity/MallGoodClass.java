@@ -1,6 +1,7 @@
 package com.yc.core.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 功能描述：商品类别
@@ -56,4 +58,10 @@ public class MallGoodClass implements Serializable {
      */
     private LocalDateTime updateTime;
 
+    // ============= 非表字段 ==============
+    /**
+     * 子级类目
+     */
+    @TableField(exist = false)
+    private List<MallGoodClass> children;
 }
