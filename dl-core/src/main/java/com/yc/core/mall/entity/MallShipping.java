@@ -1,12 +1,14 @@
 package com.yc.core.mall.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 功能描述：收货地址
@@ -39,13 +41,9 @@ public class MallShipping implements Serializable {
      */
     private String receiverName;
     /**
-     * 收货固定电话
+     * 收货电话
      */
     private String receiverPhone;
-    /**
-     * 收货移动电话
-     */
-    private String receiverMobile;
     /**
      * 省份
      */
@@ -67,9 +65,9 @@ public class MallShipping implements Serializable {
      */
     private String receiverAddress;
     /**
-     * 邮编
+     * 删除状态
      */
-    private String receiverZip;
+    private Integer delFlag;
     /**
      * 创建时间
      */
@@ -79,5 +77,24 @@ public class MallShipping implements Serializable {
      */
     private LocalDateTime updateTime;
 
+    // ================= 非标字段 ===============
+
+    /**
+     * 省份编码
+     */
+    @TableField(exist = false)
+    private String receiverProvinceCode;
+
+    /**
+     * 市区编码
+     */
+    @TableField(exist = false)
+    private String receiverCityCode;
+
+    /**
+     * 区编码
+     */
+    @TableField(exist = false)
+    private String receiverAreaCode;
 
 }

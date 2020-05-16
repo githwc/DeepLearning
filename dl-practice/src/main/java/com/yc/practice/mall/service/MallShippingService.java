@@ -1,7 +1,8 @@
 package com.yc.practice.mall.service;
 
-import com.yc.core.mall.entity.MallShipping;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yc.core.mall.entity.MallShipping;
 
 /**
  * 功能描述：
@@ -16,5 +17,30 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  */
 public interface MallShippingService extends IService<MallShipping> {
+
+    /**
+     * 我的收货地址
+     * @param page 分页信息
+     * @return page
+     */
+    Page<MallShipping> shippingPage(Page<MallShipping> page);
+
+    /**
+     * 添加收货地址
+     * @param mallShipping 地址信息
+     */
+    void add(MallShipping mallShipping);
+
+    /**
+     * 修改商品信息
+     * @param mallShipping 地址信息
+     */
+    void updateShipping(MallShipping mallShipping);
+
+    /**
+     * 删除指定收货地址
+     * @param mallShippingId 收货地址ID
+     */
+    void deleteAlone(String mallShippingId);
 
 }

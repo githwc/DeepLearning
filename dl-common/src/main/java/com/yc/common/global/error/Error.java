@@ -23,7 +23,6 @@ public enum Error implements IError {
     TokenError(403, 40103, "登录信息已失效，请重新登录！"),
     GetCodeAgain(403, 40104, "验证码不存在!"),
 
-
     /**
      * 用户异常
      */
@@ -35,6 +34,12 @@ public enum Error implements IError {
     UserNotFound(404, 40403, "用户不存在"),
     LoginNameIsNull(400, 42002, "用户名不能为空"),
     AccountLock(400, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
+
+    /**
+     * 入参异常
+     */
+    paramError(400,40001,"参数错误!"),
+
 
     /**
      * 字典管理

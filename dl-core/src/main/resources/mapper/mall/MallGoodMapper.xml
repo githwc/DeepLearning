@@ -7,6 +7,7 @@
             good.*
         FROM mall_good good
         <where>
+            good.state &lt; 5
             <if test="query.name != null and query.name != '' ">
                 and good.name like concat ('%',#{query.name},'%')
             </if>

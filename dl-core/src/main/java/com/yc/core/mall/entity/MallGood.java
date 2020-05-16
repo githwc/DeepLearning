@@ -39,7 +39,7 @@ public class MallGood implements Serializable {
      */
     private String classId;
     /**
-     * 商品状态(0:待售 1:上架 2-下架 3-删除)
+     * 商品状态(0:待审核 1:已通过 2：已拒绝 3:已上架 4-已下架 5-删除)
      */
     private String state;
     /**

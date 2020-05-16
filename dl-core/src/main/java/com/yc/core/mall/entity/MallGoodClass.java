@@ -32,7 +32,7 @@ public class MallGoodClass implements Serializable {
     @TableId(value = "mall_good_class_id", type = IdType.UUID)
     private String mallGoodClassId;
     /**
-     * 父类别id当id=0时说明是根节点,一级类别
+     * 父类别id
      */
     private String parentId;
     /**
@@ -42,7 +42,7 @@ public class MallGoodClass implements Serializable {
     /**
      * 类别状态0-正常,1-已废弃
      */
-    private Boolean state;
+    private Integer state;
     /**
      * 排序
      */
@@ -55,7 +55,5 @@ public class MallGoodClass implements Serializable {
      * 更新时间
      */
     private LocalDateTime updateTime;
-
-
 
 }
