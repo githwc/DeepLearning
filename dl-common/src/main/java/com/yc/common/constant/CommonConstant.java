@@ -16,7 +16,7 @@ public class CommonConstant {
     /**
      * 日志类型： 普通操作
      */
-    public static final int  LOG_TYPE_0 = 0;
+    public static final int LOG_TYPE_0 = 0;
 
     /**
      * 日志类型： 登录 & 登出
@@ -52,17 +52,23 @@ public class CommonConstant {
     /**
      * 日志操作类型 读取
      */
-    public final static int OPTYPE_READ  = 3;
+    public final static int OPTYPE_READ = 3;
 
     // ================== 编码格式 ===========================
 
-    /** 文本编码 */
+    /**
+     * 文本编码
+     */
     public static String TEXT_CONTENTTYPE = "text/plain;charset=UTF-8";
 
-    /** JSON编码 */
+    /**
+     * JSON编码
+     */
     public static String JSON_CONTENTTYPE = "application/json;charset=UTF-8";
 
-    /** XML编码 */
+    /**
+     * XML编码
+     */
     public static String XML_CONTENTTYPE = "text/xml;charset=UTF-8";
 
     /**
@@ -90,7 +96,7 @@ public class CommonConstant {
     /**
      * 用户信息
      */
-    public final static  String SYS_USERS_CACHE = "SYS_USERS_CACHE_";
+    public final static String SYS_USERS_CACHE = "SYS_USERS_CACHE_";
 
     /**
      * 今日订单号
@@ -102,18 +108,22 @@ public class CommonConstant {
      */
     public static final String CHAT_OBJECT = "CHAT_OBJECT";
 
+    /**
+     * 购物车缓存
+     */
+    public static final String CART = "CART_";
+
     // ====================== 图片格式 ======================
     /**
      * 图片格式
      */
-    public final static  String IMG_FORMAT = "jpg,jpeg,gif,png";
+    public final static String IMG_FORMAT = "jpg,jpeg,gif,png";
 
     // ====================== 默认数据 ======================
     /**
      * 默认密码
      */
-    public final static  String DEFAULT_PASSWORD = "123456";
-
+    public final static String DEFAULT_PASSWORD = "123456";
 
 
 }

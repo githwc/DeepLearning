@@ -115,5 +115,33 @@ public interface CommonEnum {
         }
     }
 
+    enum GoodState implements CommonEnum{
+        /**
+         * 商品状态
+         */
+        WAIT_CHECK("0","待审核"),
+        PAST("1","已通过"),
+        REFUSE("2","已拒绝"),
+        GOOD_UP("3","已上架"),
+        GOOD_DOWN("4","已下架"),
+        DELETE("5","已删除")
+        ;
+        private String code;
+        private String name;
+
+        GoodState(String code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public String getCode(){
+            return code;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
+
 
 }

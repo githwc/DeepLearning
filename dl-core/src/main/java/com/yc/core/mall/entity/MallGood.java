@@ -1,13 +1,14 @@
 package com.yc.core.mall.entity;
 
-import java.math.BigDecimal;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 功能描述：
@@ -67,10 +68,6 @@ public class MallGood implements Serializable {
      * 库存
      */
     private Integer stock;
-    /**
-     * 库存预警值
-     */
-    private Integer lowStock;
     /**
      * 备注
      */

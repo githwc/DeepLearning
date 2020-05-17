@@ -40,7 +40,6 @@ public enum Error implements IError {
      */
     paramError(400,40001,"参数错误!"),
 
-
     /**
      * 字典管理
      */
@@ -71,6 +70,10 @@ public enum Error implements IError {
      */
     GoodNotFound(200, 40409, "请添加选购商品"),
     /**
+     * 商品不存在
+     */
+    GoodError(200, 20000, "商品不存在"),
+    /**
      * 库存不足
      */
     StockLow(200,200001,"库存不足,请重新选购"),
@@ -98,6 +101,14 @@ public enum Error implements IError {
      * 保存文件异常
      */
     SaveImgError(200,20006,"保存文件异常!"),
+    /**
+     * 商品未上架
+     */
+    GoodNotUp(200, 20007, "商品未上架"),
+    /**
+     * 商品库存不足
+     */
+    GoodStock(200, 20007, "商品库存不足"),
     ;
 
     /**

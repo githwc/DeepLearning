@@ -1,7 +1,13 @@
 package com.yc.practice;
 
+import com.yc.core.mall.model.form.CartForm;
+import com.yc.practice.mall.service.MallCartService;
+import com.yc.practice.mall.service.impl.MallCartServiceImpl;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * 功能描述：
@@ -21,4 +27,16 @@ public class TestTemp {
     public void b (){
         System.out.println("aaaa");
     }
+
+    @Autowired
+    private MallCartService mallCartService;
+
+    @Test
+    public void dd(){
+        CartForm form = new CartForm();
+        form.setNum(1);
+        form.setMallGoodId("1");
+        mallCartService.add(form);
+    }
+
 }
