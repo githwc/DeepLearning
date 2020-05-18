@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.query.OrderQuery;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 功能描述：
@@ -32,5 +33,11 @@ public interface MallOrderService extends IService<MallOrder> {
      * @return page
      */
     Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query);
+
+    /**
+     * 取消订单
+     * @param mallOrderId 订单ID
+     */
+    void cancelOrder(@RequestParam("mallOrderId")String mallOrderId);
 
 }

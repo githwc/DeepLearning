@@ -2,6 +2,7 @@ package com.yc.practice.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonConstant;
@@ -18,6 +19,7 @@ import com.yc.core.region.mapper.RegionMapper;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallGoodService;
 import com.yc.practice.mall.service.MallOrderItemService;
+import com.yc.practice.mall.service.MallOrderLogService;
 import com.yc.practice.mall.service.MallOrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,20 +52,18 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     private final MallOrderItemService mallOrderItemService;
     private final RedisTemplate redisTemplate;
     private final MallGoodService mallGoodService;
-    private final RegionMapper regionMapper;
-    private final MallOrderLogMapper mallOrderLogMapper;
+    private final MallOrderLogService mallOrderLogService;
     private final MallShippingMapper mallShippingMapper;
 
     @Autowired
     public MallOrderServiceImpl(MallOrderItemService mallOrderItemService,RedisTemplate redisTemplate,
-                                MallShippingMapper mallShippingMapper,
-                                MallGoodService mallGoodService,RegionMapper regionMapper,MallOrderLogMapper mallOrderLogMapper){
+                                MallShippingMapper mallShippingMapper,MallOrderLogService mallOrderLogService,
+                                MallGoodService mallGoodService){
         this.mallOrderItemService = mallOrderItemService;
         this.redisTemplate = redisTemplate;
-        this.mallOrderLogMapper = mallOrderLogMapper;
+        this.mallOrderLogService = mallOrderLogService;
         this.mallGoodService = mallGoodService;
         this.mallShippingMapper = mallShippingMapper;
-        this.regionMapper = regionMapper;
     }
 
     @Override
@@ -115,17 +115,27 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         this.mallOrderItemService.saveBatch(orderItemList);
         // 减库存 加销量
         this.mallGoodService.updateBatchById(goodList);
-        MallOrderLog mallOrderLog = new MallOrderLog();
-        mallOrderLog.setMallOrderId(mallOrder.getMallOrderId());
-        mallOrderLog.setState(CommonEnum.OrderLogState.WAIT_PAY.getCode());
-        mallOrderLog.setRemark("正常订单");
-        mallOrderLog.setCreateUserId(UserUtil.getUserId());
-        mallOrderLogMapper.insert(mallOrderLog);
+        // 订单变更记录
+        mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),"正常订单");
     }
 
     @Override
     public Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query) {
         return this.baseMapper.page(page,query);
+    }
+
+    @Override
+    public void cancelOrder(String mallOrderId) {
+        MallOrder mallOrder = new MallOrder();
+        mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_0.getCode());
+        boolean flag = this.update(mallOrder,new LambdaQueryWrapper<MallOrder>()
+                .eq(MallOrder::getMallOrderId,mallOrderId)
+        );
+        if(!flag){
+            throw new ErrorException(Error.paramError);
+        }
+        // 订单变更记录
+        mallOrderLogService.saveOrderLog(mallOrderId,CommonEnum.OrderLogState.INVALID.getCode(),"订单取消");
     }
 
 

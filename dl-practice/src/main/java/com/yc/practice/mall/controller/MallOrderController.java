@@ -49,5 +49,13 @@ public class MallOrderController {
         return this.iMallOrderService.orderPage(page,query);
     }
 
+    /**
+     * 取消订单
+     * @param mallOrderId 订单ID
+     */
+    @PutMapping("/cancelOrder")
+    public void cancelOrder(@RequestParam("mallOrderId")String mallOrderId){
+        this.iMallOrderService.cancelOrder(mallOrderId);
+    }
 
 }

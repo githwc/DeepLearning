@@ -178,7 +178,7 @@ public interface CommonEnum {
         SEND_GOOD(2,"已发货"),
         FINISH(3,"已完成"),
         CLOSE(4,"已关闭"),
-        INVALID(5,"无效订单")
+        INVALID(5,"已取消")
         ;
         private Integer code;
         private String name;
