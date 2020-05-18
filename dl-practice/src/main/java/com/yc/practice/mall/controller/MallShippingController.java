@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  *
  * 功能描述：收货地址控制层
@@ -69,4 +71,12 @@ public class MallShippingController {
         iMallShippingService.deleteAlone(mallShippingId);
     }
 
+    /**
+     * 查询我的所有收货地址
+     * @return 我的所有收货地址
+     */
+    @GetMapping("/shipingList")
+    public List<MallShipping> shipingList(){
+        return iMallShippingService.shipingList();
+    }
 }

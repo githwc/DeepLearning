@@ -20,6 +20,11 @@ import java.util.List;
 public class OrderForm extends MallOrder {
 
     /**
+     * 收货地址
+     */
+    private String mallShippingId;
+
+    /**
      * 省份code
      */
     private String provinceCode;

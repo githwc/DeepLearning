@@ -1,25 +1,23 @@
 package com.yc.practice.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.core.mall.entity.MallGood;
-import com.yc.core.mall.entity.MallOrder;
-import com.yc.core.mall.entity.MallOrderItem;
-import com.yc.core.mall.entity.MallOrderLog;
-import com.yc.core.mall.mapper.MallGoodMapper;
+import com.yc.core.mall.entity.*;
 import com.yc.core.mall.mapper.MallOrderLogMapper;
 import com.yc.core.mall.mapper.MallOrderMapper;
+import com.yc.core.mall.mapper.MallShippingMapper;
 import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.query.OrderQuery;
-import com.yc.core.region.entity.Region;
 import com.yc.core.region.mapper.RegionMapper;
 import com.yc.practice.common.UserUtil;
-import com.yc.practice.mall.service.MallOrderGoodService;
+import com.yc.practice.mall.service.MallGoodService;
+import com.yc.practice.mall.service.MallOrderItemService;
 import com.yc.practice.mall.service.MallOrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,63 +47,77 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder> implements MallOrderService {
 
-    private final MallOrderGoodService mallOrderGoodService;
+    private final MallOrderItemService mallOrderItemService;
     private final RedisTemplate redisTemplate;
-    private final MallGoodMapper mallGoodMapper;
+    private final MallGoodService mallGoodService;
     private final RegionMapper regionMapper;
     private final MallOrderLogMapper mallOrderLogMapper;
+    private final MallShippingMapper mallShippingMapper;
 
     @Autowired
-    public MallOrderServiceImpl(MallOrderGoodService mallOrderGoodService,RedisTemplate redisTemplate,
-                                MallGoodMapper mallGoodMapper,RegionMapper regionMapper,MallOrderLogMapper mallOrderLogMapper){
-        this.mallOrderGoodService = mallOrderGoodService;
+    public MallOrderServiceImpl(MallOrderItemService mallOrderItemService,RedisTemplate redisTemplate,
+                                MallShippingMapper mallShippingMapper,
+                                MallGoodService mallGoodService,RegionMapper regionMapper,MallOrderLogMapper mallOrderLogMapper){
+        this.mallOrderItemService = mallOrderItemService;
         this.redisTemplate = redisTemplate;
         this.mallOrderLogMapper = mallOrderLogMapper;
-        this.mallGoodMapper = mallGoodMapper;
+        this.mallGoodService = mallGoodService;
+        this.mallShippingMapper = mallShippingMapper;
         this.regionMapper = regionMapper;
     }
 
     @Override
     public void createOrder(OrderForm orderForm) {
+        // 1.收货地址校验
+        MallShipping mallShipping = mallShippingMapper.selectById(orderForm.getMallShippingId());
+        if(ObjectUtil.isNull(mallShipping)){
+            throw new ErrorException(Error.ShippingNotFound);
+        }
         // ========= 保存订单信息 ========
         MallOrder mallOrder = new MallOrder();
         BeanUtil.copyProperties(orderForm,mallOrder);
         mallOrder.setOrderNo(generateOrderNo());
         mallOrder.setCreateUserId(UserUtil.getUserId());
-        // 支付时间
-        mallOrder.setPayTime(LocalDateTime.now());
-        // 支付状态
-        mallOrder.setState(1);
-        mallOrder.setPayType(0);
+        mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_10.getCode());
         // 处理收货地址
-        // mallOrder.setProvince(getRegionInfo(orderForm.getProvinceCode()).getRegionName());
-        // mallOrder.setCity(getRegionInfo(orderForm.getCityCode()).getRegionName());
-        // mallOrder.setArea(getRegionInfo(orderForm.getAreaCode()).getRegionName());
-        // mallOrder.setRegionCode(orderForm.getAreaCode());
+        mallOrder.setReceiverName(mallShipping.getReceiverName());
+        mallOrder.setReceiverPhone(mallShipping.getReceiverPhone());
+        mallOrder.setRegionCode(mallShipping.getRegionCode());
+        mallOrder.setReceiverProvince(mallShipping.getReceiverProvince());
+        mallOrder.setReceiverCity(mallShipping.getReceiverCity());
+        mallOrder.setReceiverArea(mallShipping.getReceiverArea());
+        mallOrder.setReceiverAddress(mallShipping.getReceiverAddress());
         this.baseMapper.insert(mallOrder);
         // ========= 保存订单商品信息 ========
-        List<MallOrderItem> goodList = orderForm.getGoodsInfo();
-        goodList.forEach(curr->{
+        List<MallOrderItem> orderItemList = orderForm.getGoodsInfo();
+        List<MallGood> goodList = new ArrayList<>();
+        BigDecimal amount = BigDecimal.valueOf(0);
+        for (MallOrderItem curr : orderItemList) {
             if(StringUtils.isBlank(curr.getGoodId())){
                 throw new ErrorException(Error.GoodNotFound);
             }
-            MallGood mallGood = this.mallGoodMapper.selectById(curr.getGoodId());
+            MallGood mallGood = this.mallGoodService.getBaseMapper().selectById(curr.getGoodId());
             if(mallGood.getStock()<curr.getGoodNum()){
                 throw new ErrorException(Error.StockLow);
             }
-            mallGood.setSale(curr.getGoodNum()+mallGood.getSale());
-            mallGood.setStock(mallGood.getStock()-curr.getGoodNum());
-            mallGoodMapper.update(mallGood,new LambdaQueryWrapper<MallGood>()
-                .eq(MallGood::getMallGoodId,curr.getGoodId())
-            );
             curr.setMallOrderId(mallOrder.getMallOrderId());
             curr.setOrderNo(mallOrder.getOrderNo());
-        });
-        this.mallOrderGoodService.saveBatch(goodList);
-        // ============= 记录日志 =============
+            curr.setSysUserId(UserUtil.getUserId());
+            amount = amount.add(mallGood.getPrice().multiply(BigDecimal.valueOf(curr.getGoodNum())));
+            mallGood.setSale(curr.getGoodNum()+mallGood.getSale());
+            mallGood.setStock(mallGood.getStock()-curr.getGoodNum());
+            goodList.add(mallGood);
+        }
+        // 校验总价
+        if(amount.compareTo(orderForm.getPayAmount()) != 0){
+            throw new ErrorException(Error.AmountError);
+        }
+        this.mallOrderItemService.saveBatch(orderItemList);
+        // 减库存 加销量
+        this.mallGoodService.updateBatchById(goodList);
         MallOrderLog mallOrderLog = new MallOrderLog();
         mallOrderLog.setMallOrderId(mallOrder.getMallOrderId());
-        mallOrderLog.setState(mallOrder.getState());
+        mallOrderLog.setState(CommonEnum.OrderLogState.WAIT_PAY.getCode());
         mallOrderLog.setRemark("正常订单");
         mallOrderLog.setCreateUserId(UserUtil.getUserId());
         mallOrderLogMapper.insert(mallOrderLog);
@@ -135,16 +148,5 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
             sb.append(incrementStr);
         }
         return sb.toString();
-    }
-
-    /**
-     * 获取region信息
-     * @param regionCode region Code
-     * @return regionInfo
-     */
-    private Region getRegionInfo(String regionCode){
-        return regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                .eq(Region::getRegionCode,regionCode)
-        );
     }
 }

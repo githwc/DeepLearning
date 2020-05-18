@@ -3,6 +3,9 @@ package com.yc.practice.mall.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallShipping;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 /**
  * 功能描述：
@@ -42,5 +45,11 @@ public interface MallShippingService extends IService<MallShipping> {
      * @param mallShippingId 收货地址ID
      */
     void deleteAlone(String mallShippingId);
+
+    /**
+     * 查询我的所有收货地址
+     * @return 我的所有收货地址
+     */
+    List<MallShipping> shipingList();
 
 }

@@ -1,6 +1,8 @@
 package com.yc.practice.demo.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.demo.entity.Demo;
 import com.yc.core.demo.model.DemoQuery;
 import com.yc.practice.demo.service.DemoService;
@@ -61,7 +63,7 @@ public class DemoController {
 
     /**
      * 删除
-     * @param demoId
+     * @param demoId 主键
      */
     @DeleteMapping
     public void delete(@RequestParam("demoId") String demoId) {

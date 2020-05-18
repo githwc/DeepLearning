@@ -25,4 +25,9 @@ public class GoodQuery {
      */
     private String stockFlag;
 
+    /**
+     * 商品状态
+     */
+    private String state;
+
 }

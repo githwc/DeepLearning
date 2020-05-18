@@ -62,13 +62,33 @@ public class MallOrder implements Serializable {
      */
     private Integer orderType;
     /**
-     * 收货信息
+     * 收货姓名
      */
-    private String shippingId;
+    private String receiverName;
     /**
-     * 订单备注
+     * 收货电话
      */
-    private String remark;
+    private String receiverPhone;
+    /**
+     * 省份
+     */
+    private String receiverProvince;
+    /**
+     * 城市
+     */
+    private String receiverCity;
+    /**
+     * 区/县
+     */
+    private String receiverArea;
+    /**
+     * 行政编码
+     */
+    private String regionCode;
+    /**
+     * 详细地址
+     */
+    private String receiverAddress;
     /**
      * 确认收货状态：0->未确认；1->已确认
      */

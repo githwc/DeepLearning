@@ -108,7 +108,15 @@ public enum Error implements IError {
     /**
      * 商品库存不足
      */
-    GoodStock(200, 20007, "商品库存不足"),
+    GoodStock(200, 20008, "商品库存不足"),
+    /**
+     * 收货地址不存在
+     */
+    ShippingNotFound(200, 20009, "收货地址不存在"),
+    /**
+     * 金额计算有误
+     */
+    AmountError(200, 20008, "金额计算有误"),
     ;
 
     /**

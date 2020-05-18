@@ -14,6 +14,9 @@
             <if test="query.stockFlag != null and query.stockFlag != '' ">
                 and good.stock > 0
             </if>
+            <if test="query.state != null and query.state != '' ">
+                and good.state = #{query.state}
+            </if>
         </where>
         order by good.sale desc , good.sort
     </select>

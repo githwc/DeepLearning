@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
 * 功能描述：
 *
@@ -84,5 +86,13 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
         mallShipping.setDelFlag(1);
         mallShipping.setMallShippingId(mallShippingId);
         this.baseMapper.updateById(mallShipping);
+    }
+
+    @Override
+    public List<MallShipping> shipingList() {
+        return this.baseMapper.selectList(new LambdaQueryWrapper<MallShipping>()
+            .eq(MallShipping::getSysUserId,UserUtil.getUserId())
+                .eq(MallShipping::getDelFlag,0)
+        );
     }
 }

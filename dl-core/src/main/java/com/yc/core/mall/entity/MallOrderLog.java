@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * 功能描述：
+ * 功能描述: 订单记录变更表
  *  <p>版权所有：</p>
  *  未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -50,7 +50,5 @@ public class MallOrderLog implements Serializable {
      * 操作时间
      */
     private LocalDateTime createTime;
-
-
 
 }

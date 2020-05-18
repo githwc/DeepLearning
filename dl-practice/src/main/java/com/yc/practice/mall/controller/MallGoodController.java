@@ -32,6 +32,7 @@ public class MallGoodController {
     public MallGoodController(MallGoodService iMallGoodService){
         this.iMallGoodService = iMallGoodService;
     }
+
     /**
      * 商品分页查询
      * @param page 分页信息

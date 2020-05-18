@@ -69,9 +69,7 @@ public interface CommonEnum {
          * 菜单类型
          */
         TOP_MENU_TYPE(0,"一级菜单"),
-
         SECOND_MENU_TYPE(1,"子菜单"),
-
         LAST_MENU_TYPE(2,"按钮")
         ;
         private Integer code;
@@ -96,7 +94,6 @@ public interface CommonEnum {
          * 报表信息
          */
         DEMO_REPORT("一级菜单","/demoExport.xlsx")
-
         ;
         private String name;
         private String path;
@@ -143,5 +140,61 @@ public interface CommonEnum {
         }
     }
 
+    enum OrderState implements CommonEnum{
+        /**
+         * 订单状态
+         */
+        ORDER_STATE_0(0,"已取消"),
+        ORDER_STATE_10(10,"未付款"),
+        ORDER_STATE_20(20,"已付款(待发货)"),
+        ORDER_STATE_40(40,"已发货"),
+        ORDER_STATE_50(50,"交易成功"),
+        ORDER_STATE_60(60,"交易关闭"),
+        ORDER_STATE_70(70,"无效订单")
+        ;
+        private Integer code;
+        private String name;
+
+        OrderState(Integer code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode(){
+            return code;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
+
+    enum OrderLogState implements CommonEnum{
+        /**
+         * 订单日志状态
+         */
+        WAIT_PAY(0,"待付款"),
+        WAIT_SEND_GOOD(1,"待发货"),
+        SEND_GOOD(2,"已发货"),
+        FINISH(3,"已完成"),
+        CLOSE(4,"已关闭"),
+        INVALID(5,"无效订单")
+        ;
+        private Integer code;
+        private String name;
+
+        OrderLogState(Integer code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode(){
+            return code;
+        }
+
+        public String getName(){
+            return name;
+        }
+    }
 
 }
