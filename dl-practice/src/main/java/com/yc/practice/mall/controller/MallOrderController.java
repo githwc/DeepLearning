@@ -51,11 +51,11 @@ public class MallOrderController {
 
     /**
      * 取消订单
-     * @param mallOrderId 订单ID
+     * @param mallOrder 订单信息
      */
-    @PutMapping("/cancelOrder")
-    public void cancelOrder(@RequestParam("mallOrderId")String mallOrderId){
-        this.iMallOrderService.cancelOrder(mallOrderId);
+    @PostMapping("/cancelOrder")
+    public void cancelOrder(@RequestBody MallOrder mallOrder){
+        this.iMallOrderService.cancelOrder(mallOrder.getMallOrderId());
     }
 
 }
