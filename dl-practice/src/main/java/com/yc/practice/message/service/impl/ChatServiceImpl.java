@@ -1,11 +1,11 @@
-package com.yc.practice.remind.service.impl;
+package com.yc.practice.message.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.utils.DateTimeUtil;
 import com.yc.common.webSocket.WebSocket;
 import com.yc.practice.common.UserUtil;
-import com.yc.practice.remind.service.ChatService;
+import com.yc.practice.message.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

@@ -1,9 +1,9 @@
-package com.yc.practice.remind.controller;
+package com.yc.practice.message.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
 import com.yc.practice.common.log.WriteLog;
-import com.yc.practice.remind.service.RemindMessageService;
+import com.yc.practice.message.service.MessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +30,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/remindMessage")
 @Slf4j
 @Api(tags = "消息提醒")
-public class RemindMessageController {
+public class MessageController {
 
-    private final RemindMessageService iRemindMessageService;
+    private final MessageService iRemindMessageService;
 
     @Autowired
-    public RemindMessageController(RemindMessageService iRemindMessageService) {
+    public MessageController(MessageService iRemindMessageService) {
         this.iRemindMessageService = iRemindMessageService;
     }
 
@@ -45,9 +45,8 @@ public class RemindMessageController {
     public void sendUser(@RequestBody JSONObject jsonObject){
         iRemindMessageService.sendUser(jsonObject.getString("userId"),
                 jsonObject.getString("content"),
-                jsonObject.getString("level"),
-                jsonObject.getString("type"),
-                jsonObject.getString("modelType"),
+                jsonObject.getInteger("level"),
+                jsonObject.getInteger("type"),
                 jsonObject.getString("rid")
         );
     }
@@ -57,9 +56,8 @@ public class RemindMessageController {
     @WriteLog(opPosition = "群发消息" ,optype = CommonConstant.OPTYPE_CREATE)
     public void sendAll(@RequestBody JSONObject jsonObject){
         iRemindMessageService.sendAllUser(jsonObject.getString("content"),
-                jsonObject.getString("level"),
-                jsonObject.getString("type"),
-                jsonObject.getString("modelType"),
+                jsonObject.getInteger("level"),
+                jsonObject.getInteger("type"),
                 jsonObject.getString("rid")
         );
     }

@@ -1,7 +1,7 @@
-package com.yc.core.remind.mapper;
+package com.yc.core.message.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yc.core.remind.entity.RemindMessageReceive;
+import com.yc.core.message.entity.MessageReceive;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -18,6 +18,6 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
-public interface RemindMessageReceiveMapper extends BaseMapper<RemindMessageReceive> {
+public interface MessageReceiveMapper extends BaseMapper<MessageReceive> {
 
 }

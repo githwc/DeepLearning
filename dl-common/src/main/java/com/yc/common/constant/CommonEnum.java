@@ -33,7 +33,6 @@ public interface CommonEnum {
         public Integer getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
@@ -58,7 +57,6 @@ public interface CommonEnum {
         public Integer getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
@@ -83,7 +81,6 @@ public interface CommonEnum {
         public Integer getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
@@ -106,7 +103,6 @@ public interface CommonEnum {
         public String getPath(){
             return path;
         }
-
         public String getName(){
             return name;
         }
@@ -134,7 +130,6 @@ public interface CommonEnum {
         public String getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
@@ -163,7 +158,6 @@ public interface CommonEnum {
         public Integer getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
@@ -191,10 +185,56 @@ public interface CommonEnum {
         public Integer getCode(){
             return code;
         }
-
         public String getName(){
             return name;
         }
     }
 
+    enum ReceiveType implements CommonEnum{
+        /**
+         * 消息接收类型
+         */
+        SINGLE_USER(0,"指定用户"),
+        All_USER(1,"全体用户"),
+        GROUP_USER(2,"组内用户")
+        ;
+        private Integer code;
+        private String name;
+
+        ReceiveType(Integer code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode(){
+            return code;
+        }
+        public String getName(){
+            return name;
+        }
+    }
+
+    enum SendState implements CommonEnum{
+        /**
+         * 发布状态
+         */
+        NO_SEND(0,"未发布"),
+        SEND(1,"已发布"),
+        CANCEL_SEND(2,"已撤销")
+        ;
+        private Integer code;
+        private String name;
+
+        SendState(Integer code,String name){
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode(){
+            return code;
+        }
+        public String getName(){
+            return name;
+        }
+    }
 }

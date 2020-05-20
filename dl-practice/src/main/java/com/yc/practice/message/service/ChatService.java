@@ -1,4 +1,4 @@
-package com.yc.practice.remind.service;
+package com.yc.practice.message.service;
 
 import com.alibaba.fastjson.JSONObject;
 

@@ -1,7 +1,7 @@
-package com.yc.practice.remind.controller;
+package com.yc.practice.message.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yc.practice.remind.service.ChatService;
+import com.yc.practice.message.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

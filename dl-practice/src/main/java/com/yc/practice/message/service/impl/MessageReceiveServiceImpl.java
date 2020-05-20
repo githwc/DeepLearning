@@ -1,10 +1,10 @@
-package com.yc.practice.remind.service.impl;
+package com.yc.practice.message.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.core.remind.entity.RemindMessageReceive;
-import com.yc.core.remind.mapper.RemindMessageReceiveMapper;
-import com.yc.practice.remind.service.RemindMessageReceiveService;
+import com.yc.core.message.entity.MessageReceive;
+import com.yc.core.message.mapper.MessageReceiveMapper;
+import com.yc.practice.message.service.MessageReceiveService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RemindMessageReceiveServiceImpl extends ServiceImpl<RemindMessageReceiveMapper, RemindMessageReceive> implements RemindMessageReceiveService {
+public class MessageReceiveServiceImpl extends ServiceImpl<MessageReceiveMapper, MessageReceive> implements MessageReceiveService {
 
     @Override
     public void insertRecord(String userId, String messageId,boolean receiveFlag) {
-        RemindMessageReceive remindMessageReceive = new RemindMessageReceive();
+        MessageReceive remindMessageReceive = new MessageReceive();
         remindMessageReceive.setMessageId(messageId);
         remindMessageReceive.setUserId(userId);
         remindMessageReceive.setReceiveFlag(receiveFlag);
@@ -35,9 +35,9 @@ public class RemindMessageReceiveServiceImpl extends ServiceImpl<RemindMessageRe
 
     @Override
     public void readMessage(String userId, String messageId) {
-        RemindMessageReceive remindMessageReceive = new RemindMessageReceive();
-        remindMessageReceive.setReadFlag("1");
-        this.baseMapper.update(remindMessageReceive,new QueryWrapper<RemindMessageReceive>()
+        MessageReceive remindMessageReceive = new MessageReceive();
+        remindMessageReceive.setReadFlag(1);
+        this.baseMapper.update(remindMessageReceive,new QueryWrapper<MessageReceive>()
                 .eq("user_id",userId)
                 .eq("message_id",messageId)
         );

@@ -1,7 +1,7 @@
-package com.yc.practice.remind.service;
+package com.yc.practice.message.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yc.core.remind.entity.RemindMessageReceive;
+import com.yc.core.message.entity.MessageReceive;
 
 /**
  * 功能描述：
@@ -15,7 +15,7 @@ import com.yc.core.remind.entity.RemindMessageReceive;
  * @Version: 1.0.0
  *
  */
-public interface RemindMessageReceiveService extends IService<RemindMessageReceive> {
+public interface MessageReceiveService extends IService<MessageReceive> {
 
     /**
      * 记录我的接受消息

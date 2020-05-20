@@ -29,6 +29,10 @@ public class SysUserForm {
      */
     private String idCard;
     /**
+     * 头像
+     */
+    private String headImg;
+    /**
      * 手机
      */
     private String phone;

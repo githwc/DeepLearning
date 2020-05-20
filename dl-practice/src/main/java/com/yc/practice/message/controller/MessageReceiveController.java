@@ -1,6 +1,6 @@
-package com.yc.practice.remind.controller;
+package com.yc.practice.message.controller;
 
-import com.yc.practice.remind.service.RemindMessageReceiveService;
+import com.yc.practice.message.service.MessageReceiveService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/remindMessageReceive")
 @Slf4j
 @Api(tags = "消息提醒接收")
-public class RemindMessageReceiveController {
+public class MessageReceiveController {
 
-    private final RemindMessageReceiveService service;
+    private final MessageReceiveService service;
 
     @Autowired
-    public RemindMessageReceiveController(RemindMessageReceiveService service) {
+    public MessageReceiveController(MessageReceiveService service) {
         this.service = service;
     }
 }

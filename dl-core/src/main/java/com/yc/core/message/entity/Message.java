@@ -1,4 +1,4 @@
-package com.yc.core.remind.entity;
+package com.yc.core.message.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -24,11 +24,11 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class RemindMessage implements Serializable {
+public class Message implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @TableId(value = "remind_message_id", type = IdType.UUID)
-    private String remindMessageId;
+    @TableId(value = "message_id", type = IdType.UUID)
+    private String messageId;
     /**
      * 标题
      */
@@ -40,23 +40,19 @@ public class RemindMessage implements Serializable {
     /**
      * 消息级别(0:INFO 1.WARNING 2.ERROR)
      */
-    private String level;
+    private int level;
     /**
      * 消息类型(0:通知公告 1: 系统消息)
      */
-    private String type;
+    private int type;
     /**
-     * 模块类型
+     * 接收类型(0:指定用户 1:全体用户 2:组内用户)
      */
-    private String modelType;
-    /**
-     * 接收类型(USER:指定用户 ALL:全体用户 GROUP:组内用户)
-     */
-    private String receiveType;
+    private int receiveType;
     /**
      * 发布状态(0未发布 1.已发布 2.已撤销)
      */
-    private String sendState;
+    private int sendState;
     /**
      * 发布时间
      */
