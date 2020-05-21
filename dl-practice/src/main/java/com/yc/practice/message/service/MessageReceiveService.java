@@ -19,8 +19,9 @@ public interface MessageReceiveService extends IService<MessageReceive> {
 
     /**
      * 记录我的接受消息
-     * @param userId
-     * @param messageId
+     * @param userId    用户ID
+     * @param messageId 消息ID
+     * @param receiveFlag
      */
     void insertRecord(String userId, String messageId, boolean receiveFlag);
 

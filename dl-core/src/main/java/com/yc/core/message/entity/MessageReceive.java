@@ -35,7 +35,7 @@ public class MessageReceive implements Serializable {
     /**
      * 已读标识(0: 未读 1:已读)
      */
-    private int readFlag;
+    private int readState;
     /**
      * 阅读时间
      */
@@ -43,7 +43,7 @@ public class MessageReceive implements Serializable {
     /**
      * 接收状态
      */
-    private boolean receiveFlag;
+    private boolean receiveState;
     /**
      * 消息ID
      */

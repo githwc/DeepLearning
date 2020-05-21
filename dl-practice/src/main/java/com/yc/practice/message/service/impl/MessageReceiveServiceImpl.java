@@ -25,18 +25,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class MessageReceiveServiceImpl extends ServiceImpl<MessageReceiveMapper, MessageReceive> implements MessageReceiveService {
 
     @Override
-    public void insertRecord(String userId, String messageId,boolean receiveFlag) {
+    public void insertRecord(String userId, String messageId,boolean receiveState) {
         MessageReceive remindMessageReceive = new MessageReceive();
         remindMessageReceive.setMessageId(messageId);
         remindMessageReceive.setUserId(userId);
-        remindMessageReceive.setReceiveFlag(receiveFlag);
+        remindMessageReceive.setReceiveState(receiveState);
         this.baseMapper.insert(remindMessageReceive);
     }
 
     @Override
     public void readMessage(String userId, String messageId) {
         MessageReceive remindMessageReceive = new MessageReceive();
-        remindMessageReceive.setReadFlag(1);
+        remindMessageReceive.setReadState(1);
         this.baseMapper.update(remindMessageReceive,new QueryWrapper<MessageReceive>()
                 .eq("user_id",userId)
                 .eq("message_id",messageId)
