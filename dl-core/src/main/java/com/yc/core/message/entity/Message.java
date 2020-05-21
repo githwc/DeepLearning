@@ -1,13 +1,15 @@
 package com.yc.core.message.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.naming.Name;
 import java.io.Serializable;
+import java.sql.Clob;
 import java.time.LocalDateTime;
 
 /**
@@ -40,19 +42,19 @@ public class Message implements Serializable {
     /**
      * 消息级别(0:INFO 1.WARNING 2.ERROR)
      */
-    private int level;
+    private Integer level;
     /**
      * 消息类型(0:通知公告 1: 系统消息)
      */
-    private int type;
+    private Integer type;
     /**
-     * 接收类型(0:指定用户 1:全体用户 2:组内用户)
+     * 接收类型(0:指定用户 1:全体用户)
      */
-    private int receiveType;
+    private Integer receiveType;
     /**
      * 发布状态(0未发布 1.已发布 2.已撤销)
      */
-    private int sendState;
+    private Integer sendState;
     /**
      * 发布时间
      */
@@ -76,17 +78,5 @@ public class Message implements Serializable {
 
 
     /////////////////////////////// 非表字段 ///////////////////////////////
-
-    /**
-     * 消息接收表标识
-     */
-    @TableField(exist = false)
-    private String userId;
-
-    /**
-     * 消息接收表标识
-     */
-    @TableField(exist = false)
-    private String remindMessageReceiveId;
 
 }

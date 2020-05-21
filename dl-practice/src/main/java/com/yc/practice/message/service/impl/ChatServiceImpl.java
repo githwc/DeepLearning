@@ -56,8 +56,8 @@ public class ChatServiceImpl implements ChatService{
         map.put("userName",UserUtil.getUser().getUsername());
         map.put("time",DateTimeUtil.dateToString(new Date()));
         map.put("sysUserId",UserUtil.getUserId());
-        String key = UserUtil.getUserId()+"TO"+jsonObject.getString("receiveUserId");
-        String key_sub = jsonObject.getString("receiveUserId")+"TO"+UserUtil.getUserId();
+        String key = UserUtil.getUserId()+"AND"+jsonObject.getString("receiveUserId");
+        String key_sub = jsonObject.getString("receiveUserId")+"AND"+UserUtil.getUserId();
         if(redisTemplate.hasKey(CommonConstant.CHAT_OBJECT)){
             Set<String> chatObject = redisTemplate.opsForSet().members(CommonConstant.CHAT_OBJECT);
             if(chatObject.contains(key_sub)){
@@ -78,8 +78,8 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<Object> message(String receiveUserId) {
-        String key = UserUtil.getUserId()+"TO"+receiveUserId;
-        String key_sub = receiveUserId+"TO"+UserUtil.getUserId();
+        String key = UserUtil.getUserId()+"AND"+receiveUserId;
+        String key_sub = receiveUserId+"AND"+UserUtil.getUserId();
         if(redisTemplate.hasKey(CommonConstant.CHAT_OBJECT)){
             Set<String> chatObject = redisTemplate.opsForSet().members(CommonConstant.CHAT_OBJECT);
             if(chatObject.contains(key_sub)){

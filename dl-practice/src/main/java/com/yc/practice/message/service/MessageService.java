@@ -30,13 +30,9 @@ public interface MessageService extends IService<Message> {
 
     /**
      * 群发消息
-     *
-     *  content:消息内容
-     *  level: 消息级别(0:INFO 1.WARNING 2.ERROR)
-     *  type: 消息类型(0:通知公告 1: 系统消息)
-     *  rid: 关联ID
+     * @param message 消息内容
      */
-    void sendAllUser(String content, int level, int type, String rid);
+    void sendAllUser(Message message);
 
 
 

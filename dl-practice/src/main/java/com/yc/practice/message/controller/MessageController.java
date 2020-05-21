@@ -2,6 +2,7 @@ package com.yc.practice.message.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
+import com.yc.core.message.entity.Message;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.message.service.MessageService;
 import io.swagger.annotations.Api;
@@ -27,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 @RestController
-@RequestMapping("/remindMessage")
+@RequestMapping("/message")
 @Slf4j
 @Api(tags = "消息提醒")
 public class MessageController {
@@ -54,11 +55,9 @@ public class MessageController {
     @PostMapping("/sendAll")
     @ApiOperation(value = "群发消息", notes = "发送消息给多个人")
     @WriteLog(opPosition = "群发消息" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void sendAll(@RequestBody JSONObject jsonObject){
-        iRemindMessageService.sendAllUser(jsonObject.getString("content"),
-                jsonObject.getInteger("level"),
-                jsonObject.getInteger("type"),
-                jsonObject.getString("rid")
-        );
+    public void sendAll(@RequestBody Message message){
+        iRemindMessageService.sendAllUser(message);
     }
+
+
 }

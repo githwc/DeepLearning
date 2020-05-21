@@ -41,7 +41,7 @@ public class MessageReceive implements Serializable {
      */
     private LocalDateTime readTime;
     /**
-     * 接收状态
+     * 接受状态(0:接收成功 1:接受失败)
      */
     private boolean receiveState;
     /**

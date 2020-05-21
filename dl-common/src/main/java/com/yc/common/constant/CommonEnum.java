@@ -195,8 +195,7 @@ public interface CommonEnum {
          * 消息接收类型
          */
         SINGLE_USER(0,"指定用户"),
-        All_USER(1,"全体用户"),
-        GROUP_USER(2,"组内用户")
+        All_USER(1,"全体用户")
         ;
         private Integer code;
         private String name;
