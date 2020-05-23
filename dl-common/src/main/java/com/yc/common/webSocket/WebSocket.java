@@ -16,6 +16,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 功能描述：websocket 操作类
+ *
+ * @ServerEndpoint：此注解相当于设置访问URL
+ *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
@@ -26,17 +29,22 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @Slf4j
-@ServerEndpoint("/websocket/{userId}")/*此注解相当于设置访问URL*/
+@ServerEndpoint("/websocket/{userId}")
 public class WebSocket {
 
-
-    /*与某个客户端的连接会话，需要通过它来给客户端发送数据*/
+    /**
+     * 与某个客户端的连接会话，需要通过它来给客户端发送数据
+     */
     private Session session;
 
-    /*用户ID*/
+    /**
+     * 用户ID
+     */
     private String userId="";
 
-    //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象
+    /**
+     * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象
+     */
     private static CopyOnWriteArraySet<WebSocket> webSockets =new CopyOnWriteArraySet<>();
     private static Map<String,Session> sessionPool = new HashMap<String,Session>();
 
@@ -79,8 +87,10 @@ public class WebSocket {
     public void onMessage(String message) {
         log.info("【websocket消息】收到客户端"+userId+"的消息:"+message);
         JSONObject obj = new JSONObject();
-        obj.put("type", "heartcheck");   //业务类型
-        obj.put("content", "心跳响应");  //消息内容
+        //业务类型
+        obj.put("type", "heartcheck");
+        //消息内容
+        obj.put("content", "心跳响应");
         session.getAsyncRemote().sendText(obj.toJSONString());
     }
 
@@ -127,7 +137,7 @@ public class WebSocket {
     }
 
     /**
-     * 单点消息（多人）
+     * 单点消息(多人)
      * @param userIds 用户ID
      * @param message 消息内容
      */

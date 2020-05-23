@@ -153,11 +153,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             } else {
                 json.put("route", "0");// 表示不生成路由
             }
-            if (isWWWHttpUrl(permission.getUrl())) {
-                json.put("path", EncoderUtil.MD5Encode(permission.getUrl(), "utf-8"));
-            } else {
-                json.put("path", permission.getUrl());
-            }
+            json.put("path", permission.getUrl());
             // 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
             json.put("name", urlToRouteName(permission.getUrl()));
             json.put("component", permission.getComponent());
@@ -174,9 +170,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 if (StringUtils.isNotEmpty(permission.getIcon())) {
                     meta.put("icon", permission.getIcon());
                 }
-            }
-            if (isWWWHttpUrl(permission.getUrl())) {
-                meta.put("url", permission.getUrl());
             }
             json.put("meta", meta);
         }
@@ -219,19 +212,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             json.put("describe", permission.getName());
             jsonArray.add(json);
         }
-    }
-
-    /**
-     * @param url
-     * @return
-     * @DESC：判断是否外网URL 例如： http://localhost:8080/lionherding/swagger-ui.html#/
-     * 支持特殊格式： {{ *  window._CONFIG['domianURL'] }}/druid/ {{ JS代码片段 }}，前台解析会自动执行JS代码片段
-     */
-    private boolean isWWWHttpUrl(String url) {
-        if (url != null && (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("{{"))) {
-            return true;
-        }
-        return false;
     }
 
     /**

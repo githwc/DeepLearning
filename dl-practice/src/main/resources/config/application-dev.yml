@@ -47,3 +47,10 @@ dl:
     img-access-path: /image/**
     file-save-path: D://upload//file//
     file-access-path: /file/**
+  encode:
+    secretKey: deepLearning-dev@v1
+  url:
+    test1: http://127.0.0.1:8080/sideRequest/test1
+    test2: http://127.0.0.1:8080/sideRequest/test2
+    test3: http://127.0.0.1:8080/sideRequest/test3
+    test4: http://127.0.0.1:8080/sideRequest/test4

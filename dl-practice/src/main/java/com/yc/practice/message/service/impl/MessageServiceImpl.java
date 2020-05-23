@@ -51,7 +51,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
     @Override
     public void sendUser(String userId, String content,int level,int type,String rid) {
-        /*记录推送消息*/
+        // 记录推送消息
         Message remindMessage = new Message();
         remindMessage.setCreateTime(LocalDateTime.now());
         remindMessage.setLevel(level);

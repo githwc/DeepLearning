@@ -12,7 +12,14 @@ package com.yc.common.constant;
  */
 public class CommonConstant {
 
-    // =============== 系统日志 START ====================
+    // =============== 基础常量 ====================
+    /**
+     * 成功码
+     */
+    public static final int SUCCESS_CODE = 200;
+
+
+    // =============== 系统日志 ====================
     /**
      * 日志类型： 普通操作
      */
@@ -76,6 +83,11 @@ public class CommonConstant {
      */
     public static final String DEFAULT_CHARSET = "UTF-8";
 
+    //================= 加解密 ====================
+    /**
+     * MD5
+     */
+    public static final String ENCODE_MD5 = "MD5";
 
     // =============== 凭证相关 ==================
 

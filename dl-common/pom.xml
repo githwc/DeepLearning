@@ -35,7 +35,6 @@
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
 
-        <!-- websocket 相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
@@ -47,13 +46,20 @@
             <version>${freemarker.version}</version>
         </dependency>
 
-        <!--commons-codec jar 是Apache开源组织提供的用于摘要运算、编码解码的包。
-                  常见的编码解码工具Base64、MD5、Hex、SHA1、DES等-->
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec.version}</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
         </dependency>
+
+        <!-- 待删除
+        commons-codec jar 是Apache开源组织提供的用于摘要运算、编码解码的包。
+                  常见的编码解码工具Base64、MD5、Hex、SHA1、DES等-->
+
+<!--        <dependency>-->
+<!--            <groupId>commons-codec</groupId>-->
+<!--            <artifactId>commons-codec</artifactId>-->
+<!--            <version>${commons-codec.version}</version>-->
+<!--        </dependency>-->
 
         <!-- jxls excel 导出 -->
         <dependency>
