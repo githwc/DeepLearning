@@ -24,3 +24,6 @@
     @Configuration: 指这个类是一个类似XML文件的配置类,里面用bean标签标记的方法需要被实例化到IOC容器中。
                     在SpringBoot中取消了XML文件并大量使用@Configuration注解的类来实现配置。
     @EnableCaching: 开启缓存
+四、mall
+    购买->选择商品->填写收货信息、确认金额->
+    去结算(创建订单)->去支付,支付完成->跳转到我的订单页

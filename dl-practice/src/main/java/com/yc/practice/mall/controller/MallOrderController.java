@@ -1,5 +1,6 @@
 package com.yc.practice.mall.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.model.form.OrderForm;
@@ -35,8 +36,8 @@ public class MallOrderController {
      * @param orderForm 订单信息
      */
     @PostMapping("/createOrder")
-    public void createOrder(@RequestBody OrderForm orderForm){
-        iMallOrderService.createOrder(orderForm);
+    public JSONObject createOrder(@RequestBody OrderForm orderForm){
+        return iMallOrderService.createOrder(orderForm);
     }
 
     /**

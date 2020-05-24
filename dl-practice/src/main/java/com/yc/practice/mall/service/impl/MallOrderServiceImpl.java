@@ -2,6 +2,7 @@ package com.yc.practice.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -68,8 +69,8 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     }
 
     @Override
-    public void createOrder(OrderForm orderForm) {
-        // 1.收货地址校验
+    public JSONObject createOrder(OrderForm orderForm) {
+        // 收货地址校验
         MallShipping mallShipping = mallShippingMapper.selectById(orderForm.getMallShippingId());
         if(ObjectUtil.isNull(mallShipping)){
             throw new ErrorException(Error.ShippingNotFound);
@@ -118,6 +119,14 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         this.mallGoodService.updateBatchById(goodList);
         // 订单变更记录
         mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),"正常订单");
+        JSONObject jsonObject = new JSONObject();
+        String shipping =
+                mallShipping.getReceiverName()+" "+mallShipping.getReceiverPhone()+ " " +
+                        mallShipping.getReceiverProvince()+" "+mallShipping.getReceiverCity()+" "+
+                        mallShipping.getReceiverArea()+" "+mallShipping.getReceiverAddress();
+        jsonObject.put("shipping",shipping);
+        jsonObject.put("payAmount",mallOrder.getPayAmount());
+        return jsonObject;
     }
 
     @Override

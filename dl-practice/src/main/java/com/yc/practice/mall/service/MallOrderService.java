@@ -1,5 +1,6 @@
 package com.yc.practice.mall.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallOrder;
@@ -25,7 +26,7 @@ public interface MallOrderService extends IService<MallOrder> {
      * 生成订单
      * @param orderForm 订单信息
      */
-    void createOrder(OrderForm orderForm);
+    JSONObject createOrder(OrderForm orderForm);
 
     /**
      * 订单分页查询

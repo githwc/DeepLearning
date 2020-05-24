@@ -70,4 +70,12 @@ public class MallGoodController {
     public void delete(@RequestParam("mallGoodId") String mallGoodId) {
         iMallGoodService.deleteAlone(mallGoodId);
     }
+
+
+    // TODO: 2020/5/24 1.根据商品类目选择商品
+    // TODO: 2020/5/24 2.优惠券
+    // TODO: 2020/5/24 3.会员
+    // TODO: 2020/5/24 4.秒杀
+    // TODO: 2020/5/24 5.隐藏路由
+    // TODO: 2020/5/24 6.菜单隐藏后还能查到
 }

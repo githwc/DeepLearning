@@ -79,6 +79,12 @@ public class OutSideRequestTest extends PracticeTest {
         log.info("==========调用結束==========");
     }
 
+    /**
+     * JSON加密的密文字符串
+     * 签名规则：将参与签名的参数（包含key=密钥），按照参数名根据ASCII码从小到大排序（字典序）；将参与签名的参数，调整为参数名=参数值，用“|”分隔连接成待签名字符串；如果参数的值为空不参与签名；参数名区分大小写；
+     * MD5对（待签名字符串+密钥）进行加密生成签名；
+     * AES加密对（JSON报文+密钥）进行加密生成密文
+     */
     @Test
     public void test(){
         JSONObject jsonObject = new JSONObject();
@@ -90,6 +96,7 @@ public class OutSideRequestTest extends PracticeTest {
         JSONObject jsonObject1 = new JSONObject();
         Map<String,String> m = new HashMap<>();
         jsonObject1.put("singData", sign);
+        jsonObject1.put("notifyData", jsonObject);
         String result = HttpClientUtil.doPostJson(outSideUrlProperties.getTest3(),jsonObject1.toJSONString());
         log.info(result);
 
