@@ -8,7 +8,6 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.SecurityProperties;
-import com.yc.common.utils.DateTimeUtil;
 import com.yc.common.utils.JwtTokenUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.mapper.SysUserMapper;
