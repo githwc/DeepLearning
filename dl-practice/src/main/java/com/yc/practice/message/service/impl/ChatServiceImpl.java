@@ -1,8 +1,8 @@
 package com.yc.practice.message.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
-import com.yc.common.utils.DateTimeUtil;
 import com.yc.common.webSocket.WebSocket;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.message.service.ChatService;
@@ -54,7 +54,7 @@ public class ChatServiceImpl implements ChatService{
         map.put("content",jsonObject.getString("content"));
         map.put("headImg",UserUtil.getUser().getHeadImg());
         map.put("userName",UserUtil.getUser().getUsername());
-        map.put("time",DateTimeUtil.dateToString(new Date()));
+        map.put("time", DateUtil.formatDateTime(new Date()));
         map.put("sysUserId",UserUtil.getUserId());
         String key = UserUtil.getUserId()+"AND"+jsonObject.getString("receiveUserId");
         String key_sub = jsonObject.getString("receiveUserId")+"AND"+UserUtil.getUserId();

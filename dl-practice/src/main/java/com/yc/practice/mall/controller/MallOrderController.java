@@ -34,6 +34,7 @@ public class MallOrderController {
     /**
      * 生成订单
      * @param orderForm 订单信息
+     * @return 收货地址 & 支付金额
      */
     @PostMapping("/createOrder")
     public JSONObject createOrder(@RequestBody OrderForm orderForm){

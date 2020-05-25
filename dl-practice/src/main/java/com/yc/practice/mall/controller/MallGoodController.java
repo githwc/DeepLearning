@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MallGoodController {
 
-    public final MallGoodService iMallGoodService;
+    private final MallGoodService iMallGoodService;
 
     @Autowired
     public MallGoodController(MallGoodService iMallGoodService){
@@ -71,8 +71,6 @@ public class MallGoodController {
         iMallGoodService.deleteAlone(mallGoodId);
     }
 
-
-    // TODO: 2020/5/24 1.根据商品类目选择商品
     // TODO: 2020/5/24 2.优惠券
     // TODO: 2020/5/24 3.会员
     // TODO: 2020/5/24 4.秒杀

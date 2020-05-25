@@ -91,4 +91,6 @@ public class MallGoodClassController {
         return iMallGoodClassService.classList();
     }
 
+
+
 }

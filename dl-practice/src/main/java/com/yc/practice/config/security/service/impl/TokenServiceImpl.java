@@ -1,6 +1,7 @@
 package com.yc.practice.config.security.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.yc.common.constant.CommonConstant;
@@ -81,9 +82,9 @@ public class TokenServiceImpl implements TokenService {
             Date iatTime = jwt.getIssuedAt();
             Date expTime = jwt.getExpiresAt();
             Date renewTime = new Date(iatTime.getTime() + securityProperties.getJwtRenewTime());
-            log.debug("签发时间：{}", DateTimeUtil.dateToString(iatTime));
-            log.debug("到期时间：{}", DateTimeUtil.dateToString(expTime));
-            log.debug("续签时间：{}", DateTimeUtil.dateToString(renewTime));
+            log.debug("签发时间：{}", DateUtil.formatDateTime(iatTime));
+            log.debug("到期时间：{}", DateUtil.formatDateTime(expTime));
+            log.debug("续签时间：{}", DateUtil.formatDateTime(renewTime));
             // 满足续签条件
             if (now.compareTo(renewTime) >= 0) {
                 String newToken = this.create(jwtTokenUtil.getName(token));

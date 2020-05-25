@@ -17,6 +17,9 @@
             <if test="query.state != null and query.state != '' ">
                 and good.state = #{query.state}
             </if>
+            <if test="query.mallGoodClassId != null and query.mallGoodClassId != '' ">
+                and good.class_id = #{query.mallGoodClassId}
+            </if>
         </where>
         order by good.sale desc , good.sort
     </select>

@@ -25,6 +25,7 @@ public interface MallOrderService extends IService<MallOrder> {
     /**
      * 生成订单
      * @param orderForm 订单信息
+     * @return 收货地址 & 支付金额
      */
     JSONObject createOrder(OrderForm orderForm);
 

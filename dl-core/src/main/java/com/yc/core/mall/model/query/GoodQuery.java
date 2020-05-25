@@ -30,4 +30,9 @@ public class GoodQuery {
      */
     private String state;
 
+    /**
+     * 商品类目
+     */
+    private String mallGoodClassId;
+
 }
