@@ -48,7 +48,8 @@ dl:
     file-save-path: D://upload//file//
     file-access-path: /file/**
   encode:
-    secretKey: deepLearning-dev@v1
+    secretKey: deepLearning-dev@secretKey
+    aesKey: deepLearning-dev@aesKey
   url:
     test1: http://127.0.0.1:8080/sideRequest/test1
     test2: http://127.0.0.1:8080/sideRequest/test2

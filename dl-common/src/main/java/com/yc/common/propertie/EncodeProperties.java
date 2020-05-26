@@ -23,4 +23,9 @@ public class EncodeProperties {
      * 密钥
      */
     private String secretKey;
+
+    /**
+     * AesKey
+     */
+    private String aesKey;
 }

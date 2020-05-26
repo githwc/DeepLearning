@@ -12,7 +12,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 /**
- * 功能描述：
+ * 功能描述：word 操作工具类
  *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
@@ -28,7 +28,7 @@ public class WordUtil {
 
     static {
         configuration = new Configuration();
-        configuration.setDefaultEncoding(CommonConstant.DEFAULT_CHARSET);
+        configuration.setDefaultEncoding(CommonConstant.CHARSET_UTF_8);
         try {
             configuration.setClassForTemplateLoading(WordUtil.class, "/ftl/");
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class WordUtil {
             response.setContentType("application/msword");
             // // 设置浏览器以下载的方式处理该文件名
             response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(StringUtils.join(fileName, ".doc"), CommonConstant.DEFAULT_CHARSET));
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(StringUtils.join(fileName, ".doc"), CommonConstant.CHARSET_UTF_8));
 
             out = response.getOutputStream();
             byte[] buffer = new byte[512];
@@ -86,7 +86,7 @@ public class WordUtil {
     private static File createDoc(Map<?, ?> dataMap, Template template,String fileName) {
         File file = new File(fileName);
         try {
-            Writer w = new OutputStreamWriter(new FileOutputStream(file), CommonConstant.DEFAULT_CHARSET);
+            Writer w = new OutputStreamWriter(new FileOutputStream(file), CommonConstant.CHARSET_UTF_8);
             template.process(dataMap, w);
             w.close();
         } catch (Exception ex) {

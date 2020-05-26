@@ -76,6 +76,10 @@ public class SysPermission implements Serializable {
      */
     private Boolean keepAlive;
     /**
+     * 是否隐藏菜单: 0:不是  1:是（默认值0）
+     */
+    private Boolean isHidden;
+    /**
      * 删除状态 0正常 1已删除
      */
     private Integer delFlag;

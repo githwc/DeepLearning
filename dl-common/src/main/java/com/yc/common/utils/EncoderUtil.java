@@ -2,9 +2,20 @@ package com.yc.common.utils;
 
 import com.yc.common.constant.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
+import javax.crypto.*;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
+import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  * 功能描述：关于加解密、加解码的工具类
@@ -21,7 +32,7 @@ public class EncoderUtil {
 
     // ================= MD5 加密 START ====================
     /**
-     * 对原始数据进行MD5加密，编码使用UTF-8，MD5加密不可逆。
+     * MD5加密,编码UTF-8,签名统一转成小写字符
      * @param cPlainText 原报文+md5密钥
      * @return MD5加密后的字符串
      */
@@ -29,7 +40,7 @@ public class EncoderUtil {
         StringBuffer tBuf = new StringBuffer();
         try {
             MessageDigest tMd = MessageDigest.getInstance(CommonConstant.ENCODE_MD5);
-            tMd.update(cPlainText.getBytes(CommonConstant.DEFAULT_CHARSET));
+            tMd.update(cPlainText.getBytes(CommonConstant.CHARSET_UTF_8));
             byte[] tByte = tMd.digest();
 
             for (int j = 0; j < tByte.length; ++j) {
@@ -50,183 +61,146 @@ public class EncoderUtil {
 
     // ================= MD5 加密 END ====================
 
+    // ================= AES 加密 START ==================
     /**
-     * @Description:URL解码
-     * @Date: 16:55 2019/5/9
-     * @Param:   encoderVal:需要解码的参数
-     * @Return:  正确解码的中文参数值
+     *  AES加密
+     *
+     * @param orignalStr 明文
+     * @param encryKey  aes密钥
+     * @return 结果描述
      */
-    public static String getURLDecoderString(String encoderVal) {
-        String result = "";
-        if (null == encoderVal) {
-            return "";
-        }
+    public static String encrypt(String orignalStr,String encryKey) {
+        String encryptMsg = "";
         try {
-            result = java.net.URLDecoder.decode(encoderVal, "UTF-8");
+            encryptMsg = base64Encode(aesEncryptToBytes(orignalStr, encryKey));
+        } catch (Exception e) {
+            log.error("AES加密失败" , e);
+        }
+        return encryptMsg;
+    }
+
+    /**
+     * base 64 encode
+     * @param bytes 待编码的byte[]
+     * @return 编码后的base 64 code
+     */
+    private static String base64Encode(byte[] bytes){
+        return new BASE64Encoder().encode(bytes);
+    }
+
+    /**
+     * AES加密
+     * @param content 待加密的内容
+     * @param encryptKey 加密密钥
+     * @return 加密后的byte[]
+     * @throws Exception
+     */
+    private static byte[] aesEncryptToBytes(String content, String encryptKey) throws Exception {
+        KeyGenerator kgen = KeyGenerator.getInstance(CommonConstant.ENCODE_AES);
+        SecureRandom random = SecureRandom.getInstance(CommonConstant.ALGORITHM_SHA1PRNG);
+        random.setSeed(encryptKey.getBytes());
+        kgen.init(128, random);
+        Cipher cipher = Cipher.getInstance(CommonConstant.ENCODE_AES);
+        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(kgen.generateKey().getEncoded(), CommonConstant.ENCODE_AES));
+        return cipher.doFinal(content.getBytes(CommonConstant.CHARSET_UTF_8));
+    }
+
+    /**
+     * Aes解密
+     * @param encryptStr 密文
+     * @param decryptKey aeskey
+     * @return
+     */
+    public static String aesDecrypt(String encryptStr, String decryptKey){
+        if(StringUtils.isNotBlank(encryptStr)) {
+            try {
+                return aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * base64解密
+     * @param base64Code base64code
+     * @return byty[]
+     * @throws Exception
+     */
+    private static byte[] base64Decode(String base64Code) throws Exception {
+        if(StringUtils.isNotEmpty(base64Code)) {
+            return (new BASE64Decoder()).decodeBuffer(base64Code);
+        }
+        return null;
+    }
+
+    private static String aesDecryptByBytes(byte[] encryptBytes, String decryptKey) throws Exception {
+        KeyGenerator kgen = KeyGenerator.getInstance(CommonConstant.ENCODE_AES);
+        SecureRandom random = SecureRandom.getInstance(CommonConstant.ALGORITHM_SHA1PRNG);
+        random.setSeed(decryptKey.getBytes());
+        kgen.init(128, random);
+        Cipher cipher = Cipher.getInstance(CommonConstant.ENCODE_AES);
+        cipher.init(2, new SecretKeySpec(kgen.generateKey().getEncoded(), CommonConstant.ENCODE_AES));
+        byte[] decryptBytes = cipher.doFinal(encryptBytes);
+        return new String(decryptBytes);
+    }
+    // ================= AES 加密 END ====================
+
+    // ================= RSA 加密 END ====================
+    /**
+     * RSA公钥加密
+     *
+     * @param str       加密字符串
+     * @param publicKey 公钥
+     * @return 密文
+     * @throws Exception 加密过程中的异常信息
+     */
+    public static String rsaEncrypt(String str, String publicKey) {
+        String resultStr = null;
+        try {
+            byte[] decoded = Base64.decodeBase64(publicKey);
+            RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance(CommonConstant.ENCODE_RSA).generatePublic(new X509EncodedKeySpec(decoded));
+            Cipher cipher = Cipher.getInstance(CommonConstant.ENCODE_RSA);
+            cipher.init(Cipher.ENCRYPT_MODE, pubKey);
+            resultStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes(CommonConstant.CHARSET_UTF_8)));
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return result;
+        return resultStr;
     }
 
     /**
-     * @Description:URL转码
-     * @Date: 17:13 2019/5/9
-     * @Param: decoderVal:需要转码的参数
-     * @Return: 正确转码的参数值
+     * RSA私钥解密
+     *
+     * @param str        加密字符串
+     * @param privateKey 私钥
+     * @return 铭文
+     * @throws Exception 解密过程中的异常信息
      */
-    public static String getURLEncoderString(String decoderVal) {
-        String result = "";
-        if (null == decoderVal) {
-            return "";
-        }
-        try {
-            result = java.net.URLEncoder.encode(decoderVal, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return result;
+    public static String rsaDecrypt(String str, String privateKey) throws Exception {
+        //64位解码加密后的字符串
+        byte[] inputByte = Base64.decodeBase64(str.getBytes(CommonConstant.CHARSET_UTF_8));
+        //base64编码的私钥
+        byte[] decoded = Base64.decodeBase64(privateKey);
+        RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance(CommonConstant.ENCODE_RSA).generatePrivate(new PKCS8EncodedKeySpec(decoded));
+        //RSA解密
+        Cipher cipher = Cipher.getInstance(CommonConstant.ENCODE_RSA);
+        cipher.init(Cipher.DECRYPT_MODE, priKey);
+        return new String(cipher.doFinal(inputByte));
     }
 
-    /**
-     * @Description:编码转换,从UTF-8到GBK
-     * @Date: 13:41 2019/5/10
-     * @Param strVal:UTF-8字符
-     * @Return: GBK字符
-     */
-    public static String UTF82GBK(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = strVal.trim();
-                strVal = new String(strVal.getBytes("UTF-8"), "GBK");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    /**
-     * @Description:编码转换：从GBK到UTF8
-     * @Date: 13:46 2019/5/10
-     * @Param:
-     * @Return:
-     */
-    public static String GBK2UTF8(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = new String(strVal.getBytes("GBK"), "UTF-8");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    /**
-     * @Description:编码转换,从“ISO8859_1”到“GBK”得到的字符串
-     * @Date: 13:44 2019/5/10
-     * @Param strVal 要转换的字符串
-     * @Return:
-     */
-    public static String ISO2GBK(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = strVal.trim();
-                strVal = new String(strVal.getBytes("ISO8859_1"), "GBK");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    /**
-     * @Description:编码转换：从“GBK”到“ISO8859_1”得到的字符串
-     * @Date: 13:45 2019/5/10
-     * @Param:
-     * @Return:
-     */
-    public static String GBK2ISO(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = new String(strVal.getBytes("GBK"), "ISO8859_1");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    /**
-     * @Description:编码转换 从ISO到UTF8
-     * @Date: 13:50 2019/5/10
-     * @Param:
-     * @Return:
-     */
-    public static String ISO2UTF8(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = new String(strVal.getBytes("ISO-8859-1"), "UTF-8");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    /**
-     * @Description:编码转换,从UTF8到ISO-8895-1
-     * @Date: 13:51 2019/5/10
-     * @Param:
-     * @Return:
-     */
-    public static String UTF82ISO(String strVal) {
-        try {
-            if (strVal == null) {
-                return "";
-            } else {
-                strVal = new String(strVal.getBytes("UTF-8"), "ISO-8859-1");
-                return strVal;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-     // ======================本类使用START=======================
-
-
-    public static String byteArrayToHexString(byte b[]) {
-        StringBuffer resultSb = new StringBuffer();
-        for (int i = 0; i < b.length; i++){
-            resultSb.append(byteToHexString(b[i]));
-        }
-        return resultSb.toString();
-    }
-
-    private static String byteToHexString(byte b) {
-        int n = b;
-        if (n < 0) {
-            n += 256;
-        }
-        int d1 = n / 16;
-        int d2 = n % 16;
-        return hexDigits[d1] + hexDigits[d2];
-    }
-
-    private static final String hexDigits[] = { "0", "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
-
-    // ======================本类使用END=======================
+    // ================= RSA 加密 END ====================
 }

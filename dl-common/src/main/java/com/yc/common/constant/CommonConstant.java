@@ -79,9 +79,14 @@ public class CommonConstant {
     public static String XML_CONTENTTYPE = "text/xml;charset=UTF-8";
 
     /**
-     * 默认编码
+     * 编码格式
      */
-    public static final String DEFAULT_CHARSET = "UTF-8";
+    public static final String CHARSET_UTF_8 = "UTF-8";
+
+    /**
+     * 编码格式
+     */
+    public static final String CHARSET_GBK = "GBK";
 
     //================= 加解密 ====================
     /**
@@ -89,6 +94,20 @@ public class CommonConstant {
      */
     public static final String ENCODE_MD5 = "MD5";
 
+    /**
+     * AES
+     */
+    public static final String ENCODE_AES = "AES";
+
+    /**
+     * RSA
+     */
+    public static final String ENCODE_RSA = "RSA";
+
+    /**
+     * SHA1PRNG 算法
+     */
+    public static final String ALGORITHM_SHA1PRNG = "SHA1PRNG";
     // =============== 凭证相关 ==================
 
     public static String X_ACCESS_TOKEN = "X-Access-Token";

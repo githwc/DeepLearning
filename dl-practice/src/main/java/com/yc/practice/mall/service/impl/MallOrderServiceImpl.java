@@ -126,6 +126,8 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
                         mallShipping.getReceiverArea()+" "+mallShipping.getReceiverAddress();
         jsonObject.put("shipping",shipping);
         jsonObject.put("payAmount",mallOrder.getPayAmount());
+        jsonObject.put("orderNo",mallOrder.getOrderNo());
+        jsonObject.put("sysUserId",mallOrder.getCreateUserId());
         return jsonObject;
     }
 

@@ -88,6 +88,8 @@ public class SysDictController {
      * @return list
      */
     @GetMapping("/getDict")
+    @ApiOperation(value = "查询指定字典",notes = "查询指定字典")
+    @WriteLog(opPosition = "查询指定字典")
     public List<SysDict> getDict(@RequestParam("skey")String skeys,@RequestParam("mode")String mode){
         return service.getDict(skeys);
     }

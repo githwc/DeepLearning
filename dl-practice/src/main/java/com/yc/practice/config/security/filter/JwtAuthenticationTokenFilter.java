@@ -72,13 +72,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter{
             String errorMsg = RestResult.error(e.getCode(), e.getMsg()).toJSONString();
             log.error(errorMsg);
             ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
-                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+                    Charset.forName(CommonConstant.CHARSET_UTF_8)));
             return;
         } catch (Exception e) {
             String errorMsg = RestResult.error(40103, e.getMessage()).toJSONString();
             log.error(errorMsg);
             ServletUtil.write(response, errorMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
-                    Charset.forName(CommonConstant.DEFAULT_CHARSET)));
+                    Charset.forName(CommonConstant.CHARSET_UTF_8)));
             return;
         }
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

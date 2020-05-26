@@ -55,7 +55,7 @@ public class HttpClientUtil {
             HttpGet httpGet = new HttpGet(uri);
             response = httpclient.execute(httpGet);
             if (response.getStatusLine().getStatusCode() == CommonConstant.SUCCESS_CODE) {
-                resultString = EntityUtils.toString(response.getEntity(), CommonConstant.DEFAULT_CHARSET);
+                resultString = EntityUtils.toString(response.getEntity(), CommonConstant.CHARSET_UTF_8);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class HttpClientUtil {
                 httpPost.setEntity(entity);
             }
             response = httpClient.execute(httpPost);
-            resultString = EntityUtils.toString(response.getEntity(), CommonConstant.DEFAULT_CHARSET);
+            resultString = EntityUtils.toString(response.getEntity(), CommonConstant.CHARSET_UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -127,7 +127,7 @@ public class HttpClientUtil {
 			httpPost.setEntity(entity);
 			// 执行http请求
 			response = httpClient.execute(httpPost);
-			resultString = EntityUtils.toString(response.getEntity(), CommonConstant.DEFAULT_CHARSET);
+			resultString = EntityUtils.toString(response.getEntity(), CommonConstant.CHARSET_UTF_8);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
