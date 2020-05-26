@@ -1,6 +1,7 @@
 package com.yc.practice;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yc.common.constant.CommonConstant;
 import com.yc.common.propertie.EncodeProperties;
 import com.yc.common.propertie.OutSideUrlProperties;
 import com.yc.common.utils.EncoderUtil;
@@ -94,7 +95,7 @@ public class OutSideRequestTest extends PracticeTest {
         // 签名
         String sign = EncoderUtil.md5(jsonObject.toJSONString()+encodeProperties.getSecretKey());
         //密文
-        String requestData = EncoderUtil.encrypt(jsonObject.toJSONString(),encodeProperties.getAesKey());
+        String requestData = EncoderUtil.aesEncrypt(jsonObject.toJSONString(),encodeProperties.getAesKey());
         JSONObject jsonObject1 = new JSONObject();
         jsonObject1.put("signData", sign);
         jsonObject1.put("requestData", requestData);
@@ -103,5 +104,26 @@ public class OutSideRequestTest extends PracticeTest {
     }
 
 
+    /**
+     * 非对称加密 [签名+密文]
+     * MD5对（待签名字符串+密钥）进行加密生成签名，签名须统一转成小写字符，编码格式UTF-8
+     * RSA加密对（JSON报文+密钥）进行加密生成密文,编码格式UTF-8
+     */
+    @Test
+    public void test2(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name","乔治");
+        jsonObject.put("age","23");
+        jsonObject.put("sysUserId","wejriowerweojos89723984asjdi");
+        // 签名
+        String sign = EncoderUtil.md5(jsonObject.toJSONString()+encodeProperties.getSecretKey());
+        //密文
+        String requestData = EncoderUtil.rsaEncrypt(jsonObject.toJSONString(), CommonConstant.RSA_PUBLIC_KEY);
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("signData", sign);
+        jsonObject1.put("requestData", requestData);
+        String result = HttpClientUtil.doPostJson(outSideUrlProperties.getTest4(),jsonObject1.toJSONString());
+        log.info(result);
+    }
 
 }

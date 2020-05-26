@@ -69,7 +69,7 @@ public class EncoderUtil {
      * @param encryKey  aes密钥
      * @return 结果描述
      */
-    public static String encrypt(String orignalStr,String encryKey) {
+    public static String aesEncrypt(String orignalStr,String encryKey) {
         String encryptMsg = "";
         try {
             encryptMsg = base64Encode(aesEncryptToBytes(orignalStr, encryKey));
