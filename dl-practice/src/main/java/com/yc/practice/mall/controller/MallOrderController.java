@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *
  * 功能描述：订单控制层
@@ -59,5 +61,15 @@ public class MallOrderController {
     public void cancelOrder(@RequestBody MallOrder mallOrder){
         this.iMallOrderService.cancelOrder(mallOrder.getMallOrderId());
     }
+
+    /**
+     * 支付回调
+     * @param request 请求信息
+     */
+    @PostMapping("/syncCallBackPay")
+    public void syncCallBackPay(HttpServletRequest request){
+        this.iMallOrderService.syncCallBackPay(request);
+    }
+
 
 }

@@ -25,12 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class MallOrderLogServiceImpl extends ServiceImpl<MallOrderLogMapper, MallOrderLog> implements MallOrderLogService {
 
     @Override
-    public void saveOrderLog(String mallOrderId, Integer state, String remark) {
+    public void saveOrderLog(String mallOrderId, Integer state,String sysUserId, String remark) {
         MallOrderLog mallOrderLog = new MallOrderLog();
         mallOrderLog.setMallOrderId(mallOrderId);
         mallOrderLog.setState(state);
         mallOrderLog.setRemark("正常订单");
-        mallOrderLog.setCreateUserId(UserUtil.getUserId());
+        mallOrderLog.setCreateUserId(sysUserId);
         this.baseMapper.insert(mallOrderLog);
     }
 }

@@ -8,6 +8,8 @@ import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.query.OrderQuery;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 功能描述：
  *
@@ -41,5 +43,11 @@ public interface MallOrderService extends IService<MallOrder> {
      * @param mallOrderId 订单ID
      */
     void cancelOrder(@RequestParam("mallOrderId")String mallOrderId);
+
+    /**
+     * 支付回调
+     * @param request 请求信息
+     */
+    void syncCallBackPay(HttpServletRequest request);
 
 }

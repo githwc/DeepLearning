@@ -37,6 +37,7 @@ dl:
       - /druid/**
       - /upload/**
       - /websocket/**
+      - /mallOrder/syncCallBackPay
   #===== 文件相关 =====
   upload:
     img-save-path: /www/upload/image/

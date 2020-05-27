@@ -1,15 +1,20 @@
 package com.yc.practice.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
+import com.yc.common.propertie.EncodeProperties;
+import com.yc.common.utils.EncoderUtil;
 import com.yc.core.mall.entity.MallGood;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.entity.MallOrderItem;
@@ -17,23 +22,31 @@ import com.yc.core.mall.entity.MallShipping;
 import com.yc.core.mall.mapper.MallOrderMapper;
 import com.yc.core.mall.mapper.MallShippingMapper;
 import com.yc.core.mall.model.form.OrderForm;
+import com.yc.core.mall.model.form.SyncCallBack;
 import com.yc.core.mall.model.query.OrderQuery;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallGoodService;
 import com.yc.practice.mall.service.MallOrderItemService;
 import com.yc.practice.mall.service.MallOrderLogService;
 import com.yc.practice.mall.service.MallOrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
 * 功能描述：
@@ -47,6 +60,7 @@ import java.util.List;
 * @Version: 1.0.0
 *
 */
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder> implements MallOrderService {
@@ -56,13 +70,15 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     private final MallGoodService mallGoodService;
     private final MallOrderLogService mallOrderLogService;
     private final MallShippingMapper mallShippingMapper;
+    private final EncodeProperties encodeProperties;
 
     @Autowired
     public MallOrderServiceImpl(MallOrderItemService mallOrderItemService,RedisTemplate redisTemplate,
                                 MallShippingMapper mallShippingMapper,MallOrderLogService mallOrderLogService,
-                                MallGoodService mallGoodService){
+                                MallGoodService mallGoodService,EncodeProperties encodeProperties){
         this.mallOrderItemService = mallOrderItemService;
         this.redisTemplate = redisTemplate;
+        this.encodeProperties = encodeProperties;
         this.mallOrderLogService = mallOrderLogService;
         this.mallGoodService = mallGoodService;
         this.mallShippingMapper = mallShippingMapper;
@@ -118,7 +134,8 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         // 减库存 加销量
         this.mallGoodService.updateBatchById(goodList);
         // 订单变更记录
-        mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),"正常订单");
+        mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),
+                UserUtil.getUserId(),"正常订单");
         JSONObject jsonObject = new JSONObject();
         String shipping =
                 mallShipping.getReceiverName()+" "+mallShipping.getReceiverPhone()+ " " +
@@ -147,9 +164,50 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
             throw new ErrorException(Error.paramError);
         }
         // 订单变更记录
-        mallOrderLogService.saveOrderLog(mallOrderId,CommonEnum.OrderLogState.INVALID.getCode(),"订单取消");
+        mallOrderLogService.saveOrderLog(mallOrderId,CommonEnum.OrderLogState.INVALID.getCode(),UserUtil.getUserId(),
+                "订单取消");
     }
 
+    @Override
+    public void syncCallBackPay(HttpServletRequest request) {
+        try {
+            request.setCharacterEncoding(CommonConstant.CHARSET_UTF_8);
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(request.getInputStream(),
+                    CommonConstant.CHARSET_UTF_8));
+            StringBuilder responseStrBuilder = new StringBuilder();
+            String inputStr;
+            while ((inputStr = streamReader.readLine()) != null){
+                responseStrBuilder.append(inputStr);
+            }
+            Map<String, String> map = JSON.parseObject(responseStrBuilder.toString(), Map.class);
+            // 获取报文密文信息
+            String notifyData = map.get("requestData");
+            // 报文解密
+            String deStr = EncoderUtil.rsaDecrypt(notifyData,CommonConstant.RSA_PRIVATE_KEY);
+            // 验签
+            String sign = EncoderUtil.md5(deStr+encodeProperties.getSecretKey());
+            //获取签名数据密文信息
+            String signMsg = map.get("signData");
+            if(StringUtils.equals(signMsg,sign)){
+                ObjectMapper mapper = new ObjectMapper();
+                SyncCallBack syncCallBack = mapper.readValue(deStr , SyncCallBack.class);
+                MallOrder mallOrder = this.baseMapper.selectOne(new LambdaQueryWrapper<MallOrder>()
+                    .eq(MallOrder::getOrderNo,syncCallBack.getOrderNo())
+                );
+                mallOrder.setState(20);
+                DateTimeFormatter df = DateTimeFormatter.ofPattern(CommonConstant.yyyyMMddHHmmss);
+                mallOrder.setPayTime(LocalDateTime.parse(syncCallBack.getPayTime(),df));
+                mallOrder.setPayType(syncCallBack.getPayType());
+                this.baseMapper.updateById(mallOrder);
+                this.mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),1,syncCallBack.getSysUserId(),
+                        "支付回调完成");
+            } else {
+                log.error("请求数据异常");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // ======================== 私有方法 ========================
     /**

@@ -104,12 +104,12 @@ public class MallOrder implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime sendTime;
     /**
-     * 交易完成时间
+     * 交易完成时间(确认收货时间)
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime endTime;
     /**
-     * 关闭时间
+     * 订单未支付关闭时间
      */
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime closeTime;

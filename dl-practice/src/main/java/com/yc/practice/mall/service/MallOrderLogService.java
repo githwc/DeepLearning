@@ -21,7 +21,8 @@ public interface MallOrderLogService extends IService<MallOrderLog> {
      * 保存订单变更记录
      * @param mallOrderId 订单号
      * @param state 状态
+     * @param sysUserId 用户ID
      * @param remark 备注
      */
-    void saveOrderLog(String mallOrderId,Integer state,String remark);
+    void saveOrderLog(String mallOrderId,Integer state,String sysUserId,String remark);
 }
