@@ -17,6 +17,7 @@
                 and ord.pay_time lt;= #{query.payEndTime}
             </if>
         </where>
+        order by ord.create_time desc
     </select>
 
 

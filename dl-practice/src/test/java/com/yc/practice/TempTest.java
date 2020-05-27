@@ -1,7 +1,11 @@
 package com.yc.practice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 功能描述：
@@ -17,4 +21,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @Slf4j
 public class TempTest {
 
+    @Test
+    public void tests(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long("1590412128000");
+        Date date = new Date(lt);
+        System.out.println(simpleDateFormat.format(date));
+    }
 }
