@@ -60,8 +60,19 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
     @Override
     public void add(MallShipping mallShipping) {
         mallShipping.setSysUserId(UserUtil.getUserId());
+        dealRegion(mallShipping);
+        this.baseMapper.insert(mallShipping);
+    }
+
+    @Override
+    public void updateShipping(MallShipping mallShipping) {
+        dealRegion(mallShipping);
+        this.baseMapper.updateById(mallShipping);
+    }
+
+    private void dealRegion(MallShipping mallShipping){
         Region region = regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-            .eq(Region::getRegionCode,mallShipping.getReceiverProvince())
+                .eq(Region::getRegionCode,mallShipping.getReceiverProvince())
         );
         mallShipping.setReceiverProvince(region.getRegionName());
         region = regionMapper.selectOne(new LambdaQueryWrapper<Region>()
@@ -72,12 +83,6 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
                 .eq(Region::getRegionCode,mallShipping.getReceiverArea())
         );
         mallShipping.setReceiverArea(region.getRegionName());
-        this.baseMapper.insert(mallShipping);
-    }
-
-    @Override
-    public void updateShipping(MallShipping mallShipping) {
-        this.baseMapper.updateById(mallShipping);
     }
 
     @Override

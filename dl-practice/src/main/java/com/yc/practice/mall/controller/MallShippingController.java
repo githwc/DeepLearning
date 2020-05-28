@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/mallShipping")
 public class MallShippingController {
 
-    public MallShippingService iMallShippingService;
+    private final MallShippingService iMallShippingService;
 
     @Autowired
     public MallShippingController (MallShippingService iMallShippingService){
