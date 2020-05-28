@@ -5,11 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.common.utils.EncoderUtil;
 import com.yc.core.cascadeList.CaseTopLevel;
 import com.yc.core.system.entity.SysPermission;
 import com.yc.core.system.mapper.SysPermissionMapper;
@@ -21,7 +19,6 @@ import com.yc.practice.system.service.SysPermissionService;
 import com.yc.practice.system.utils.PermissionOPUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -149,9 +146,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         } else if (permission.getMenuType() == 0 || permission.getMenuType() == 1) {
             json.put("id", permission.getSysPermissionId());
             if (permission.getIsRoute()) {
-                json.put("route", "1");// 表示生成路由
+                // 表示生成路由
+                json.put("route", "1");
             } else {
-                json.put("route", "0");// 表示不生成路由
+                // 表示不生成路由
+                json.put("route", "0");
             }
             json.put("path", permission.getUrl());
             // 重要规则：路由name (通过URL生成路由name,路由name供前端开发，页面跳转使用)
@@ -170,6 +169,9 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 if (StringUtils.isNotEmpty(permission.getIcon())) {
                     meta.put("icon", permission.getIcon());
                 }
+            }
+            if (permission.getIsHidden()) {
+                json.put("hidden", true);
             }
             json.put("meta", meta);
         }
@@ -336,7 +338,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                         this.baseMapper.setMenuLeaf(oldPer.getParentId(), 1);
                     }
                 }
-
             }
         }
     }

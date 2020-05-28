@@ -30,8 +30,12 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class MallOrderController {
 
+    private final MallOrderService iMallOrderService;
+
     @Autowired
-    public MallOrderService iMallOrderService;
+    public MallOrderController(MallOrderService iMallOrderService){
+        this.iMallOrderService = iMallOrderService;
+    }
 
     /**
      * 生成订单

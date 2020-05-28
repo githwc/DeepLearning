@@ -68,7 +68,7 @@ public class SysPermission implements Serializable {
      */
     private Boolean isRoute;
     /**
-     * 是否叶子结点:    1:是   0:不是
+     * 是否叶子结点: 1:是   0:不是
      */
     private Boolean isLeaf;
     /**

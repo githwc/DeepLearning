@@ -74,6 +74,10 @@ public class SysPermissionTree implements Serializable {
      */
     private boolean isLeaf;
     /**
+     * 是否隐藏菜单: 1:是 0:不是
+     */
+    private boolean isHidden;
+    /**
      * 是否路由菜单: 0:不是  1:是（默认值1）
      */
     private boolean isRoute;
@@ -132,6 +136,7 @@ public class SysPermissionTree implements Serializable {
         this.updateTime = permission.getUpdateTime();
         this.url = permission.getUrl();
         this.isRoute = permission.getIsRoute();
+        this.isHidden = permission.getIsHidden();
         this.keepAlive = permission.getKeepAlive();
         this.title=permission.getName();
         if (!permission.getIsLeaf()) {
