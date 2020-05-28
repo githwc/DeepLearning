@@ -71,7 +71,6 @@ public class MallGoodController {
         iMallGoodService.deleteAlone(mallGoodId);
     }
 
-    // TODO: 2020/5/25 1.定时器订单取消
     // TODO: 2020/5/24 2.优惠券
     // TODO: 2020/5/24 3.会员
     // TODO: 2020/5/24 4.秒杀

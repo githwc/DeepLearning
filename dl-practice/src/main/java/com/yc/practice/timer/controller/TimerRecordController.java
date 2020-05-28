@@ -26,14 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TimerRecordController {
 
-    @Autowired
-    public TimerRecordService iTimerRecordService;
+    private final TimerRecordService service;
 
-    // @Scheduled(cron="0 0/1 * * * ?")
-    public void sendMessage(){
-        log.info("开始推送");
-        JSONObject obj = new JSONObject();
-        //消息内容
-        obj.put("content", "定向推送");
+    @Autowired
+    public TimerRecordController (TimerRecordService service){
+        this.service = service;
+    }
+
+    /**
+     * 超时订单取消
+     */
+    @Scheduled(cron="0 0/5 * * * ?")
+    public void orderCheck(){
+        service.orderCheck();
     }
 }

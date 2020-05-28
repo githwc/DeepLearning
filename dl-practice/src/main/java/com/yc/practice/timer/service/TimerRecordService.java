@@ -17,4 +17,8 @@ import com.yc.core.timer.entity.TimerRecord;
  */
 public interface TimerRecordService extends IService<TimerRecord> {
 
+    /**
+     * 订单超时检查
+     */
+    void orderCheck();
 }

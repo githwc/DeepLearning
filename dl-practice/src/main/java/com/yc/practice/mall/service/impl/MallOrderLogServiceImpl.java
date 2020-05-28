@@ -29,7 +29,7 @@ public class MallOrderLogServiceImpl extends ServiceImpl<MallOrderLogMapper, Mal
         MallOrderLog mallOrderLog = new MallOrderLog();
         mallOrderLog.setMallOrderId(mallOrderId);
         mallOrderLog.setState(state);
-        mallOrderLog.setRemark("正常订单");
+        mallOrderLog.setRemark(remark);
         mallOrderLog.setCreateUserId(sysUserId);
         this.baseMapper.insert(mallOrderLog);
     }
