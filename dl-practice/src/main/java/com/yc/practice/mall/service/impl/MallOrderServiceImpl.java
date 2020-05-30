@@ -3,6 +3,7 @@ package com.yc.practice.mall.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -185,7 +186,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
             // 报文解密
             String deStr = EncoderUtil.rsaDecrypt(notifyData,CommonConstant.RSA_PRIVATE_KEY);
             // 验签
-            String sign = EncoderUtil.md5(deStr+encodeProperties.getSecretKey());
+            String sign = DigestUtil.md5Hex(deStr+encodeProperties.getSecretKey());
             //获取签名数据密文信息
             String signMsg = map.get("signData");
             if(StringUtils.equals(signMsg,sign)){
