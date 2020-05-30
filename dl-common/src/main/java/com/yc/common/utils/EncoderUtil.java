@@ -30,37 +30,6 @@ import java.security.spec.X509EncodedKeySpec;
 @Slf4j
 public class EncoderUtil {
 
-    // ================= MD5 加密 START ====================
-    /**
-     * MD5加密,编码UTF-8,签名统一转成小写字符
-     * @param cPlainText 原报文+md5密钥
-     * @return MD5加密后的字符串
-     */
-    public static String md5(String cPlainText) {
-        StringBuffer tBuf = new StringBuffer();
-        try {
-            MessageDigest tMd = MessageDigest.getInstance(CommonConstant.ENCODE_MD5);
-            tMd.update(cPlainText.getBytes(CommonConstant.CHARSET_UTF_8));
-            byte[] tByte = tMd.digest();
-
-            for (int j = 0; j < tByte.length; ++j) {
-                int i = tByte[j];
-                if (i < 0) {
-                    i += 256;
-                }
-                if (i < 16) {
-                    tBuf.append("0");
-                }
-                tBuf.append(Integer.toHexString(i));
-            }
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-        return tBuf.toString();
-    }
-
-    // ================= MD5 加密 END ====================
-
     // ================= AES 加密 START ==================
     /**
      *  AES加密

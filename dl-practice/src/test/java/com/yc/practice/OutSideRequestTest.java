@@ -1,5 +1,6 @@
 package com.yc.practice;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.yc.common.constant.CommonConstant;
 import com.yc.common.propertie.EncodeProperties;
@@ -83,8 +84,8 @@ public class OutSideRequestTest extends PracticeTest {
     /**
      * 对称加密 [签名+密文]
      * JSON加密的密文字符串
-     * MD5对（待签名字符串+密钥）进行加密生成签名，签名须统一转成小写字符，编码格式UTF-8
-     * AES加密对（JSON报文+密钥）进行加密生成密文,编码格式UTF-8
+     * MD5对(待签名字符串+密钥)进行加密生成签名,签名须统一转成小写字符,编码格式UTF-8
+     * AES加密对(JSON报文+密钥)进行加密生成密文,编码格式UTF-8
      */
     @Test
     public void test(){
@@ -93,7 +94,7 @@ public class OutSideRequestTest extends PracticeTest {
         jsonObject.put("age","23");
         jsonObject.put("sysUserId","wejriowerweojos89723984asjdi");
         // 签名
-        String sign = EncoderUtil.md5(jsonObject.toJSONString()+encodeProperties.getSecretKey());
+        String sign = DigestUtil.md5Hex(jsonObject.toJSONString()+encodeProperties.getSecretKey());
         //密文
         String requestData = EncoderUtil.aesEncrypt(jsonObject.toJSONString(),encodeProperties.getAesKey());
         JSONObject jsonObject1 = new JSONObject();
@@ -116,7 +117,7 @@ public class OutSideRequestTest extends PracticeTest {
         jsonObject.put("age","23");
         jsonObject.put("sysUserId","wejriowerweojos89723984asjdi");
         // 签名
-        String sign = EncoderUtil.md5(jsonObject.toJSONString()+encodeProperties.getSecretKey());
+        String sign = DigestUtil.md5Hex(jsonObject.toJSONString()+encodeProperties.getSecretKey());
         //密文
         String requestData = EncoderUtil.rsaEncrypt(jsonObject.toJSONString(), CommonConstant.RSA_PUBLIC_KEY);
         JSONObject jsonObject1 = new JSONObject();

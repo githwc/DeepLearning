@@ -1,11 +1,11 @@
 package com.yc.practice;
 
+import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * 功能描述：
@@ -23,9 +23,16 @@ public class TempTest {
 
     @Test
     public void tests(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long("1590412128000");
-        Date date = new Date(lt);
-        System.out.println(simpleDateFormat.format(date));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        // long lt = new Long("1590412128000");
+        // Date date = new Date(lt);
+        // System.out.println(simpleDateFormat.format(date));
+        // Calendar calendar = Calendar.getInstance();
+        // calendar.setTime(new Date());
+        // calendar.add(Calendar.DAY_OF_YEAR,-1);
+        // String dd = simpleDateFormat.format(calendar.getTime());
+        // System.out.println(dd);
+        // System.out.println(IdUtil.simpleUUID());
+        System.out.println(RandomUtil.getRandom());
     }
 }

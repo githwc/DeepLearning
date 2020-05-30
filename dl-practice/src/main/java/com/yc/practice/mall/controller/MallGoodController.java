@@ -71,7 +71,4 @@ public class MallGoodController {
         iMallGoodService.deleteAlone(mallGoodId);
     }
 
-    // TODO: 2020/5/24 2.优惠券
-    // TODO: 2020/5/24 3.会员
-    // TODO: 2020/5/24 4.秒杀
 }

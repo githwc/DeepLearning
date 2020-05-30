@@ -1,5 +1,6 @@
 package com.yc.practice.system.service.impl;
 
+import cn.hutool.core.util.IdcardUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -10,7 +11,6 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.common.utils.IdcardUtil;
 import com.yc.core.system.entity.SysUser;
 import com.yc.core.system.entity.SysUserRole;
 import com.yc.core.system.mapper.SysUserMapper;
@@ -86,7 +86,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setPassWord(passwordEncoder.encode(CommonConstant.DEFAULT_PASSWORD));
         user.setCreateUserId(UserUtil.getUserId());
         user.setAge(IdcardUtil.getAgeByIdCard(user.getIdCard()));
-        user.setSex(IdcardUtil.getSexByIdCard(user.getIdCard()));
+        user.setSex(IdcardUtil.getGenderByIdCard(user.getIdCard()));
         user.setBirthday(LocalDate.parse(IdcardUtil.getBirthByIdCard(user.getIdCard())));
         this.save(user);
         String roles = jsonObject.getString("selectedroles");

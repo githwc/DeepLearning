@@ -44,3 +44,6 @@ dl:
     img-access-path: /image/**
     file-save-path: /www/upload/file/
     file-access-path: /file/**
+  encode:
+    secretKey: deepLearning-test@secretKey
+    aesKey: deepLearning-test@aesKey

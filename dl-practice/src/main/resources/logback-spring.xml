@@ -29,7 +29,7 @@
     <property name="log.path" value="D:/logs" />
     <property name="PROJECT_NAME" value="deeplearning"/>
 
-    <springProfile name="test,uat,pro,dev">
+    <springProfile name="test,uat,prod,dev">
         <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -64,14 +64,14 @@
     <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="warn"/>
 
     <!--开发环境:打印控制台-->
-    <springProfile name="dev">
+    <springProfile name="dev,prod">
         <root level="debug">
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
     <!--生产环境:输出到文件-->
-    <springProfile name="test,uat,pro">
+    <springProfile name="test,uat,prod">
         <root level="info">
             <appender-ref ref="file" />
         </root>

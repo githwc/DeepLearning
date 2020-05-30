@@ -8,7 +8,7 @@ spring:
     port: 6379
     password:
     database: 0
-    timeout: 10000ms    # \u6307\u5B9A\u8D85\u65F6\u65F6\u95F4
+    timeout: 10000ms    #
     jedis:
       pool:
         min-idle: 1     # 连接池最小空闲连接
@@ -21,6 +21,6 @@ mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*Mapper.xml
   type-aliases-package: com.yc.core.*.entity
   configuration:
-    map-underscore-to-camel-case: true  # \u9A7C\u5CF0
+    map-underscore-to-camel-case: true  # 驼峰
   global-config:
     banner: false #关闭MP 3.0 自带的banner
