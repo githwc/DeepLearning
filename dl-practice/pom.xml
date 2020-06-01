@@ -25,19 +25,16 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!-- Web 场景 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--SpringSecurity依赖配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!--Swagger 相关：核心包:扫描程序,生成文档数据;swagger生成可视化界面-->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>

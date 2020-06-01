@@ -35,4 +35,5 @@ public class TempTest {
         // System.out.println(IdUtil.simpleUUID());
         System.out.println(RandomUtil.getRandom());
     }
+
 }

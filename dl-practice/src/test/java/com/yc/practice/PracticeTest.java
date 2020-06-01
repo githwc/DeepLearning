@@ -5,6 +5,7 @@ import com.yc.common.propertie.EncodeProperties;
 import com.yc.common.propertie.OutSideUrlProperties;
 import com.yc.common.utils.EncoderUtil;
 import com.yc.common.utils.HttpClientUtil;
+import com.yc.core.system.entity.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,5 +30,6 @@ import java.util.Map;
 @SpringBootTest
 @Slf4j
 public class PracticeTest {
+
 
 }
