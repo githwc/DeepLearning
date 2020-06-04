@@ -1,5 +1,6 @@
 package com.yc.practice.mall.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallSeckill;
 
@@ -18,11 +19,35 @@ import com.yc.core.mall.entity.MallSeckill;
 public interface MallSeckillService extends IService<MallSeckill> {
 
     /**
+     * 秒杀商品分页查询
+     * @param page 分页信息
+     * @return page
+     */
+    Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page);
+
+    /**
+     * 增加秒杀商品
+     * @param mallSeckill 商品信息
+     */
+    void add(MallSeckill mallSeckill);
+
+    /**
+     * 修改秒杀商品信息
+     * @param mallSeckill 商品信息
+     */
+    void updateSeckill(MallSeckill mallSeckill);
+
+    /**
+     * 删除指定秒杀商品
+     * @param mallSeckillId 秒杀商品ID
+     */
+    void deleteAlone(String mallSeckillId);
+
+    /**
      * 减库存
      * @param mallSeckillId 秒杀商品ID
      */
     void cutSeckill(String mallSeckillId);
-
 
     /**
      * 秒杀商品详情

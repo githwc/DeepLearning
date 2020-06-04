@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -31,6 +33,10 @@ public class MallSeckill implements Serializable {
     @TableId(value = "mall_seckill_id", type = IdType.UUID)
     private String mallSeckillId;
     /**
+     * 秒杀名称
+     */
+    private String title;
+    /**
      * 商品ID
      */
     private String mallGoodId;
@@ -45,11 +51,17 @@ public class MallSeckill implements Serializable {
     /**
      * 秒杀开启时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime seckillStartTime;
     /**
      * 秒杀结束时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime seckillEndTime;
+    /**
+     * 删除状态(0:未删除 1:已删除)
+     */
+    private Integer delFlag;
     /**
      * 创建人ID
      */
@@ -66,7 +78,5 @@ public class MallSeckill implements Serializable {
      * 修改人
      */
     private String updateUserId;
-
-
 
 }

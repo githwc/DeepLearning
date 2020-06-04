@@ -1,8 +1,10 @@
 package com.yc.practice.mall.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.mall.entity.MallSeckill;
 import com.yc.core.mall.mapper.MallSeckillMapper;
+import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallSeckillService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +26,35 @@ import org.springframework.transaction.annotation.Transactional;
 public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallSeckill> implements MallSeckillService {
 
     @Override
+    public Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page) {
+        return baseMapper.mallSeckillPage(page);
+    }
+
+    @Override
+    public void add(MallSeckill mallSeckill) {
+        mallSeckill.setCreateUserId(UserUtil.getUserId());
+        this.baseMapper.insert(mallSeckill);
+    }
+
+    @Override
+    public void updateSeckill(MallSeckill mallSeckill) {
+        mallSeckill.setUpdateUserId(UserUtil.getUserId());
+        this.baseMapper.updateById(mallSeckill);
+    }
+
+    @Override
+    public void deleteAlone(String mallSeckillId) {
+        MallSeckill mallSeckill = new MallSeckill();
+        mallSeckill.setMallSeckillId(mallSeckillId);
+        mallSeckill.setDelFlag(1);
+        this.baseMapper.updateById(mallSeckill);
+    }
+
+    @Override
     public void cutSeckill(String mallSeckillId) {
         MallSeckill mallSeckill = new MallSeckill();
         mallSeckill.setMallSeckillId(mallSeckillId);
-        // TODO: 2020/6/1  
+        // TODO: 2020/6/1
         // mallSeckill.setStock()
     }
 

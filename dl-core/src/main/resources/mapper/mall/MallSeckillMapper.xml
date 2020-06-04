@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yc.core.mall.mapper.MallSeckillMapper">
 
+    <select id="mallSeckillPage" resultType="com.yc.core.mall.entity.MallSeckill">
+        SELECT
+            seckill.*
+        FROM mall_seckill seckill
+        where del_flag = 0
+        order by seckill.seckill_end_time desc
+    </select>
+
 </mapper>

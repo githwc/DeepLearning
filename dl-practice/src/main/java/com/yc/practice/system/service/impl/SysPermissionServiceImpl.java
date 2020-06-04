@@ -280,11 +280,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             throw new ErrorException(Error.URLNotUnique);
         }
         sysPermission.setPermsCode(code);
-        //判断是否是一级菜单，是的话清空父菜单
+        // 判断是否是一级菜单，是的话清空父菜单
         if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
             sysPermission.setParentId(null);
         }
-        //设置父节点不为叶子节点
+        // 设置父节点不为叶子节点
         if (StringUtils.isNotEmpty(sysPermission.getParentId())) {
             this.baseMapper.setMenuLeaf(sysPermission.getParentId(), 0);
         }
@@ -503,6 +503,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             buttonPermission.setIsRoute(false);
             buttonPermission.setIsLeaf(true);
             buttonPermission.setKeepAlive(false);
+            buttonPermission.setIsHidden(false);
             buttonPermission.setDelFlag(0);
             buttonPermission.setCreateUserId(UserUtil.getUserId());
             this.baseMapper.insert(buttonPermission);
