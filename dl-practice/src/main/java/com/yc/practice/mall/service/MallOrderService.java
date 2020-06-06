@@ -50,4 +50,6 @@ public interface MallOrderService extends IService<MallOrder> {
      */
     void syncCallBackPay(HttpServletRequest request);
 
+    String aa();
+
 }

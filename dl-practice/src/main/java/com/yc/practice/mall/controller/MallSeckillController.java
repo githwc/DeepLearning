@@ -2,6 +2,7 @@ package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.model.vo.SeckillVO;
 import com.yc.practice.mall.service.MallSeckillService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,11 +82,12 @@ public class MallSeckillController {
     /**
      * 秒杀商品详情
      * @param mallSeckillId 主键
-     * @return detail
+     * @return (系统时间,加密串,秒杀ID)
      */
     @GetMapping("/mallSeckill")
-    public MallSeckill mallSeckill(@RequestParam("mallSeckillId")String mallSeckillId){
+    public SeckillVO mallSeckill(@RequestParam("mallSeckillId")String mallSeckillId){
         return this.iMallSeckillService.mallSeckill(mallSeckillId);
     }
+
 
 }

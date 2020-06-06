@@ -42,4 +42,5 @@ public interface MallCartService {
      * @return 我的购物车
      */
     CartForm delete(String mallGoodId);
+
 }

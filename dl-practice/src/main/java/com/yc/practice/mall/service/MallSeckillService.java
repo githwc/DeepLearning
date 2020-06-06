@@ -3,6 +3,7 @@ package com.yc.practice.mall.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.model.vo.SeckillVO;
 
 /**
  * 功能描述：
@@ -52,8 +53,8 @@ public interface MallSeckillService extends IService<MallSeckill> {
     /**
      * 秒杀商品详情
      * @param mallSeckillId 主键
-     * @return detail
+     * @return (系统时间,加密串,秒杀ID)
      */
-    MallSeckill mallSeckill(String mallSeckillId);
+    SeckillVO mallSeckill(String mallSeckillId);
 
 }

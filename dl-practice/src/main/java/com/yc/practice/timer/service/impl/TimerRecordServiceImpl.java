@@ -47,8 +47,6 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
 
     @Override
     public void orderCheck() {
-        log.info("=====================订单超时关闭==================");
-        log.info("=====================订单超时关闭==================");
         // 1.查询从创建订单开始超时30分钟的订单
         List<MallOrder> mallOrders = mallOrderMapper.selectList(new LambdaQueryWrapper<MallOrder>()
             .eq(MallOrder::getState, CommonEnum.OrderState.ORDER_STATE_10.getCode())
@@ -56,6 +54,8 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
         );
         mallOrders.forEach(i->{
             if(Duration.between(i.getCreateTime(),LocalDateTime.now()).toMinutes() > 30 ){
+                log.info("=====================订单超时关闭==================");
+                log.info("=====================订单超时关闭==================");
                 // 2.修改为订单超时
                 MallOrder mallOrder = i;
                 mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_60.getCode());

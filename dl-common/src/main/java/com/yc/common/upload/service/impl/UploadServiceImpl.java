@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述：
@@ -103,7 +104,10 @@ public class UploadServiceImpl implements UploadService {
         Long nowLong = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         sb.append(nowLong.toString());
         String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
-        String key = CommonConstant.ORDER_NO_TODAY_CACHE + date;
+        String key = CommonConstant.TODAY_ORDER_NO + date;
+        if(!redisTemplate.hasKey(key)){
+            redisTemplate.opsForValue().set(key,0,5, TimeUnit.MINUTES);
+        }
         Long increment = redisTemplate.opsForValue().increment(key,1);
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 6) {

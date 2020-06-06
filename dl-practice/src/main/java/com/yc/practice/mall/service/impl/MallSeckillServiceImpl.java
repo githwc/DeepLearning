@@ -1,13 +1,18 @@
 package com.yc.practice.mall.service.impl;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yc.common.constant.CommonConstant;
 import com.yc.core.mall.entity.MallSeckill;
 import com.yc.core.mall.mapper.MallSeckillMapper;
+import com.yc.core.mall.model.vo.SeckillVO;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallSeckillService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 /**
 * 功能描述：
@@ -59,7 +64,23 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
     }
 
     @Override
-    public MallSeckill mallSeckill(String mallSeckillId) {
-        return this.baseMapper.selectById(mallSeckillId);
+    public SeckillVO mallSeckill(String mallSeckillId) {
+        SeckillVO seckillVO = new SeckillVO();
+        MallSeckill seckill = this.baseMapper.selectById(mallSeckillId);
+        seckillVO.setSeckillStartTime(seckill.getSeckillStartTime());
+        seckillVO.setSeckillEndTime(seckill.getSeckillEndTime());
+        seckillVO.setMallGoodName(seckill.getMallGoodName());
+        seckillVO.setLocalDateTime(LocalDateTime.now());
+        seckillVO.setMd5(DigestUtil.md5Hex(seckill.getMallSeckillId()+ CommonConstant.SLAT));
+        if(LocalDateTime.now().isBefore(seckill.getSeckillStartTime())){
+            seckillVO.setState("0");
+        }else if (LocalDateTime.now().isEqual(seckill.getSeckillStartTime())|| LocalDateTime.now().isEqual(seckill.getSeckillEndTime())){
+            seckillVO.setState("1");
+        } else if(LocalDateTime.now().isAfter(seckill.getSeckillStartTime()) && LocalDateTime.now().isBefore(seckill.getSeckillEndTime())){
+            seckillVO.setState("1");
+        } else {
+            seckillVO.setState("2");
+        }
+        return seckillVO;
     }
 }
