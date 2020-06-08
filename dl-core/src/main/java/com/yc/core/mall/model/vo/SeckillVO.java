@@ -1,5 +1,6 @@
 package com.yc.core.mall.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yc.core.mall.entity.MallSeckill;
 import lombok.Data;
 
@@ -30,6 +31,7 @@ public class SeckillVO extends MallSeckill implements Serializable {
     /**
      * 系统当前时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime localDateTime;
 
     /**

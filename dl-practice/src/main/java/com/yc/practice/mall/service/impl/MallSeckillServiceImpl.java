@@ -4,11 +4,18 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonConstant;
+import com.yc.common.global.error.Error;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.entity.MallSeckillSuccess;
 import com.yc.core.mall.mapper.MallSeckillMapper;
+import com.yc.core.mall.mapper.MallSeckillSuccessMapper;
+import com.yc.core.mall.model.form.SeckillForm;
 import com.yc.core.mall.model.vo.SeckillVO;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallSeckillService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +36,13 @@ import java.time.LocalDateTime;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallSeckill> implements MallSeckillService {
+
+    private MallSeckillSuccessMapper mallSeckillSuccessMapper;
+
+    @Autowired
+    public MallSeckillServiceImpl(MallSeckillSuccessMapper mallSeckillSuccessMapper){
+        this.mallSeckillSuccessMapper = mallSeckillSuccessMapper;
+    }
 
     @Override
     public Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page) {
@@ -56,14 +70,6 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
     }
 
     @Override
-    public void cutSeckill(String mallSeckillId) {
-        MallSeckill mallSeckill = new MallSeckill();
-        mallSeckill.setMallSeckillId(mallSeckillId);
-        // TODO: 2020/6/1
-        // mallSeckill.setStock()
-    }
-
-    @Override
     public SeckillVO mallSeckill(String mallSeckillId) {
         SeckillVO seckillVO = new SeckillVO();
         MallSeckill seckill = this.baseMapper.selectById(mallSeckillId);
@@ -72,6 +78,9 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
         seckillVO.setMallGoodName(seckill.getMallGoodName());
         seckillVO.setLocalDateTime(LocalDateTime.now());
         seckillVO.setMd5(DigestUtil.md5Hex(seckill.getMallSeckillId()+ CommonConstant.SLAT));
+        seckillVO.setSeckillStartTime(seckill.getSeckillStartTime());
+        seckillVO.setSeckillEndTime(seckill.getSeckillEndTime());
+        // 状态(0:未开始 1:开始秒杀 2:已结束)
         if(LocalDateTime.now().isBefore(seckill.getSeckillStartTime())){
             seckillVO.setState("0");
         }else if (LocalDateTime.now().isEqual(seckill.getSeckillStartTime())|| LocalDateTime.now().isEqual(seckill.getSeckillEndTime())){
@@ -83,4 +92,30 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
         }
         return seckillVO;
     }
+
+    @Override
+    public void execSeckill(SeckillForm seckillForm) {
+        // 验签
+        String md5 = DigestUtil.md5Hex(seckillForm.getMallSeckillId()+ CommonConstant.SLAT);
+        if(StringUtils.equals(seckillForm.getMd5(),md5)){
+            // 执行秒杀逻辑: 1.减库存.2.记录购买行为
+            MallSeckillSuccess mallSeckillSuccess = new MallSeckillSuccess();
+            mallSeckillSuccess.setMallSeckillId(seckillForm.getMallSeckillId());
+            mallSeckillSuccess.setSysUserId(UserUtil.getUserId());
+            try {
+                mallSeckillSuccessMapper.insert(mallSeckillSuccess);
+            }catch (Exception e){
+                throw new ErrorException(Error.DuplicateSeckill);
+            }
+            seckillForm.setKillTime(LocalDateTime.now().toString());
+            int result = this.baseMapper.reduceNumber(seckillForm);
+            if(result<=0){
+                throw new ErrorException(Error.SeckillOver);
+            }
+        } else {
+            throw new ErrorException(Error.IllegalRequest);
+        }
+    }
+
+
 }

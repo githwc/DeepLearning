@@ -3,6 +3,7 @@ package com.yc.core.mall.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.model.form.SeckillForm;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 /**
@@ -27,4 +28,11 @@ public interface MallSeckillMapper extends BaseMapper<MallSeckill> {
      * @return page
      */
     Page<MallSeckill> mallSeckillPage(@Param("page") Page<MallSeckill> page);
+
+    /**
+     * 减库存
+     * @param form 秒杀信息
+     * @return int
+     */
+    Integer reduceNumber(@Param("param") SeckillForm form);
 }

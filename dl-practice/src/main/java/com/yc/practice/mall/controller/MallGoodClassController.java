@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/mallGoodClass")
-public class MallGoodClassController {
+public class MallGoodClassController  {
 
     private final MallGoodClassService iMallGoodClassService;
 
@@ -90,7 +90,6 @@ public class MallGoodClassController {
     public List<MallGoodClass> classList(){
         return iMallGoodClassService.classList();
     }
-
 
 
 }

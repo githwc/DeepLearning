@@ -3,6 +3,7 @@ package com.yc.practice.mall.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.model.form.SeckillForm;
 import com.yc.core.mall.model.vo.SeckillVO;
 
 /**
@@ -46,9 +47,9 @@ public interface MallSeckillService extends IService<MallSeckill> {
 
     /**
      * 减库存
-     * @param mallSeckillId 秒杀商品ID
+     * @param seckillForm 秒杀商品
      */
-    void cutSeckill(String mallSeckillId);
+    void execSeckill(SeckillForm seckillForm);
 
     /**
      * 秒杀商品详情

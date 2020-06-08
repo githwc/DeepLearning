@@ -22,6 +22,7 @@ public enum Error implements IError {
     ParameterNotFound(403, 40102, "请求参数错误"),
     TokenError(403, 40103, "登录信息已失效，请重新登录！"),
     GetCodeAgain(403, 40104, "验证码不存在!"),
+    IllegalRequest(403, 40105, "非法请求"),
 
     /**
      * 用户异常
@@ -117,6 +118,16 @@ public enum Error implements IError {
      * 金额计算有误
      */
     AmountError(200, 20008, "金额计算有误"),
+
+    /**
+     * 重复秒杀
+     */
+    DuplicateSeckill(200,20009,"请勿重复秒杀!"),
+
+    /**
+     * 秒杀结束
+     */
+    SeckillOver(200,20010,"秒杀结束!"),
     ;
 
     /**

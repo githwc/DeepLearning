@@ -44,6 +44,7 @@ dl:
     - /upload/**
     - /websocket/**
     - /mallOrder/syncCallBackPay
+    - /mallSeckill/**
   #===== 文件相关 =====
   upload:
     img-save-path: D://upload//image//

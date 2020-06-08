@@ -2,6 +2,7 @@ package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallSeckill;
+import com.yc.core.mall.model.form.SeckillForm;
 import com.yc.core.mall.model.vo.SeckillVO;
 import com.yc.practice.mall.service.MallSeckillService;
 import lombok.extern.slf4j.Slf4j;
@@ -71,15 +72,6 @@ public class MallSeckillController {
     }
 
     /**
-     * 减库存
-     * @param mallSeckillId 秒杀商品ID
-     */
-    @PutMapping("/cutSeckill")
-    public void cutSeckill(@RequestParam("mallSeckillId") String mallSeckillId){
-        this.iMallSeckillService.cutSeckill(mallSeckillId);
-    }
-
-    /**
      * 秒杀商品详情
      * @param mallSeckillId 主键
      * @return (系统时间,加密串,秒杀ID)
@@ -89,5 +81,13 @@ public class MallSeckillController {
         return this.iMallSeckillService.mallSeckill(mallSeckillId);
     }
 
+    /**
+     * 执行秒杀
+     * @param seckillForm 秒杀提交页
+     */
+    @PutMapping("/execSeckill")
+    public void execSeckill(@RequestBody SeckillForm seckillForm){
+        this.iMallSeckillService.execSeckill(seckillForm);
+    }
 
 }

@@ -10,4 +10,13 @@
         order by seckill.seckill_end_time desc
     </select>
 
+    <update id="reduceNumber">
+       UPDATE mall_seckill set stock = stock -1
+       where mall_seckill_id = #{param.mallSeckillId}
+       AND DATE_FORMAT(seckill_start_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]> DATE_FORMAT(#{param.killTime},'%Y-%m-%d %H:%i:%s')
+       AND DATE_FORMAT(seckill_end_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ >= ]]> DATE_FORMAT(#{param.killTime},'%Y-%m-%d
+        %H:%i:%s')
+       AND stock >0
+   </update>
+
 </mapper>
