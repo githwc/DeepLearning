@@ -6,6 +6,9 @@ import com.yc.core.mall.entity.MallSeckill;
 import com.yc.core.mall.model.form.SeckillForm;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Map;
+
 /**
  *
  * 功能描述：
@@ -35,4 +38,12 @@ public interface MallSeckillMapper extends BaseMapper<MallSeckill> {
      * @return int
      */
     Integer reduceNumber(@Param("param") SeckillForm form);
+
+    /**
+     * 使用存储过程执行秒杀
+     *
+     * @param param 入参
+     */
+    void killByProcedure(Map<String, Object> param);
+
 }

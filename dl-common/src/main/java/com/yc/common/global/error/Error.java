@@ -63,7 +63,7 @@ public enum Error implements IError {
     /**
      * 服务器异常
      */
-    ServiceError(500, 50000, "内部错误"),
+    ServiceError(500, 50000, "系统错误"),
 
     // ===================== 业务层错误 ==================
     /**

@@ -46,7 +46,7 @@ public interface MallSeckillService extends IService<MallSeckill> {
     void deleteAlone(String mallSeckillId);
 
     /**
-     * 减库存
+     * 执行秒杀
      * @param seckillForm 秒杀商品
      */
     void execSeckill(SeckillForm seckillForm);
@@ -57,5 +57,11 @@ public interface MallSeckillService extends IService<MallSeckill> {
      * @return (系统时间,加密串,秒杀ID)
      */
     SeckillVO mallSeckill(String mallSeckillId);
+
+    /**
+     * 执行秒杀
+     * @param seckillForm 秒杀商品
+     */
+    void execSeckillByProcedure(SeckillForm seckillForm);
 
 }

@@ -13,10 +13,21 @@
     <update id="reduceNumber">
        UPDATE mall_seckill set stock = stock -1
        where mall_seckill_id = #{param.mallSeckillId}
-       AND DATE_FORMAT(seckill_start_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]> DATE_FORMAT(#{param.killTime},'%Y-%m-%d %H:%i:%s')
-       AND DATE_FORMAT(seckill_end_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ >= ]]> DATE_FORMAT(#{param.killTime},'%Y-%m-%d
-        %H:%i:%s')
+       AND DATE_FORMAT(seckill_start_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]>
+           DATE_FORMAT(#{param.killTime},'%Y-%m-%d %H:%i:%s')
+       AND DATE_FORMAT(seckill_end_time,'%Y-%m-%d %H:%i:%s') <![CDATA[ >= ]]>
+           DATE_FORMAT(#{param.killTime},'%Y-%m-%d %H:%i:%s')
        AND stock >0
    </update>
+
+    <select id="killByProcedure" statementType="CALLABLE">
+        call execute_seckill(
+          #{mallSeckillId,jdbcType=VARCHAR,mode=IN},
+          #{sysUserId,jdbcType=VARCHAR,mode=IN},
+          #{killTime,jdbcType=TIMESTAMP,mode=IN},
+          #{result,jdbcType=INTEGER,mode=OUT}
+        )
+    </select>
+
 
 </mapper>

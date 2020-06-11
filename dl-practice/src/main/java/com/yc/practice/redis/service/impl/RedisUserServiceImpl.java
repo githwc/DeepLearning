@@ -4,10 +4,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yc.common.constant.CommonConstant;
 import com.yc.core.redisPractice.entity.RedisUser;
 import com.yc.core.redisPractice.mapper.RedisUserMapper;
 import com.yc.core.redisPractice.model.RedisUserQuery;
-import com.yc.practice.redis.constant.RedisConstant;
 import com.yc.practice.redis.service.RedisUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -46,13 +46,13 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
     }
 
     /**
-     * 获取信息策略：先从缓存中获取用户，没有则取数据表中取数据，再将数据写入缓存
+     * 获取信息策略：先从缓存中获取用户，没有则取数据表中数据，再将数据写入缓存
      * @param id 用户ID
      * @return
      */
     @Override
     public RedisUser findUserById(String id) {
-        String key = RedisConstant.USER_BY_ID_ + id;
+        String key = CommonConstant.USER_BY_ID_ + id;
         ValueOperations<String,RedisUser> operations = redisTemplate.opsForValue();
         // 判断redis中是否有键为key的缓存
         if(redisTemplate.hasKey(key)){
@@ -61,7 +61,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
         }else{
             RedisUser redisUser = this.baseMapper.selectById(id);
             // 写入缓存
-            operations.set(RedisConstant.USER_BY_ID_+redisUser.getRedisUserId(),redisUser);
+            operations.set(CommonConstant.USER_BY_ID_+redisUser.getRedisUserId(),redisUser);
             return redisUser;
         }
     }
@@ -77,7 +77,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
         int result = this.baseMapper.insert(redisUser);
         if(result > 0){
             ValueOperations operations = redisTemplate.opsForValue();
-            operations.set(RedisConstant.USER_BY_ID_ + redisUser.getRedisUserId(),this.baseMapper.selectById(redisUser.getRedisUserId()));
+            operations.set(CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId(),this.baseMapper.selectById(redisUser.getRedisUserId()));
         }
     }
 
@@ -90,7 +90,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
         int result = this.baseMapper.updateById(redisUser);
         if(result > 0){
             ValueOperations operations = redisTemplate.opsForValue();
-            String key = RedisConstant.USER_BY_ID_ + redisUser.getRedisUserId();
+            String key = CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId();
             if(redisTemplate.hasKey(key)){
                 redisTemplate.delete(key);
             }
@@ -110,7 +110,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
             .eq(RedisUser::getRedisUserId,id)
         );
         if(result > 0){
-            String key = RedisConstant.USER_BY_ID_ + id;
+            String key = CommonConstant.USER_BY_ID_ + id;
             if(redisTemplate.hasKey(key)){
                 redisTemplate.delete(key);
             }
@@ -122,7 +122,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
         int result = this.baseMapper.updateById(redisUser);
         if(result > 0){
             ValueOperations operations = redisTemplate.opsForValue();
-            String key = RedisConstant.USER_BY_ID_ + redisUser.getRedisUserId();
+            String key = CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId();
             if(redisTemplate.hasKey(key)){
                 redisTemplate.delete(key);
             }
@@ -136,7 +136,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
 
     @Override
     public boolean expireState(String redisUserId) {
-        String key = RedisConstant.USER_BY_ID_ + redisUserId;
+        String key = CommonConstant.USER_BY_ID_ + redisUserId;
         if(redisTemplate.hasKey(key)){
             return true;
         }

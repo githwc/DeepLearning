@@ -14,27 +14,37 @@ package com.yc.common.constant;
  */
 public interface CommonEnum {
 
-    enum DelFlag implements CommonEnum{
+    enum DelFlag implements CommonEnum {
         /**
          * 删除状态
          */
-        DEL(1,"已删除"),
-        NO_DEL(0,"未删除")
+        DEL(1, "已删除"),
+        NO_DEL(0, "未删除"),
         ;
 
         private Integer code;
-        private String  name;
+        private String name;
 
-        DelFlag(Integer code,String name){
+        DelFlag(Integer code, String name) {
             this.code = code;
             this.name = name;
         }
 
-        public Integer getCode(){
+        public Integer getCode() {
             return code;
         }
-        public String getName(){
+
+        public String getName() {
             return name;
+        }
+
+        public static String getEnumByCode(int code) {
+            for (DelFlag bt : values()) {
+                if (bt.code == code) {
+                    return bt.getName();
+                }
+            }
+            return "";
         }
     }
 

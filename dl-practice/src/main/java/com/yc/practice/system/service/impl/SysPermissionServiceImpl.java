@@ -100,7 +100,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             if (json == null) {
                 continue;
             }
-            //@2
+            // @2
             if (parentJson == null && StringUtils.isEmpty(tempPid)) {
                 jsonArray.add(json);
                 if (!permission.getIsLeaf()) {

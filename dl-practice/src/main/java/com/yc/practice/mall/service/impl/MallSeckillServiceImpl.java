@@ -14,12 +14,18 @@ import com.yc.core.mall.model.form.SeckillForm;
 import com.yc.core.mall.model.vo.SeckillVO;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallSeckillService;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 * 功能描述：
@@ -34,14 +40,15 @@ import java.time.LocalDateTime;
 *
 */
 @Service
-@Transactional(rollbackFor = Exception.class)
 public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallSeckill> implements MallSeckillService {
 
     private MallSeckillSuccessMapper mallSeckillSuccessMapper;
+    private final RedisTemplate redisTemplate;
 
     @Autowired
-    public MallSeckillServiceImpl(MallSeckillSuccessMapper mallSeckillSuccessMapper){
+    public MallSeckillServiceImpl(MallSeckillSuccessMapper mallSeckillSuccessMapper,RedisTemplate redisTemplate){
         this.mallSeckillSuccessMapper = mallSeckillSuccessMapper;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -72,7 +79,16 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
     @Override
     public SeckillVO mallSeckill(String mallSeckillId) {
         SeckillVO seckillVO = new SeckillVO();
-        MallSeckill seckill = this.baseMapper.selectById(mallSeckillId);
+        MallSeckill seckill = new MallSeckill();
+        String key = CommonConstant.MALL_SECKILL_+mallSeckillId;
+        ValueOperations<String, MallSeckill> operations = redisTemplate.opsForValue();
+        if(redisTemplate.hasKey(key)){
+            seckill = operations.get(key);
+        } else {
+            seckill = this.baseMapper.selectById(mallSeckillId);
+            operations.set(CommonConstant.MALL_SECKILL_+mallSeckillId,seckill);
+            redisTemplate.opsForValue().set(key,seckill);
+        }
         seckillVO.setSeckillStartTime(seckill.getSeckillStartTime());
         seckillVO.setSeckillEndTime(seckill.getSeckillEndTime());
         seckillVO.setMallGoodName(seckill.getMallGoodName());
@@ -93,29 +109,66 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
         return seckillVO;
     }
 
+    /**
+     *  使用注解控制事务:
+     *      1.保证事务方法的执行时间尽可能短,不要穿插其他网络操作RPC/HTTP请求或者剥离到事务方法外部
+     *      2.不是所有的方法都需要事务,如一些查询的service || 只有一条修改操作的service
+     */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void execSeckill(SeckillForm seckillForm) {
         // 验签
         String md5 = DigestUtil.md5Hex(seckillForm.getMallSeckillId()+ CommonConstant.SLAT);
-        if(StringUtils.equals(seckillForm.getMd5(),md5)){
-            // 执行秒杀逻辑: 1.减库存.2.记录购买行为
-            MallSeckillSuccess mallSeckillSuccess = new MallSeckillSuccess();
-            mallSeckillSuccess.setMallSeckillId(seckillForm.getMallSeckillId());
-            mallSeckillSuccess.setSysUserId(UserUtil.getUserId());
-            try {
-                mallSeckillSuccessMapper.insert(mallSeckillSuccess);
-            }catch (Exception e){
-                throw new ErrorException(Error.DuplicateSeckill);
-            }
-            seckillForm.setKillTime(LocalDateTime.now().toString());
-            int result = this.baseMapper.reduceNumber(seckillForm);
-            if(result<=0){
-                throw new ErrorException(Error.SeckillOver);
-            }
-        } else {
+        if(!StringUtils.equals(md5,seckillForm.getMd5())){
             throw new ErrorException(Error.IllegalRequest);
+        }
+        // 执行秒杀逻辑: 1.减库存.2.记录购买行为
+        MallSeckillSuccess mallSeckillSuccess = new MallSeckillSuccess();
+        mallSeckillSuccess.setMallSeckillId(seckillForm.getMallSeckillId());
+        mallSeckillSuccess.setSysUserId(UserUtil.getUserId());
+        try {
+            mallSeckillSuccessMapper.insert(mallSeckillSuccess);
+        }catch (Exception e){
+            throw new ErrorException(Error.DuplicateSeckill);
+        }
+        seckillForm.setKillTime(LocalDateTime.now().toString());
+        int result = this.baseMapper.reduceNumber(seckillForm);
+        if(result<=0){
+            throw new ErrorException(Error.SeckillOver);
         }
     }
 
+
+    /**
+     * 基于存储过程执行秒杀
+     *
+     *  注:存储过程优化的是事务行级锁持有的时间
+     *
+     * @param seckillForm 入参
+     */
+    @Override
+    public void execSeckillByProcedure(SeckillForm seckillForm){
+        // 验签
+        String md5 = DigestUtil.md5Hex(seckillForm.getMallSeckillId()+ CommonConstant.SLAT);
+        if(!StringUtils.equals(md5,seckillForm.getMd5())){
+            throw new ErrorException(Error.IllegalRequest);
+        }
+        // 记录购买信息,减库存
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("mallSeckillId", seckillForm.getMallSeckillId());
+        map.put("killTime",LocalDateTime.now().toString());
+        map.put("sysUserId", UserUtil.getUserId());
+        map.put("result", null);
+        // 执行存储过程 赋值result
+        this.baseMapper.killByProcedure(map);
+        int result = MapUtils.getInteger(map, "result", -2);
+        if(result == 0){
+            throw new ErrorException(Error.SeckillOver);
+        } else if(result == -1) {
+            throw new ErrorException(Error.DuplicateSeckill);
+        } else if(result == -2) {
+            throw new ErrorException(Error.ServiceError);
+        }
+    }
 
 }

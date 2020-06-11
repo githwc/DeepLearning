@@ -157,9 +157,29 @@ public class CommonConstant {
     public static final String CHAT_OBJECT = "CHAT_OBJECT";
 
     /**
-     * 购物车缓存
+     * 购物车
      */
     public static final String CART = "CART_";
+
+    /**
+     * 秒杀项目
+     */
+    public static final String MALL_SECKILL_ = "MALL_SECKILL_";
+
+    /**
+     * 用户ID
+     */
+    public final static String USER_BY_ID_ = "USER_BY_ID_";
+
+    /**
+     * 总成绩排名
+     */
+    public final static String SCORE_BANK = "SCORE_BANK";
+
+    /**
+     * 设备号
+     */
+    public final static String DEVICE_REPAIR = "DEVICE_REPAIR";
 
     // ====================== 图片格式 ======================
     /**

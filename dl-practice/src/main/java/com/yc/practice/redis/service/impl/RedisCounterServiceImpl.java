@@ -1,6 +1,6 @@
 package com.yc.practice.redis.service.impl;
 
-import com.yc.practice.redis.constant.RedisConstant;
+import com.yc.common.constant.CommonConstant;
 import com.yc.practice.redis.service.RedisCounterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class RedisCounterServiceImpl implements RedisCounterService {
 
     @Override
     public String importDevice() {
-        String key = RedisConstant.DEVICE_REPAIR;
+        String key = CommonConstant.DEVICE_REPAIR;
         if(redisTemplate.hasKey(key)){
             if((int)(redisTemplate.opsForValue().get(key)) > 5){
                 return "操作过于频繁，请稍后再试！";
@@ -71,7 +71,8 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     private Long incr(String key, long liveTime) {
         RedisAtomicLong entityIdCounter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
         Long increment = entityIdCounter.getAndIncrement();
-        if ((null == increment || increment.longValue() == 0) && liveTime > 0) {//初始设置过期时间
+        // 初始设置过期时间
+        if ((null == increment || increment.longValue() == 0) && liveTime > 0) {
             entityIdCounter.expire(liveTime, TimeUnit.MINUTES);
         }
         return increment;
