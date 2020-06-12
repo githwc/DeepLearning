@@ -193,13 +193,11 @@ public class CommonConstant {
      */
     public final static String DEFAULT_PASSWORD = "123456";
 
-    // ======================= 日期格式 ========================
+    // ======================= 日期格式 =======================
     /**
      * 2020-05-05 12:12:23
      */
     public static final String yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
-
-
 
 
 }

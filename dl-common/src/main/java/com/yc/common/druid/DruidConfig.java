@@ -52,7 +52,7 @@ public class DruidConfig {
         Map<String,String> initParams = new HashMap<String, String>();
         initParams.put("loginUsername","xieyc");
         initParams.put("loginPassword","xieyc");
-        //默认就是允许所有访问:可设置为""
+        // 默认就是允许所有访问:可设置为""
         initParams.put("allow","127.0.0.1");
         //拒绝访问
         initParams.put("deny","192.168.15.21");

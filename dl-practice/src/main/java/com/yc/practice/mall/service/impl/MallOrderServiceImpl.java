@@ -163,7 +163,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
                 .eq(MallOrder::getMallOrderId,mallOrderId)
         );
         if(!flag){
-            throw new ErrorException(Error.paramError);
+            throw new ErrorException(Error.ParameterNotFound);
         }
         // 订单变更记录
         mallOrderLogService.saveOrderLog(mallOrderId,CommonEnum.OrderLogState.INVALID.getCode(),UserUtil.getUserId(),

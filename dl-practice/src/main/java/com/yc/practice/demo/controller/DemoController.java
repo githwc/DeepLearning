@@ -1,14 +1,13 @@
 package com.yc.practice.demo.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.common.global.error.Error;
-import com.yc.common.global.error.ErrorException;
 import com.yc.core.demo.entity.Demo;
 import com.yc.core.demo.model.DemoQuery;
 import com.yc.practice.demo.service.DemoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 
 /**
  * 功能描述：Demo 控制层

@@ -60,9 +60,9 @@ public class MallGoodClassServiceImpl extends ServiceImpl<MallGoodClassMapper, M
     public void deleteAlone(String mallGoodClassId) {
         MallGoodClass mallGoodClass = this.getById(mallGoodClassId);
         if(mallGoodClass == null) {
-            throw new ErrorException(Error.paramError);
+            throw new ErrorException(Error.ParameterNotFound);
         }else {
-            //逻辑删除子类目
+            // 逻辑删除子类目
             List<MallGoodClass> list = this.baseMapper.selectList(new LambdaQueryWrapper<MallGoodClass>()
                 .eq(MallGoodClass::getParentId,mallGoodClassId)
                     .eq(MallGoodClass::getState,0)

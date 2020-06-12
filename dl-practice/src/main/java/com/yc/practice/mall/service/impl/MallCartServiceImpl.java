@@ -69,11 +69,11 @@ public class MallCartServiceImpl implements MallCartService {
         if (ObjectUtil.isNull(dbMallGood)) {
             throw new ErrorException(Error.GoodError);
         }
-        //  判断商品状态是否正常
+        // 判断商品状态是否正常
         if (!StringUtils.equals(dbMallGood.getState(), CommonEnum.GoodState.GOOD_UP.getCode())) {
             throw new ErrorException(Error.GoodNotUp);
         }
-        //    判断商品库存是否充足
+        // 判断商品库存是否充足
         if (dbMallGood.getStock() <= 0) {
             throw new ErrorException(Error.GoodStock);
         }

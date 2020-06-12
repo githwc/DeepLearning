@@ -56,7 +56,7 @@ public class LogAspect {
                     jp.getSignature().getDeclaringTypeName()+"."+jp.getSignature().getName(),
                     costTimeMillis,CommonConstant.OPSTATE_FAILURE);
             ErrorException error = (ErrorException)throwable;
-            throw new ErrorException(error.getCode(),error.getHttpStatusCode(),error.getMsg());
+            throw new ErrorException(error.getHttpStatusCode(),error.getCode(),error.getMsg());
         }
     }
 

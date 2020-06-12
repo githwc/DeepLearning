@@ -2,7 +2,15 @@ package com.yc.common.global.error;
 
 /**
  * 功能描述：异常代码枚举
- *  [throw new ErrorException(DlError.RoleNoDelete);]
+ *  一、[throw new ErrorException(DlError.RoleNoDelete);]
+ *  二、
+ *      httpStatusCode: http响应码(非200前端进入error代码逻辑块)
+ *      code:           平台响应码
+ *      msg:            响应信息
+ *  三、
+ *      401:缺乏有效身份认证凭证,多指未登录
+ *      403:服务器拒绝响应,权限不足
+ *
  *
  * <p>版权所有：</p>
  * 未经本人许可，不得以任何方式复制或使用本程序任何部分
@@ -17,53 +25,48 @@ public enum Error implements IError {
     /**
      * 安全认证
      */
-    AuthError(403, 40100, "您的账号已在异地登录,请注意个人信息安全!"),
+    AuthError(401, 40100, "您的账号已在异地登录,请注意个人信息安全!"),
+    TokenError(401, 99999, "登录信息已失效，请重新登录！"),
     CheckCodeError(403, 40101, "验证码错误"),
     ParameterNotFound(403, 40102, "请求参数错误"),
-    TokenError(403, 40103, "登录信息已失效，请重新登录！"),
     GetCodeAgain(403, 40104, "验证码不存在!"),
     IllegalRequest(403, 40105, "非法请求"),
 
     /**
      * 用户异常
      */
-    LoginNameOrPwdError(400, 42010, "用户名或密码错误"),
-    LoginPwdError(400, 42011, "用户密码错误"),
-    UserDeleted(400, 42000, "用户已注销"),
-    UserDisabled(400, 42004, "用户已禁用"),
-    UserExisted(400, 40203, "用户已存在"),
-    UserNotFound(404, 40403, "用户不存在"),
-    LoginNameIsNull(400, 42002, "用户名不能为空"),
-    AccountLock(400, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
-
-    /**
-     * 入参异常
-     */
-    paramError(400,40001,"参数错误!"),
+    LoginNameOrPwdError(403, 42010, "用户名或密码错误"),
+    LoginPwdError(403, 42011, "用户密码错误"),
+    UserDeleted(403, 42000, "用户已注销"),
+    UserDisabled(403, 42004, "用户已禁用"),
+    UserExisted(403, 40203, "用户已存在"),
+    UserNotFound(403, 40403, "用户不存在"),
+    LoginNameIsNull(403, 42002, "用户名不能为空"),
+    AccountLock(403, 42001, "该账号密码输入错误五次，请10分钟以后重试"),
 
     /**
      * 字典管理
      */
-    PathIsNull(400,40004,"字典路径不能为空，禁止读取根字典信息!"),
-    PathIsError(400,40005,"字典路径格式有误"),
-    DictExisted(400, 40204, "存在重复字典项,请重新填写"),
-    DictNotFound(404, 40406, "字典不存在"),
+    PathIsNull(200,40004,"字典路径不能为空，禁止读取根字典信息!"),
+    PathIsError(200,40005,"字典路径格式有误"),
+    DictExisted(200, 20004, "存在重复字典项,请重新填写"),
+    DictNotFound(200, 40406, "字典不存在"),
 
     /**
-     * 角色/权限管理
+     * 角色\权限管理
      */
-    RoleExisted(400, 40202, "角色已存在"),
-    PermissionNotFound(404, 40405, "权限点不存在"),
+    RoleExisted(200, 40202, "角色已存在"),
+    PermissionNotFound(200, 40405, "权限点不存在"),
 
     /**
      * 部门管理
      */
-    DeptNotFound(404, 40404, "部门不存在"),
+    DeptNotFound(403, 40404, "部门不存在"),
 
     /**
      * 服务器异常
      */
-    ServiceError(500, 50000, "系统错误"),
+    ServiceError(200, 50000, "系统错误"),
 
     // ===================== 业务层错误 ==================
     /**
