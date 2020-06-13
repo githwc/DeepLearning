@@ -47,28 +47,32 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
 
     @Override
     public void orderCheck() {
-        // 1.查询从创建订单开始超时30分钟的订单
-        List<MallOrder> mallOrders = mallOrderMapper.selectList(new LambdaQueryWrapper<MallOrder>()
-            .eq(MallOrder::getState, CommonEnum.OrderState.ORDER_STATE_10.getCode())
-
-        );
-        mallOrders.forEach(i->{
-            if(Duration.between(i.getCreateTime(),LocalDateTime.now()).toMinutes() > 30 ){
-                log.info("=====================订单超时关闭==================");
-                log.info("=====================订单超时关闭==================");
-                // 2.修改为订单超时
-                MallOrder mallOrder = i;
-                mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_60.getCode());
-                mallOrder.setCloseTime(LocalDateTime.now());
-                this.mallOrderMapper.updateById(mallOrder);
-                // 3.记录订单日志
-                mallOrderLogService.saveOrderLog(i.getMallOrderId(),
-                        CommonEnum.OrderLogState.INVALID.getCode(),"admin","订单超时自动关闭");
-            }
-        });
-        // 4.记录定时器日志
-        TimerRecord timerRecord = new TimerRecord();
-        timerRecord.setTitle("订单超时监测");
-        this.baseMapper.insert(timerRecord);
+        try{
+            // 1.查询从创建订单开始超时30分钟的订单
+            List<MallOrder> mallOrders = mallOrderMapper.selectList(new LambdaQueryWrapper<MallOrder>()
+                    .eq(MallOrder::getState, CommonEnum.OrderState.ORDER_STATE_10.getCode())
+            );
+            mallOrders.forEach(i->{
+                if(Duration.between(i.getCreateTime(),LocalDateTime.now()).toMinutes() > 30 ){
+                    log.info("=====================订单超时关闭==================");
+                    log.info("=====================订单超时关闭==================");
+                    // 2.修改为订单超时
+                    MallOrder mallOrder = i;
+                    mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_60.getCode());
+                    mallOrder.setCloseTime(LocalDateTime.now());
+                    this.mallOrderMapper.updateById(mallOrder);
+                    // 3.记录订单日志
+                    mallOrderLogService.saveOrderLog(i.getMallOrderId(),
+                            CommonEnum.OrderLogState.INVALID.getCode(),"admin","订单超时自动关闭");
+                }
+            });
+        }catch(Exception e){
+            log.error(e.getMessage());
+        }finally {
+            // 4.记录定时器日志
+            TimerRecord timerRecord = new TimerRecord();
+            timerRecord.setTitle("订单超时监测");
+            this.baseMapper.insert(timerRecord);
+        }
     }
 }

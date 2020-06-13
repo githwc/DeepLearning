@@ -1,4 +1,4 @@
-package com.yc.common.druid;
+package com.yc.common.datasource;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
@@ -35,8 +35,8 @@ import java.util.Map;
 @Configuration
 public class DruidConfig {
 
-    @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource druid(){
         return new DruidDataSource();
     }

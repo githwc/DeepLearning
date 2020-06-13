@@ -86,7 +86,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      * 然后遍历所有metaList,如果是一级菜单不执行任何操作,如果是二级菜单并且此parentJson的ID等于当前菜单的父ID,
      * 执行@3(将子菜单组装到children中，将按钮组装到meta->permissionList中,如果不是叶子节点,会继续调用getMenuJsonArray方法封装其下级菜单)
      * 3、如果是二级菜单或三级菜单，不执行任何操作(在一级菜单走完后会循环放入二级三级菜单)
-     * <p>
+     *
      * menuType: 类型( 0：一级菜单 1：子菜单 2：按钮 )
      */
     private void getMenuJsonArray(JSONArray jsonArray, List<SysPermission> metaList, JSONObject parentJson) {

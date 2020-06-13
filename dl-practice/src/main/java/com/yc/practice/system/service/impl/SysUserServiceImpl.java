@@ -71,8 +71,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         String token = StringUtils.remove(request.getHeader(CommonConstant.HEADER_STRING), CommonConstant.TOKEN_PREFIX).trim();
         redisTemplate.delete(CommonConstant.SYS_USERS_CACHE+UserUtil.getUserId());
-        sysLogService.addLog(request,"用户名: "+UserUtil.getUser().getLoginName()+",退出成功！",CommonConstant.LOG_TYPE_1,UserUtil.getUser().getLoginName(),
-                "/sysUser/logout",token);
+        sysLogService.addLog(request,"用户名: "+UserUtil.getUser().getLoginName()+",退出成功！",CommonConstant.LOG_TYPE_1,
+                UserUtil.getUserId(),"/sysUser/logout",token);
     }
 
     @Override
