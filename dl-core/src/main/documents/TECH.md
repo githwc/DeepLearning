@@ -28,3 +28,9 @@
 四、mall
     购买->选择商品->填写收货信息、确认金额->
     去结算(创建订单)->去支付,支付完成->跳转到我的订单页
+五、日志输出
+    1、application.properties同时配置Path和File,file胜;
+       logging.path为D:/tmp/spring-boot.log/会发生很奇怪的事情,它会在D盘下，创建tmp目录(若不存在),
+       在tmp目录下会创建”spring-boot.log#”目录,是以#替换/的;
+    2、日志输出文件的加载顺序:logback.xml > application.properties > logback-spring.xml,最后加载的，会覆盖前者
+    

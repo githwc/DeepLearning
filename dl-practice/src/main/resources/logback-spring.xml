@@ -39,11 +39,11 @@
                     <maxFileSize>10MB</maxFileSize>
                 </timeBasedFileNamingAndTriggeringPolicy>
                 <!--日志文件保留天数-->
-                <maxHistory>100</maxHistory>
+                <maxHistory>50</maxHistory>
             </rollingPolicy>
             <!-- 此日志文件只记录debug级别的 -->
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
-                <level>debug</level>
+                <level>error</level>
                 <onMatch>ACCEPT</onMatch>
                 <onMismatch>DENY</onMismatch>
             </filter>
@@ -53,7 +53,7 @@
         </appender>
     </springProfile>
 
-    <!-- 设置包或具体的某一个类的日志打印级别、以及指定<appender> -->
+    <!-- 设置包或具体的某一个类的日志打印级别 -->
     <logger name="org.mybatis" level="warn"/>
     <logger name="org.springframework" level="warn"/>
     <logger name="org.apache.ibatis.io" level="warn"/>
@@ -64,7 +64,7 @@
     <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="warn"/>
 
     <!--开发环境:打印控制台-->
-    <springProfile name="dev,prod">
+    <springProfile name="dev">
         <root level="debug">
             <appender-ref ref="CONSOLE"/>
         </root>

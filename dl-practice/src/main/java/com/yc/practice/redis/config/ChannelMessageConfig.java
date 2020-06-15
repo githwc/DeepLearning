@@ -33,7 +33,7 @@ public class ChannelMessageConfig {
         container.setConnectionFactory(connectionFactory);
         //可以添加多个 messageListener
         container.addMessageListener(listenerAdapter,new PatternTopic("goodLucky*"));
-        container.addMessageListener(listenerAdapter, new PatternTopic("index"));
+        container.addMessageListener(listenerAdapter,new PatternTopic("index"));
         return container;
     }
 

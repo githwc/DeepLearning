@@ -37,15 +37,6 @@ public interface CommonEnum {
         public String getName() {
             return name;
         }
-
-        public static String getEnumByCode(int code) {
-            for (DelFlag bt : values()) {
-                if (bt.code == code) {
-                    return bt.getName();
-                }
-            }
-            return "";
-        }
     }
 
     enum State implements CommonEnum{
@@ -244,6 +235,42 @@ public interface CommonEnum {
         }
         public String getName(){
             return name;
+        }
+    }
+
+    enum ButtonName implements CommonEnum {
+        /**
+         * 按钮名称
+         */
+        BUTTON_CREATE(0, "添加"),
+        BUTTON_UPDATE(1, "修改"),
+        BUTTON_DEL(2, "删除"),
+        BUTTON_QUERY(3, "查询"),
+        ;
+
+        private Integer code;
+        private String name;
+
+        ButtonName(Integer code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public static String getEnumByCode(int code) {
+            for (ButtonName bt : values()) {
+                if (bt.code == code) {
+                    return bt.getName();
+                }
+            }
+            return "";
         }
     }
 }

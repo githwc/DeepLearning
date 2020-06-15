@@ -267,7 +267,6 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return resMap;
     }
 
-
     @Override
     public void addPermission(SysPermission sysPermission) {
         sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
@@ -280,7 +279,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             throw new ErrorException(Error.URLNotUnique);
         }
         sysPermission.setPermsCode(code);
-        // 判断是否是一级菜单，是的话清空父菜单
+        // 菜单等级
         if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
             sysPermission.setParentId(null);
         }
@@ -291,8 +290,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         sysPermission.setIsLeaf(true);
         sysPermission.setCreateUserId(UserUtil.getUser().getSysUserId());
         this.save(sysPermission);
-        // 如果是二级菜单，添加默认增删改查按钮权限
-        if(1 == sysPermission.getMenuType()){
+        if(CommonEnum.MenuType.SECOND_MENU_TYPE.getCode().equals(sysPermission.getMenuType())){
             this.addDefaultPermission(sysPermission);
         }
     }
@@ -315,23 +313,23 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             throw new ErrorException(Error.PermissionNotFound);
         } else {
             //----------------------------------------------------------------------
-            //Step1.判断是否是一级菜单，是的话清空父菜单ID
+            // Step1.判断是否是一级菜单，是的话清空父菜单ID
             if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
                 sysPermission.setParentId(null);
             }
-            //Step2.判断菜单下级是否有菜单，无则设置为叶子节点
+            // Step2.判断菜单下级是否有菜单，无则设置为叶子节点
             int count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, sysPermission.getSysPermissionId()));
             if (count == 0) {
                 sysPermission.setIsLeaf(true);
             }
             //----------------------------------------------------------------------
             this.updateById(sysPermission);
-            //如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
+            // 如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
             String newPid = sysPermission.getParentId();
             if ((StringUtils.isNotEmpty(newPid) && !newPid.equals(oldPer.getParentId())) || StringUtils.isEmpty(newPid) && StringUtils.isNotEmpty(oldPer.getParentId())) {
-                //a.设置新的父菜单不为叶子节点
+                // a.设置新的父菜单不为叶子节点
                 this.baseMapper.setMenuLeaf(newPid, 0);
-                //b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
+                // b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
                 int cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, oldPer.getParentId()));
                 if (cc == 0) {
                     if (StringUtils.isNotEmpty(oldPer.getParentId())) {
@@ -352,13 +350,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         if (StringUtils.isNotEmpty(pid)) {
             int count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, pid));
             if (count == 1) {
-                //若父节点无其他子节点，则该父节点是叶子节点
+                // 若父节点无其他子节点，则该父节点是叶子节点
                 this.baseMapper.setMenuLeaf(pid, 1);
             }
         }
         // 该节点可能是子节点但也可能是其它节点的父节点,所以需要级联删除
         this.removeChildrenBy(sysPermission.getSysPermissionId());
-        //执行逻辑删除
+        // 执行逻辑删除
         sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
         this.baseMapper.updateById(sysPermission);
     }
@@ -378,12 +376,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         Map<String, Object> resMap = new HashMap<String, Object>();
         List<String> ids = new ArrayList<>();
         List<CaseTopLevel> list = this.baseMapper.caseList();
-        //全部树节点数据
+        // 全部树节点数据
         resMap.put("treeList", list);
         for (CaseTopLevel sysPer : list) {
             ids.add(sysPer.getId());
         }
-        //全部树ids
+        // 全部树ids
         resMap.put("ids", ids);
         return resMap;
     }
@@ -470,7 +468,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
 
     /**
-     * 初始化二级菜单按钮权限
+     * ****** 子方法 ***** 初始化二级菜单按钮权限
      * @param sysPermission 二级菜单信息
      */
     private void addDefaultPermission(SysPermission sysPermission){
@@ -478,23 +476,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         for (int i = 0 ; i< permissionArr.length; i++){
             SysPermission buttonPermission = new SysPermission();
             buttonPermission.setParentId(sysPermission.getSysPermissionId());
-            switch (i){
-                case 0:
-                    buttonPermission.setName("添加");
-                    break;
-                case 1:
-                    buttonPermission.setName("修改");
-                    break;
-                case 2:
-                    buttonPermission.setName("删除");
-                    break;
-                case 3:
-                    buttonPermission.setName("查询");
-                    break;
-                    default:
-                        buttonPermission.setName("添加");
-                        break;
-            }
+            buttonPermission.setName(CommonEnum.ButtonName.getEnumByCode(i));
             // isystem:user:add
             String code = (sysPermission.getUrl().substring(1)+":"+permissionArr[i]).replace("/",":");
             buttonPermission.setPermsCode(code.toUpperCase());
