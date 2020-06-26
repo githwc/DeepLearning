@@ -24,14 +24,14 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class MallGood implements Serializable {
+public class MallProduct implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
      * 主键
      */
-    @TableId(value = "mall_good_id", type = IdType.UUID)
-    private String mallGoodId;
+    @TableId(value = "mall_product_id", type = IdType.UUID)
+    private String mallProductId;
     /**
      * 商品名称
      */

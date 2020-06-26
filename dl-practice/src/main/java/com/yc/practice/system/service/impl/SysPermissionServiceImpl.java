@@ -268,74 +268,73 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public void addPermission(SysPermission sysPermission) {
-        sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
-        String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
-        int count = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
-            .eq(SysPermission::getMenuType,sysPermission.getMenuType())
-                .eq(SysPermission::getPermsCode,code)
-        );
-        if(count > 0){
-            throw new ErrorException(Error.URLNotUnique);
-        }
-        sysPermission.setPermsCode(code);
-        // 菜单等级
-        if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
-            sysPermission.setParentId(null);
-        }
-        // 设置父节点不为叶子节点
-        if (StringUtils.isNotEmpty(sysPermission.getParentId())) {
-            this.baseMapper.setMenuLeaf(sysPermission.getParentId(), 0);
-        }
-        sysPermission.setIsLeaf(true);
-        sysPermission.setCreateUserId(UserUtil.getUser().getSysUserId());
-        this.save(sysPermission);
-        if(CommonEnum.MenuType.SECOND_MENU_TYPE.getCode().equals(sysPermission.getMenuType())){
-            this.addDefaultPermission(sysPermission);
-        }
-    }
-
-    @Override
-    public void editPermission(SysPermission sysPermission) {
-        sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
-        SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
-        String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
-        int codeCount = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getMenuType,sysPermission.getMenuType())
-                .eq(SysPermission::getPermsCode,code)
-                .ne(SysPermission::getSysPermissionId,oldPer.getSysPermissionId())
-        );
-        if(codeCount > 0){
-            throw new ErrorException(Error.URLNotUnique);
-        }
-        sysPermission.setPermsCode(code);
-        if (oldPer == null) {
-            throw new ErrorException(Error.PermissionNotFound);
+    public void savePermission(SysPermission sysPermission) {
+        if(StringUtils.isNotBlank(sysPermission.getSysPermissionId())){
+            sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
+            SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
+            String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+            int codeCount = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
+                    .eq(SysPermission::getMenuType,sysPermission.getMenuType())
+                    .eq(SysPermission::getPermsCode,code)
+                    .ne(SysPermission::getSysPermissionId,oldPer.getSysPermissionId())
+            );
+            if(codeCount > 0){
+                throw new ErrorException(Error.URLNotUnique);
+            }
+            sysPermission.setPermsCode(code);
+            if (oldPer == null) {
+                throw new ErrorException(Error.PermissionNotFound);
+            } else {
+                //----------------------------------------------------------------------
+                // Step1.判断是否是一级菜单，是的话清空父菜单ID
+                if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
+                    sysPermission.setParentId(null);
+                }
+                // Step2.判断菜单下级是否有菜单，无则设置为叶子节点
+                int count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, sysPermission.getSysPermissionId()));
+                if (count == 0) {
+                    sysPermission.setIsLeaf(true);
+                }
+                //----------------------------------------------------------------------
+                this.updateById(sysPermission);
+                // 如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
+                String newPid = sysPermission.getParentId();
+                if ((StringUtils.isNotEmpty(newPid) && !newPid.equals(oldPer.getParentId())) || StringUtils.isEmpty(newPid) && StringUtils.isNotEmpty(oldPer.getParentId())) {
+                    // a.设置新的父菜单不为叶子节点
+                    this.baseMapper.setMenuLeaf(newPid, 0);
+                    // b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
+                    int cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, oldPer.getParentId()));
+                    if (cc == 0) {
+                        if (StringUtils.isNotEmpty(oldPer.getParentId())) {
+                            this.baseMapper.setMenuLeaf(oldPer.getParentId(), 1);
+                        }
+                    }
+                }
+            }
         } else {
-            //----------------------------------------------------------------------
-            // Step1.判断是否是一级菜单，是的话清空父菜单ID
+            sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
+            String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+            int count = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
+                .eq(SysPermission::getMenuType,sysPermission.getMenuType())
+                    .eq(SysPermission::getPermsCode,code)
+            );
+            if(count > 0){
+                throw new ErrorException(Error.URLNotUnique);
+            }
+            sysPermission.setPermsCode(code);
+            // 菜单等级
             if (CommonEnum.MenuType.TOP_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
                 sysPermission.setParentId(null);
             }
-            // Step2.判断菜单下级是否有菜单，无则设置为叶子节点
-            int count = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, sysPermission.getSysPermissionId()));
-            if (count == 0) {
-                sysPermission.setIsLeaf(true);
+            // 设置父节点不为叶子节点
+            if (StringUtils.isNotEmpty(sysPermission.getParentId())) {
+                this.baseMapper.setMenuLeaf(sysPermission.getParentId(), 0);
             }
-            //----------------------------------------------------------------------
-            this.updateById(sysPermission);
-            // 如果当前菜单的父菜单变了，则需要修改新父菜单和老父菜单的，叶子节点状态
-            String newPid = sysPermission.getParentId();
-            if ((StringUtils.isNotEmpty(newPid) && !newPid.equals(oldPer.getParentId())) || StringUtils.isEmpty(newPid) && StringUtils.isNotEmpty(oldPer.getParentId())) {
-                // a.设置新的父菜单不为叶子节点
-                this.baseMapper.setMenuLeaf(newPid, 0);
-                // b.判断老的菜单下是否还有其他子菜单，没有的话则设置为叶子节点
-                int cc = this.count(new QueryWrapper<SysPermission>().lambda().eq(SysPermission::getParentId, oldPer.getParentId()));
-                if (cc == 0) {
-                    if (StringUtils.isNotEmpty(oldPer.getParentId())) {
-                        this.baseMapper.setMenuLeaf(oldPer.getParentId(), 1);
-                    }
-                }
+            sysPermission.setIsLeaf(true);
+            sysPermission.setCreateUserId(UserUtil.getUser().getSysUserId());
+            this.save(sysPermission);
+            if(CommonEnum.MenuType.SECOND_MENU_TYPE.getCode().equals(sysPermission.getMenuType())){
+                this.addDefaultPermission(sysPermission);
             }
         }
     }
@@ -354,11 +353,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 this.baseMapper.setMenuLeaf(pid, 1);
             }
         }
-        // 该节点可能是子节点但也可能是其它节点的父节点,所以需要级联删除
+        // 删除节点及子节点
         this.removeChildrenBy(sysPermission.getSysPermissionId());
-        // 执行逻辑删除
-        sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
-        this.baseMapper.updateById(sysPermission);
     }
 
     @Override
@@ -442,24 +438,24 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      * @return
      */
     private void removeChildrenBy(String parentId) {
+        // TODO: 2020/6/23 待验证
+        // 如果查出的集合不为空, 则先删除所有
+        SysPermission sysPermission = new SysPermission();
+        sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
+        this.update(sysPermission, new LambdaQueryWrapper<SysPermission>()
+                .eq(SysPermission::getSysPermissionId, parentId)
+        );
         // 查出该主键下的所有子级
         List<SysPermission> permissionList = this.list(new LambdaQueryWrapper<SysPermission>()
                 .eq(SysPermission::getParentId, parentId)
         );
         if (permissionList != null && permissionList.size() > 0) {
-            SysPermission sysPermission = new SysPermission();
-            sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
-            String id;
-            int num; // 查出的子级数量
-            // 如果查出的集合不为空, 则先删除所有
-            this.update(sysPermission, new LambdaQueryWrapper<SysPermission>()
-                    .eq(SysPermission::getParentId, parentId)
-            );
-            // 再遍历刚才查出的集合, 根据每个对象,查找其是否仍有子级
+            // 遍历, 根据每个对象,查找其是否仍有子级
             for (int i = 0, len = permissionList.size(); i < len; i++) {
-                id = permissionList.get(i).getSysPermissionId();
-                num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, id));
-                if (num > 0) {// 如果有, 则递归
+                String id = permissionList.get(i).getSysPermissionId();
+                int num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, id));
+                // 有子级, 则递归
+                if (num > 0) {
                     this.removeChildrenBy(id);
                 }
             }

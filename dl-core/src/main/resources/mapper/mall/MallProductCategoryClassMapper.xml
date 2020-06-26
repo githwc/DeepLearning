@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yc.core.mall.mapper.MallGoodClassMapper">
+<mapper namespace="com.yc.core.mall.mapper.MallProductCategoryClassMapper">
 
     <select id="classTree" resultType="com.yc.core.tree.TreeNode">
         select
-            mall_good_class_id as id,
+            mall_product_category_id as id,
             parent_id as parent_id,
             name as title,
             sort as order_num
-        from mall_good_class
+        from mall_product_category
         where
             state = 0
         order by sort
     </select>
 
-    <select id="childrenClass" resultType="com.yc.core.mall.entity.MallGoodClass">
+    <select id="childrenClass" resultType="com.yc.core.mall.entity.MallProductCategory">
         select
             *
-        from mall_good_class
+        from mall_product_category
         where
             state = 0
         and parent_id = #{parentId}

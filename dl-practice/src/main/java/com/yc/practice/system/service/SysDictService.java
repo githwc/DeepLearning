@@ -14,7 +14,7 @@ import java.util.List;
  *  <p>版权所有：</p>
  *  未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
- * @Company: LionHerding
+ * @Company: 紫色年华
  * @Author xieyc
  * @Date 2019-09-20
  * @Version: 1.0.0
@@ -38,12 +38,6 @@ public interface SysDictService extends IService<SysDict> {
     Page<SysDict> childrenDict(Page<SysDict> page, DictQuery dictQuery);
 
     /**
-     * 根据字典Id修改
-     * @param sysDict 标识
-     */
-    void editByDictId(SysDict sysDict);
-
-    /**
      * 根据字典ID删除
      * @param id 标识
      */
@@ -59,7 +53,7 @@ public interface SysDictService extends IService<SysDict> {
      * 创建字典
      * @param sysDict 字典信息
      */
-    void create(SysDict sysDict);
+    void saveDict(SysDict sysDict);
 
     /**
      * 根据指定路径读取子级字典

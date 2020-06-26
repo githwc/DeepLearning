@@ -55,7 +55,7 @@ public class MallSeckillController {
      * @return (系统时间,加密串,秒杀ID)
      */
     @GetMapping("/mallSeckill")
-    public SeckillVO mallSeckill(@RequestParam("mallSeckillId")String mallSeckillId){
+    public SeckillVO mallSeckill(String mallSeckillId){
         return this.iMallSeckillService.mallSeckill(mallSeckillId);
     }
 
@@ -81,7 +81,7 @@ public class MallSeckillController {
     }
 
     /**
-     * 增加秒杀商品
+     * 增加/更新秒杀商品
      * @param mallSeckill 商品信息
      */
     @PostMapping
@@ -90,20 +90,11 @@ public class MallSeckillController {
     }
 
     /**
-     * 修改秒杀商品信息
-     * @param mallSeckill 商品信息
-     */
-    @PutMapping
-    public void updateSeckill(@RequestBody MallSeckill mallSeckill){
-        iMallSeckillService.updateSeckill(mallSeckill);
-    }
-
-    /**
      * 删除指定秒杀商品
      * @param mallSeckillId 秒杀商品ID
      */
     @DeleteMapping
-    public void delete(@RequestParam("mallSeckillId") String mallSeckillId) {
+    public void delete(String mallSeckillId) {
         iMallSeckillService.deleteAlone(mallSeckillId);
     }
 }

@@ -1,7 +1,6 @@
 package com.yc.practice.mall.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
@@ -16,7 +15,7 @@ import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.EncodeProperties;
 import com.yc.common.utils.EncoderUtil;
-import com.yc.core.mall.entity.MallGood;
+import com.yc.core.mall.entity.MallProduct;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.entity.MallOrderItem;
 import com.yc.core.mall.entity.MallShipping;
@@ -26,7 +25,7 @@ import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.form.SyncCallBack;
 import com.yc.core.mall.model.query.OrderQuery;
 import com.yc.practice.common.UserUtil;
-import com.yc.practice.mall.service.MallGoodService;
+import com.yc.practice.mall.service.MallProductService;
 import com.yc.practice.mall.service.MallOrderItemService;
 import com.yc.practice.mall.service.MallOrderLogService;
 import com.yc.practice.mall.service.MallOrderService;
@@ -69,20 +68,20 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
 
     private final MallOrderItemService mallOrderItemService;
     private final RedisTemplate redisTemplate;
-    private final MallGoodService mallGoodService;
+    private final MallProductService mallProductService;
     private final MallOrderLogService mallOrderLogService;
     private final MallShippingMapper mallShippingMapper;
     private final EncodeProperties encodeProperties;
 
     @Autowired
-    public MallOrderServiceImpl(MallOrderItemService mallOrderItemService,RedisTemplate redisTemplate,
-                                MallShippingMapper mallShippingMapper,MallOrderLogService mallOrderLogService,
-                                MallGoodService mallGoodService,EncodeProperties encodeProperties){
+    public MallOrderServiceImpl(MallOrderItemService mallOrderItemService, RedisTemplate redisTemplate,
+                                MallShippingMapper mallShippingMapper, MallOrderLogService mallOrderLogService,
+                                MallProductService mallProductService, EncodeProperties encodeProperties){
         this.mallOrderItemService = mallOrderItemService;
         this.redisTemplate = redisTemplate;
         this.encodeProperties = encodeProperties;
         this.mallOrderLogService = mallOrderLogService;
-        this.mallGoodService = mallGoodService;
+        this.mallProductService = mallProductService;
         this.mallShippingMapper = mallShippingMapper;
     }
 
@@ -110,23 +109,23 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         this.baseMapper.insert(mallOrder);
         // ========= 保存订单商品信息 ========
         List<MallOrderItem> orderItemList = orderForm.getGoodsInfo();
-        List<MallGood> goodList = new ArrayList<>();
+        List<MallProduct> goodList = new ArrayList<>();
         BigDecimal amount = BigDecimal.valueOf(0);
         for (MallOrderItem curr : orderItemList) {
             if(StringUtils.isBlank(curr.getGoodId())){
                 throw new ErrorException(Error.GoodNotFound);
             }
-            MallGood mallGood = this.mallGoodService.getBaseMapper().selectById(curr.getGoodId());
-            if(mallGood.getStock()<curr.getGoodNum()){
+            MallProduct mallProduct = this.mallProductService.getBaseMapper().selectById(curr.getGoodId());
+            if(mallProduct.getStock()<curr.getGoodNum()){
                 throw new ErrorException(Error.StockLow);
             }
             curr.setMallOrderId(mallOrder.getMallOrderId());
             curr.setOrderNo(mallOrder.getOrderNo());
             curr.setSysUserId(UserUtil.getUserId());
-            amount = amount.add(mallGood.getPrice().multiply(BigDecimal.valueOf(curr.getGoodNum())));
-            mallGood.setSale(curr.getGoodNum()+mallGood.getSale());
-            mallGood.setStock(mallGood.getStock()-curr.getGoodNum());
-            goodList.add(mallGood);
+            amount = amount.add(mallProduct.getPrice().multiply(BigDecimal.valueOf(curr.getGoodNum())));
+            mallProduct.setSale(curr.getGoodNum()+mallProduct.getSale());
+            mallProduct.setStock(mallProduct.getStock()-curr.getGoodNum());
+            goodList.add(mallProduct);
         }
         // 校验总价
         if(amount.compareTo(orderForm.getPayAmount()) != 0){
@@ -134,7 +133,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         }
         this.mallOrderItemService.saveBatch(orderItemList);
         // 减库存 加销量
-        this.mallGoodService.updateBatchById(goodList);
+        this.mallProductService.updateBatchById(goodList);
         // 订单变更记录
         mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),
                 UserUtil.getUserId(),"正常订单");

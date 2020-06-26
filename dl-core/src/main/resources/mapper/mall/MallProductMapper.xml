@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yc.core.mall.mapper.MallGoodMapper">
+<mapper namespace="com.yc.core.mall.mapper.MallProductMapper">
 
-    <select id="goodPage" resultType="com.yc.core.mall.entity.MallGood">
+    <select id="goodPage" resultType="com.yc.core.mall.entity.MallProduct">
         SELECT
             good.*
-        FROM mall_good good
+        FROM mall_product good
         <where>
             good.state &lt; 5
             <if test="query.name != null and query.name != '' ">
@@ -17,8 +17,8 @@
             <if test="query.state != null and query.state != '' ">
                 and good.state = #{query.state}
             </if>
-            <if test="query.mallGoodClassId != null and query.mallGoodClassId != '' ">
-                and good.class_id = #{query.mallGoodClassId}
+            <if test="query.mallProductCategoryId != null and query.mallProductCategoryId != '' ">
+                and good.class_id = #{query.mallProductCategoryId}
             </if>
         </where>
         order by good.sale desc , good.sort

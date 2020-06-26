@@ -42,7 +42,7 @@ public interface MallOrderService extends IService<MallOrder> {
      * 取消订单
      * @param mallOrderId 订单ID
      */
-    void cancelOrder(@RequestParam("mallOrderId")String mallOrderId);
+    void cancelOrder(String mallOrderId);
 
     /**
      * 支付回调

@@ -38,8 +38,7 @@ public class UploadController {
      * @return 文件名称
      */
     @PostMapping("/img")
-    public String uploadImg(HttpServletRequest request,
-                         @RequestParam(name = "file") MultipartFile file) {
+    public String uploadImg(HttpServletRequest request, MultipartFile file) {
         return uploadService.uploadImg(request,file);
     }
 

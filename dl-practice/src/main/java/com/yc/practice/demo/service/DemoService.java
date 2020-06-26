@@ -31,13 +31,7 @@ public interface DemoService extends IService<Demo> {
      * 数据添加
      * @param demo 添加信息
      */
-    void add(Demo demo);
-
-    /**
-     * 修改
-     * @param demo 修改信息
-     */
-    void editById(Demo demo);
+    void saveDemo(Demo demo);
 
     /**
      * 删除

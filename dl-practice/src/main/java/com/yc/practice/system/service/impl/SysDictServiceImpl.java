@@ -53,21 +53,6 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     }
 
     @Override
-    public void editByDictId(SysDict sysDict) {
-        QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("parent_id",sysDict.getParentId());
-        queryWrapper.eq("del_flag",0);
-        queryWrapper.ne("sys_dict_id",sysDict.getSysDictId());
-        queryWrapper.and(wrapper-> wrapper.eq("name",sysDict.getName()).or().eq("value",sysDict.getValue()));
-        List<SysDict> sysDicts = this.baseMapper.selectList(queryWrapper);
-        if(ObjectUtil.isNotEmpty(sysDicts)){
-            throw new RuntimeException("存在重复字典项,请重新填写！");
-        }
-        sysDict.setUpdateUserId(UserUtil.getUserId());
-        this.updateById(sysDict);
-    }
-
-    @Override
     public void deleteAlone(String id) {
         List<String> idList = new ArrayList<String>();
         SysDict sysDict = this.getById(id);
@@ -98,22 +83,36 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     }
 
     @Override
-    public void create(SysDict sysDict) {
-        if (sysDict != null) {
-            sysDict.setCreateUserId(UserUtil.getUserId());
-            if (StringUtils.isBlank(sysDict.getParentId())) {
-                sysDict.setParentId("root");
-            }else{
-                QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("parent_id",sysDict.getParentId());
-                queryWrapper.eq("del_flag",0);
-                queryWrapper.and(wrapper-> wrapper.eq("name",sysDict.getName()).or().eq("value",sysDict.getValue()));
-                List<SysDict> sysDicts = this.baseMapper.selectList(queryWrapper);
-                if(ObjectUtil.isNotEmpty(sysDicts)){
-                    throw new ErrorException(Error.DictExisted);
-                }
+    public void saveDict(SysDict sysDict) {
+        if(StringUtils.isNotBlank(sysDict.getSysDictId())){
+            QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("parent_id",sysDict.getParentId());
+            queryWrapper.eq("del_flag",0);
+            queryWrapper.ne("sys_dict_id",sysDict.getSysDictId());
+            queryWrapper.and(wrapper-> wrapper.eq("name",sysDict.getName()).or().eq("value",sysDict.getValue()));
+            List<SysDict> sysDicts = this.baseMapper.selectList(queryWrapper);
+            if(ObjectUtil.isNotEmpty(sysDicts)){
+                throw new RuntimeException("存在重复字典项,请重新填写！");
             }
-            this.save(sysDict);
+            sysDict.setUpdateUserId(UserUtil.getUserId());
+            this.updateById(sysDict);
+        } else {
+            if (sysDict != null) {
+                sysDict.setCreateUserId(UserUtil.getUserId());
+                if (StringUtils.isBlank(sysDict.getParentId())) {
+                    sysDict.setParentId("root");
+                }else{
+                    QueryWrapper<SysDict> queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("parent_id",sysDict.getParentId());
+                    queryWrapper.eq("del_flag",0);
+                    queryWrapper.and(wrapper-> wrapper.eq("name",sysDict.getName()).or().eq("value",sysDict.getValue()));
+                    List<SysDict> sysDicts = this.baseMapper.selectList(queryWrapper);
+                    if(ObjectUtil.isNotEmpty(sysDicts)){
+                        throw new ErrorException(Error.DictExisted);
+                    }
+                }
+                this.save(sysDict);
+            }
         }
     }
 

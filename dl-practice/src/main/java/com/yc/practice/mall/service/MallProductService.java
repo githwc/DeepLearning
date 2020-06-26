@@ -2,7 +2,7 @@ package com.yc.practice.mall.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.yc.core.mall.entity.MallGood;
+import com.yc.core.mall.entity.MallProduct;
 import com.yc.core.mall.model.query.GoodQuery;
 
 /**
@@ -17,7 +17,7 @@ import com.yc.core.mall.model.query.GoodQuery;
  * @Version: 1.0.0
  *
  */
-public interface MallGoodService extends IService<MallGood> {
+public interface MallProductService extends IService<MallProduct> {
 
     /**
      * 商品分页查询
@@ -25,24 +25,18 @@ public interface MallGoodService extends IService<MallGood> {
      * @param query 入参
      * @return page
      */
-    Page<MallGood> mallPage(Page<MallGood> page, GoodQuery query);
+    Page<MallProduct> mallPage(Page<MallProduct> page, GoodQuery query);
 
     /**
      * 增加商品信息
-     * @param mallGood 商品信息
+     * @param mallProduct 商品信息
      */
-    void add(MallGood mallGood);
-
-    /**
-     * 修改商品信息
-     * @param mallGood 商品信息
-     */
-    void updateGood(MallGood mallGood);
+    void add(MallProduct mallProduct);
 
     /**
      * 删除指定商品
-     * @param mallGoodId 商品ID
+     * @param mallProductId 商品ID
      */
-    void deleteAlone(String mallGoodId);
+    void deleteAlone(String mallProductId);
 
 }

@@ -63,7 +63,7 @@ public class RedisRankController {
      * @return set
      */
     @GetMapping("/scoreTop10")
-    public Set top10(@RequestParam("type")String type){
+    public Set top10(String type){
         return iRedisRankService.top10(type);
     }
 

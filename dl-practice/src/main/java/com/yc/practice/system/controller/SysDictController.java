@@ -55,31 +55,24 @@ public class SysDictController {
         return service.childrenDict(page,dictQuery);
     }
 
-    @ApiOperation(value = "字典添加",notes = "字典添加")
-    @PostMapping(value = "/add")
-    @WriteLog(opPosition = "字典添加" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void add(@RequestBody SysDict sysDict) {
-        service.create(sysDict);
-    }
-
-    @PutMapping(value = "/edit")
-    @ApiOperation(value = "字典修改",notes = "字典修改")
-    @WriteLog(opPosition = "字典修改" ,optype = CommonConstant.OPTYPE_UPDATE)
-    public void edit(@RequestBody SysDict sysDict) {
-       service.editByDictId(sysDict);
+    @ApiOperation(value = "字典添加/修改",notes = "字典添加/修改")
+    @PostMapping
+    @WriteLog(opPosition = "字典添加/修改" ,optype = CommonConstant.OPTYPE_CREATE)
+    public void saveDict(@RequestBody SysDict sysDict) {
+        service.saveDict(sysDict);
     }
 
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "字典删除",notes = "字典删除")
     @WriteLog(opPosition = "字典删除" ,optype = CommonConstant.OPTYPE_DELETE)
-    public void delete(@RequestParam("sysDictId") String sysDictId) {
+    public void delete(String sysDictId) {
         service.deleteAlone(sysDictId);
     }
 
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "字典批量删除",notes = "字典批量删除")
     @WriteLog(opPosition = "字典批量删除" ,optype = CommonConstant.OPTYPE_DELETE)
-    public void deleteBatch(@RequestParam("ids") String ids) {
+    public void deleteBatch( String ids) {
         service.deleteBatch(ids);
     }
 
@@ -90,7 +83,7 @@ public class SysDictController {
     @GetMapping("/getDict")
     @ApiOperation(value = "查询指定字典",notes = "查询指定字典")
     @WriteLog(opPosition = "查询指定字典")
-    public List<SysDict> getDict(@RequestParam("skey")String skeys,@RequestParam("mode")String mode){
-        return service.getDict(skeys);
+    public List<SysDict> getDict(String skey){
+        return service.getDict(skey);
     }
 }

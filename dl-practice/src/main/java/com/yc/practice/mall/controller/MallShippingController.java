@@ -45,21 +45,12 @@ public class MallShippingController {
     }
 
     /**
-     * 添加收货地址
+     * 添加/更新收货地址
      * @param mallShipping 地址信息
      */
     @PostMapping
-    public void add(@RequestBody MallShipping mallShipping){
-        iMallShippingService.add(mallShipping);
-    }
-
-    /**
-     * 修改收货地址
-     * @param mallShipping 收货地址信息
-     */
-    @PutMapping
-    public void updateShipping(@RequestBody MallShipping mallShipping){
-        iMallShippingService.updateShipping(mallShipping);
+    public void saveShipping(@RequestBody MallShipping mallShipping){
+        iMallShippingService.saveShipping(mallShipping);
     }
 
     /**
@@ -67,7 +58,7 @@ public class MallShippingController {
      * @param mallShippingId 收货地址ID
      */
     @DeleteMapping
-    public void delete(@RequestParam("mallShippingId") String mallShippingId) {
+    public void delete(String mallShippingId) {
         iMallShippingService.deleteAlone(mallShippingId);
     }
 

@@ -39,11 +39,11 @@ public class MallSeckill implements Serializable {
     /**
      * 商品ID
      */
-    private String mallGoodId;
+    private String mallProductId;
     /**
      * 商品名称
      */
-    private String mallGoodName;
+    private String mallProductName;
     /**
      * 库存
      */

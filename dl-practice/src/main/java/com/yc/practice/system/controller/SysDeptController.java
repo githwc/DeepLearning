@@ -48,11 +48,11 @@ public class SysDeptController {
         return service.departTree(departName);
     }
 
-    @PostMapping(value = "/add")
-    @ApiOperation(value = "部门添加",notes = "部门添加")
+    @PostMapping
+    @ApiOperation(value = "部门添加/更新",notes = "部门添加/更新")
     @WriteLog(opPosition = "部门添加" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void add(@RequestBody SysDept sysDept) {
-        service.create(sysDept);
+    public void saveDept(@RequestBody SysDept sysDept) {
+        service.saveDept(sysDept);
     }
 
     @GetMapping("/childrenDept")
@@ -62,24 +62,17 @@ public class SysDeptController {
         return service.childrenDept(page,deptQuery);
     }
 
-    @PutMapping(value = "/edit")
-    @ApiOperation(value = "部门修改",notes = "部门修改")
-    @WriteLog(opPosition = "部门修改" ,optype = CommonConstant.OPTYPE_UPDATE)
-    public void edit(@RequestBody SysDept sysDept) {
-        service.editByDeptId(sysDept);
-    }
-
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "部门删除",notes = "部门删除")
     @WriteLog(opPosition = "部门删除" ,optype = CommonConstant.OPTYPE_DELETE)
-    public void delete(@RequestParam("sysDeptId") String sysDeptId) {
+    public void delete(String sysDeptId) {
         service.deleteAlone(sysDeptId);
     }
 
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "部门批量删除",notes = "部门批量删除")
     @WriteLog(opPosition = "部门批量删除" ,optype = CommonConstant.OPTYPE_DELETE)
-    public void deleteBatch(@RequestParam("ids") String ids) {
+    public void deleteBatch(String ids) {
         service.deleteBatch(ids);
     }
 

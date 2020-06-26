@@ -2,13 +2,10 @@ package com.yc.core.mall.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.core.mall.entity.MallGoodClass;
-import com.yc.core.tree.TreeNode;
+import com.yc.core.mall.entity.MallProduct;
+import com.yc.core.mall.model.query.GoodQuery;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
 /**
  *
  * 功能描述：
@@ -18,25 +15,19 @@ import java.util.List;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-05-08
+ * @Date 2020-04-08
  * @Version: 1.0.0
  *
  */
 @Repository
-public interface MallGoodClassMapper extends BaseMapper<MallGoodClass> {
+public interface MallProductMapper extends BaseMapper<MallProduct> {
 
     /**
-     * 类目树
-     * @return tree
-     */
-    List<TreeNode> classTree();
-
-    /**
-     * 子级类目
-     * @param page 分页信息
-     * @param parentId 父级ID
+     * 商品分页信息
+     * @param page 分页
+     * @param query 入参
      * @return page
      */
-    Page<MallGoodClass> childrenClass(@Param("page") Page<MallGoodClass> page, @Param("parentId") String parentId);
+    Page<MallProduct> goodPage(@Param("page")Page<MallProduct> page, @Param("query") GoodQuery query);
 
 }

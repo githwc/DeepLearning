@@ -12,6 +12,7 @@ import com.yc.practice.system.service.SysRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -58,27 +59,24 @@ public class SysRoleController {
         return service.roleList();
     }
 
-    @PostMapping(value = "/add")
-    @ApiOperation(value = "角色添加", notes = "角色添加")
-    @WriteLog(opPosition = "角色添加", optype = CommonConstant.OPTYPE_CREATE)
+    @PostMapping
+    @ApiOperation(value = "角色添加/更新", notes = "角色添加/更新")
+    @WriteLog(opPosition = "角色添加/更新", optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysRole sysRole) {
-        sysRole.setCreateUserId(UserUtil.getUserId());
-        service.save(sysRole);
-    }
-
-    @PutMapping(value = "/edit")
-    @ApiOperation(value = "角色修改", notes = "角色修改")
-    @WriteLog(opPosition = "角色修改", optype = CommonConstant.OPTYPE_UPDATE)
-    public void edit(@RequestBody SysRole role) {
-        service.updateById(role);
+        if(StringUtils.isNotBlank(sysRole.getSysRoleId())){
+            service.updateById(sysRole);
+        } else {
+            sysRole.setCreateUserId(UserUtil.getUserId());
+            service.save(sysRole);
+        }
     }
 
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "角色删除", notes = "角色删除")
     @WriteLog(opPosition = "角色删除", optype = CommonConstant.OPTYPE_DELETE)
-    public void delete(@RequestParam("sysRoleId") String id) {
+    public void delete(String sysRoleId) {
         SysRole sysRole = new SysRole();
-        sysRole.setSysRoleId(id);
+        sysRole.setSysRoleId(sysRoleId);
         sysRole.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
         service.updateById(sysRole);
     }
@@ -86,7 +84,7 @@ public class SysRoleController {
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "角色批量删除", notes = "角色批量删除")
     @WriteLog(opPosition = "角色批量删除", optype = CommonConstant.OPTYPE_DELETE)
-    public void deleteBatch(@RequestParam("ids") String ids) {
+    public void deleteBatch(String ids) {
         List<String> listIds = Arrays.asList(ids.split(","));
         listIds.forEach(curr -> {
             SysRole sysRole = new SysRole();
@@ -99,15 +97,15 @@ public class SysRoleController {
     @GetMapping("/duplicate")
     @ApiOperation(value = "重复校验", notes = "角色代码唯一性校验")
     @WriteLog(opPosition = "重复校验")
-    public void duplicate(@RequestParam("roleCode") String roleCode) {
+    public void duplicate(String roleCode) {
         service.duplicate(roleCode);
     }
 
     @GetMapping(value = "/rolePermission")
     @ApiOperation(value = "查询角色授权", notes = "查询角色拥有的权限")
     @WriteLog(opPosition = "查询角色授权")
-    public List<String> queryRolePermission(@RequestParam("sysRoleId") String roleId) {
-        return service.queryRolePermission(roleId);
+    public List<String> queryRolePermission(String sysRoleId) {
+        return service.queryRolePermission(sysRoleId);
     }
 
     @PostMapping(value = "/rolePermission")

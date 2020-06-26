@@ -4,7 +4,6 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
@@ -18,7 +17,6 @@ import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysDeptService;
 import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,12 +52,6 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    public void editByDeptId(SysDept sysDept) {
-        sysDept.setUpdateUserId(UserUtil.getUserId());
-        this.updateById(sysDept);
-    }
-
-    @Override
     public void deleteAlone(String id) {
         List<String> idList = new ArrayList<String>();
         SysDept sysDept = this.getById(id);
@@ -90,16 +82,21 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     @Override
-    public void create(SysDept sysDept) {
-        if (sysDept != null ) {
-            String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());
-            sysDept.setUniqueCoding(codeAndLevel[0]);
-            sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
-            sysDept.setCreateUserId(UserUtil.getUserId());
-            if (StringUtils.isBlank(sysDept.getParentId())) {
-                sysDept.setParentId("root");
+    public void saveDept(SysDept sysDept) {
+        if(StringUtils.isNotBlank(sysDept.getSysDeptId())){
+            sysDept.setUpdateUserId(UserUtil.getUserId());
+            this.updateById(sysDept);
+        } else {
+            if (sysDept != null ) {
+                String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());
+                sysDept.setUniqueCoding(codeAndLevel[0]);
+                sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
+                sysDept.setCreateUserId(UserUtil.getUserId());
+                if (StringUtils.isBlank(sysDept.getParentId())) {
+                    sysDept.setParentId("root");
+                }
+                this.save(sysDept);
             }
-            this.save(sysDept);
         }
     }
 

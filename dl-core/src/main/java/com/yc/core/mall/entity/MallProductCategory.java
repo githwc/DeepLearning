@@ -25,14 +25,14 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class MallGoodClass implements Serializable {
+public class MallProductCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
      * 类别Id
      */
-    @TableId(value = "mall_good_class_id", type = IdType.UUID)
-    private String mallGoodClassId;
+    @TableId(value = "mall_product_category_id", type = IdType.UUID)
+    private String mallProductCategoryId;
     /**
      * 父类别id
      */
@@ -63,5 +63,5 @@ public class MallGoodClass implements Serializable {
      * 子级类目
      */
     @TableField(exist = false)
-    private List<MallGoodClass> children;
+    private List<MallProductCategory> children;
 }

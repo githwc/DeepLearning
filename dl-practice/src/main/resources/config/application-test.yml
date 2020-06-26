@@ -1,26 +1,30 @@
+server:
+  port: 8080
 spring:
-  #=====DataBase 相关 ===========
+  #===== DataBase 相关 ===========
   datasource:
-    url: jdbc:mysql://192.168.45.130:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    username: root
-    password: Xieyc@mysql1.>
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://219.146.138.106:33062/xfxmall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    username: haitao_mysql
+    password: wiHT123+212*
     # 配置监控统计拦截的filters，'stat'用于监控统计;  'log4j'用于日志;  'wall'用于防火墙
     druid:
       filters: stat,wall,config,log4j
       use-global-data-source-stat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-      max-active: 100
-      initial-size: 1
-      max-wait: 60000
-      min-idle: 1
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
+      max-active: 100 # 最大连接数
+      initial-size: 1 # 初始化连接数
+      min-idle: 1 # 维持最小链接数
+      max-wait: 30000 # 最大等待时间
+      time-between-eviction-runs-millis: 60000  # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000  # 配置一个连接在池中最小生存的时间，单位是毫秒
       validation-query: select 'x'
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+      # 打开PSCache，并且指定每个连接上PSCache的大小
       pool-prepared-statements: true
       max-open-prepared-statements: 50
       max-pool-prepared-statement-per-connection-size: 20
@@ -29,7 +33,9 @@ dl:
   security:
     jwt-active-time: 3600000
     jwt-renew-time: 1800000
-    jwt-secret: deepLearning-test@123*
+    #    jwt-active-time: 60000
+    #    jwt-renew-time: 30000
+    jwt-secret: deepLearning-dev@123*
     excludes:
       - /
       - /login
@@ -40,10 +46,15 @@ dl:
       - /mallOrder/syncCallBackPay
   #===== 文件相关 =====
   upload:
-    img-save-path: /www/upload/image/
+    img-save-path: D://upload//image//
     img-access-path: /image/**
-    file-save-path: /www/upload/file/
+    file-save-path: D://upload//file//
     file-access-path: /file/**
   encode:
-    secretKey: deepLearning-test@secretKey
-    aesKey: deepLearning-test@aesKey
+    secretKey: deepLearning-dev@secretKey
+    aesKey: deepLearning-dev@aesKey
+  url:
+    test1: http://127.0.0.1:8081/sideRequest/test1
+    test2: http://127.0.0.1:8081/sideRequest/test2
+    test3: http://127.0.0.1:8081/sideRequest/test3
+    test4: http://127.0.0.1:8081/sideRequest/test4

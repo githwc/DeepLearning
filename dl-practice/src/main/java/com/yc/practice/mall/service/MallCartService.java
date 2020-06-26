@@ -38,9 +38,9 @@ public interface MallCartService {
     /**
      * 删除购物车中的商品
      *
-     * @param mallGoodId 商品信息
+     * @param mallProductId 商品信息
      * @return 我的购物车
      */
-    CartForm delete(String mallGoodId);
+    CartForm delete(String mallProductId);
 
 }

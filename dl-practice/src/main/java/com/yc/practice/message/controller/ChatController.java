@@ -45,7 +45,7 @@ public class ChatController {
      * @param receiveUserId 接收人
      */
     @GetMapping("/init")
-    public List<Object> message(@RequestParam("receiveUserId") String receiveUserId) {
+    public List<Object> message(String receiveUserId) {
        return chatService.message(receiveUserId);
     }
 }

@@ -1,6 +1,6 @@
 package com.yc.practice.mall.controller;
 
-import com.yc.practice.mall.service.MallSeckillSuccessService;
+import com.yc.practice.mall.service.MallFloorService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-06-01
+ * @Date 2020-06-26
  * @Version: 1.0.0
  *
  */
 @RestController
-@RequestMapping("/mall/mall-seckill-success")
+@RequestMapping("/mall/mall-floor")
 @Slf4j
-public class MallSeckillSuccessController {
+public class MallFloorController {
 
     @Autowired
-    public MallSeckillSuccessService iMallSeckillSuccessService;
+    public MallFloorService iMallFloorService;
 
 }

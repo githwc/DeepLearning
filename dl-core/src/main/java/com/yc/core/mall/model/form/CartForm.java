@@ -1,6 +1,6 @@
 package com.yc.core.mall.model.form;
 
-import com.yc.core.mall.entity.MallGood;
+import com.yc.core.mall.entity.MallProduct;
 import lombok.Data;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * @Version: 1.0.0
  */
 @Data
-public class CartForm extends MallGood {
+public class CartForm extends MallProduct {
 
     /**
      * 购买数量

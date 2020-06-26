@@ -33,6 +33,6 @@ public class GoodQuery {
     /**
      * 商品类目
      */
-    private String mallGoodClassId;
+    private String mallProductCategoryId;
 
 }

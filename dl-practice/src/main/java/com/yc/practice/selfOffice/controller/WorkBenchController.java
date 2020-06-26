@@ -47,30 +47,16 @@ public class WorkBenchController {
      * 我的工作台-添加
      */
     @PostMapping
-    public void add(@RequestBody WorkBench workBench){
+    public void save(@RequestBody WorkBench workBench){
         Random random=new Random();
         if(random.nextInt(2) > 0){
             workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png");
         }else {
            workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png");
         }
-        iWorkBenchService.save(workBench);
+        iWorkBenchService.saveOrUpdate(workBench);
     }
 
-
-    /**
-     * 我的工作台-修改
-     */
-    @PutMapping
-    public void update(@RequestBody WorkBench workBench){
-        Random random=new Random();
-        if(random.nextInt(2) > 0){
-            workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png");
-        }else {
-            workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png");
-        }
-        iWorkBenchService.updateById(workBench);
-    }
 
     /**
      * 我的工作台-删除

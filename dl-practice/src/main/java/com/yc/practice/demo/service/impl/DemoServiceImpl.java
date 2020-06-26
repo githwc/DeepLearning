@@ -6,6 +6,7 @@ import com.yc.core.demo.entity.Demo;
 import com.yc.core.demo.mapper.DemoMapper;
 import com.yc.core.demo.model.DemoQuery;
 import com.yc.practice.demo.service.DemoService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,13 +32,12 @@ public class DemoServiceImpl extends ServiceImpl<DemoMapper, Demo> implements De
     }
 
     @Override
-    public void add(Demo demo) {
-        this.baseMapper.insert(demo);
-    }
-
-    @Override
-    public void editById(Demo demo) {
-        this.baseMapper.updateById(demo);
+    public void saveDemo(Demo demo) {
+        if(StringUtils.isBlank(demo.getDemoId())){
+            baseMapper.insert(demo);
+        } else{
+            baseMapper.updateById(demo);
+        }
     }
 
     @Override

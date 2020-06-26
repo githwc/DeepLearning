@@ -1,9 +1,9 @@
 package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.core.mall.entity.MallGoodClass;
+import com.yc.core.mall.entity.MallProductCategory;
 import com.yc.core.tree.TreeNode;
-import com.yc.practice.mall.service.MallGoodClassService;
+import com.yc.practice.mall.service.MallProductCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +25,13 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/mallGoodClass")
-public class MallGoodClassController  {
+@RequestMapping("/mallProductCategory")
+public class MallProductCategoryController {
 
-    private final MallGoodClassService iMallGoodClassService;
+    private final MallProductCategoryService iMallGoodClassService;
 
     @Autowired
-    public MallGoodClassController(MallGoodClassService iMallGoodClassService){
+    public MallProductCategoryController(MallProductCategoryService iMallGoodClassService){
         this.iMallGoodClassService = iMallGoodClassService;
     }
 
@@ -45,12 +45,12 @@ public class MallGoodClassController  {
     }
 
     /**
-     * 添加类目
-     * @param mallGoodClass 类目信息
+     * 添加/更新类目
+     * @param mallProductCategory 类目信息
      */
     @PostMapping
-    public void add(@RequestBody MallGoodClass mallGoodClass) {
-        iMallGoodClassService.add(mallGoodClass);
+    public void add(@RequestBody MallProductCategory mallProductCategory) {
+        iMallGoodClassService.add(mallProductCategory);
     }
 
     /**
@@ -60,26 +60,17 @@ public class MallGoodClassController  {
      * @return page
      */
     @GetMapping("/childrenClass")
-    public Page<MallGoodClass> childrenClass(Page<MallGoodClass> page, String parentId){
+    public Page<MallProductCategory> childrenClass(Page<MallProductCategory> page, String parentId){
         return iMallGoodClassService.childrenClass(page,parentId);
     }
 
     /**
-     * 编辑商品类目
-     * @param mallGoodClass 类目信息
-     */
-    @PutMapping
-    public void edit(@RequestBody MallGoodClass mallGoodClass) {
-        iMallGoodClassService.editById(mallGoodClass);
-    }
-
-    /**
      * 删除类目
-     * @param mallGoodClassId 类目ID
+     * @param mallProductCategoryId 类目ID
      */
     @DeleteMapping
-    public void delete(@RequestParam("mallGoodClassId") String mallGoodClassId) {
-        iMallGoodClassService.deleteAlone(mallGoodClassId);
+    public void delete(String mallProductCategoryId) {
+        iMallGoodClassService.deleteAlone(mallProductCategoryId);
     }
 
     /**
@@ -87,7 +78,7 @@ public class MallGoodClassController  {
      * @return case list
      */
     @GetMapping("/classList")
-    public List<MallGoodClass> classList(){
+    public List<MallProductCategory> classList(){
         return iMallGoodClassService.classList();
     }
 

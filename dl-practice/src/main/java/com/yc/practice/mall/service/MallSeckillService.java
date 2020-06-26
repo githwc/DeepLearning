@@ -34,12 +34,6 @@ public interface MallSeckillService extends IService<MallSeckill> {
     void add(MallSeckill mallSeckill);
 
     /**
-     * 修改秒杀商品信息
-     * @param mallSeckill 商品信息
-     */
-    void updateSeckill(MallSeckill mallSeckill);
-
-    /**
      * 删除指定秒杀商品
      * @param mallSeckillId 秒杀商品ID
      */

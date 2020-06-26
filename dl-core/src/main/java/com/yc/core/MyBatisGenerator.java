@@ -43,7 +43,10 @@ public class MyBatisGenerator {
     /**
      * 要生成的表名
      */
-    private static final String[] TABLES = {"test"};
+    private static final String[] TABLES = {
+            "mall_fix",
+            "mall_floor"
+    };
 
     /**
      * 数据库配置四要素
@@ -53,6 +56,10 @@ public class MyBatisGenerator {
             "jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "xieyc@mysql";
+    // private static final String URL =
+    //         "jdbc:mysql://219.146.138.106:33062/xfxmall?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8";
+    // private static final String USERNAME = "haitao_mysql";
+    // private static final String PASSWORD = "wiHT123+212*";
 
     public static void main(String[] args) {
         //代码生成器

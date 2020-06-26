@@ -42,8 +42,8 @@ public class RedisUserController {
     }
 
     @GetMapping("/findUserById")
-    public RedisUser findUserById(@RequestParam("redisUserId") String id){
-        return iRedisUserService.findUserById(id);
+    public RedisUser findUserById(String redisUserId){
+        return iRedisUserService.findUserById(redisUserId);
     }
 
     @PostMapping("/add")
@@ -57,8 +57,8 @@ public class RedisUserController {
     }
 
     @DeleteMapping("/deleteUserById")
-    public void deleteUserById(@RequestParam("redisUserId") String id){
-        iRedisUserService.deleteUserById(id);
+    public void deleteUserById(String redisUserId){
+        iRedisUserService.deleteUserById(redisUserId);
     }
 
     /**
@@ -80,7 +80,7 @@ public class RedisUserController {
      * @return boolean true: 过期 false: 有效
      */
     @GetMapping("/expireState")
-    public boolean expireState(@RequestParam("redisUserId") String redisUserId){
+    public boolean expireState(String redisUserId){
        return iRedisUserService.expireState(redisUserId);
     }
 

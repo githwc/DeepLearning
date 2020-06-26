@@ -1,6 +1,6 @@
 package com.yc.practice.mall.service;
 
-import com.yc.core.mall.entity.MallSeckillSuccess;
+import com.yc.core.mall.entity.MallFloor;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,10 +11,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  * @Company: 紫色年华
  * @Author xieyc
- * @Date 2020-06-01
+ * @Date 2020-06-26
  * @Version: 1.0.0
  *
  */
-public interface MallSeckillSuccessService extends IService<MallSeckillSuccess> {
+public interface MallFloorService extends IService<MallFloor> {
 
 }

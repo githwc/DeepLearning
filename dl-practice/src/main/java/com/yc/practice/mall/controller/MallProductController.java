@@ -1,9 +1,9 @@
 package com.yc.practice.mall.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.yc.core.mall.entity.MallGood;
+import com.yc.core.mall.entity.MallProduct;
 import com.yc.core.mall.model.query.GoodQuery;
-import com.yc.practice.mall.service.MallGoodService;
+import com.yc.practice.mall.service.MallProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.*;
  *
  */
 @RestController
-@RequestMapping("/mallGood")
+@RequestMapping("/mallProduct")
 @Slf4j
-public class MallGoodController {
+public class MallProductController {
 
-    private final MallGoodService iMallGoodService;
+    private final MallProductService iMallGoodService;
 
     @Autowired
-    public MallGoodController(MallGoodService iMallGoodService){
+    public MallProductController(MallProductService iMallGoodService){
         this.iMallGoodService = iMallGoodService;
     }
 
@@ -40,35 +40,26 @@ public class MallGoodController {
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallGood> mallPage(Page<MallGood> page, GoodQuery query){
+    public Page<MallProduct> mallPage(Page<MallProduct> page, GoodQuery query){
         return iMallGoodService.mallPage(page,query);
     }
 
     /**
-     * 增加商品信息
-     * @param mallGood 商品信息
+     * 增加/更新商品信息
+     * @param mallProduct 商品信息
      */
     @PostMapping
-    public void add(@RequestBody MallGood mallGood){
-        iMallGoodService.add(mallGood);
-    }
-
-    /**
-     * 修改商品信息
-     * @param mallGood 商品信息
-     */
-    @PutMapping
-    public void updateGood(@RequestBody MallGood mallGood){
-        iMallGoodService.updateGood(mallGood);
+    public void add(@RequestBody MallProduct mallProduct){
+        iMallGoodService.add(mallProduct);
     }
 
     /**
      * 删除指定商品
-     * @param mallGoodId 商品ID
+     * @param mallProductId 商品ID
      */
     @DeleteMapping
-    public void delete(@RequestParam("mallGoodId") String mallGoodId) {
-        iMallGoodService.deleteAlone(mallGoodId);
+    public void delete(String mallProductId) {
+        iMallGoodService.deleteAlone(mallProductId);
     }
 
 }

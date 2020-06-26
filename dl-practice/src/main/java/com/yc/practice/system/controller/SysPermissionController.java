@@ -44,7 +44,7 @@ public class SysPermissionController {
     @GetMapping(value = "/getUserPermissionByToken")
     @ApiOperation(value = "获取用户权限", notes = "根据Token获取用户拥有的权限")
     @WriteLog(opPosition = "获取指定用户权限")
-    public JSONObject getUserPermissionByToken(@RequestParam("token") String token, HttpServletResponse response) {
+    public JSONObject getUserPermissionByToken(String token, HttpServletResponse response) {
         return service.getUserPermissionByToken(token, response);
     }
 
@@ -62,31 +62,24 @@ public class SysPermissionController {
         return service.queryTreeList(query);
     }
 
-    @PostMapping(value = "/add")
-    @ApiOperation(value = "添加菜单", notes = "添加菜单")
-    @WriteLog(opPosition = "添加菜单", optype = CommonConstant.OPTYPE_CREATE)
-    public void add(@RequestBody SysPermission permission) {
-        service.addPermission(permission);
-    }
-
-    @PutMapping(value = "/edit")
-    @ApiOperation(value = "编辑菜单", notes = "编辑菜单")
-    @WriteLog(opPosition = "编辑菜单", optype = CommonConstant.OPTYPE_UPDATE)
-    public void edit(@RequestBody SysPermission permission) {
-        service.editPermission(permission);
+    @PostMapping
+    @ApiOperation(value = "添加菜单/更新", notes = "添加菜单/更新")
+    @WriteLog(opPosition = "添加菜单/更新", optype = CommonConstant.OPTYPE_CREATE)
+    public void savePermission(@RequestBody SysPermission permission) {
+        service.savePermission(permission);
     }
 
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "删除菜单", notes = "删除菜单")
     @WriteLog(opPosition = "删除菜单", optype = CommonConstant.OPTYPE_DELETE)
-    public void delete(@RequestParam("sysPermissionId") String id) {
-        service.deletePermission(id);
+    public void delete(String sysPermissionId) {
+        service.deletePermission(sysPermissionId);
     }
 
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "批量删除菜单", notes = "批量删除菜单")
     @WriteLog(opPosition = "批量删除菜单", optype = CommonConstant.OPTYPE_DELETE)
-    public void deleteBatch(@RequestParam("ids") String ids) {
+    public void deleteBatch(String ids) {
         service.deleteBatch(ids);
     }
 

@@ -58,14 +58,13 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
 
     @Override
     public void add(MallSeckill mallSeckill) {
-        mallSeckill.setCreateUserId(UserUtil.getUserId());
-        this.baseMapper.insert(mallSeckill);
-    }
-
-    @Override
-    public void updateSeckill(MallSeckill mallSeckill) {
-        mallSeckill.setUpdateUserId(UserUtil.getUserId());
-        this.baseMapper.updateById(mallSeckill);
+        if(StringUtils.isNotBlank(mallSeckill.getMallSeckillId())){
+            mallSeckill.setUpdateUserId(UserUtil.getUserId());
+            this.baseMapper.updateById(mallSeckill);
+        } else {
+            mallSeckill.setCreateUserId(UserUtil.getUserId());
+            this.baseMapper.insert(mallSeckill);
+        }
     }
 
     @Override
@@ -91,7 +90,7 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
         }
         seckillVO.setSeckillStartTime(seckill.getSeckillStartTime());
         seckillVO.setSeckillEndTime(seckill.getSeckillEndTime());
-        seckillVO.setMallGoodName(seckill.getMallGoodName());
+        seckillVO.setMallProductName(seckill.getMallProductName());
         seckillVO.setLocalDateTime(LocalDateTime.now());
         seckillVO.setMd5(DigestUtil.md5Hex(seckill.getMallSeckillId()+ CommonConstant.SLAT));
         seckillVO.setSeckillStartTime(seckill.getSeckillStartTime());

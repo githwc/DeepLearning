@@ -43,21 +43,12 @@ public class DemoController {
     }
 
     /**
-     * 数据添加
+     * 数据添加/更新
      * @param demo 添加信息
      */
     @PostMapping
-    public void add(@RequestBody Demo demo) {
-        service.add(demo);
-    }
-
-    /**
-     * 修改
-     * @param demo 修改信息
-     */
-    @PutMapping
-    public void edit(@RequestBody Demo demo) {
-        service.editById(demo);
+    public void saveDemo(@RequestBody Demo demo) {
+        service.saveDemo(demo);
     }
 
     /**
@@ -65,7 +56,7 @@ public class DemoController {
      * @param demoId 主键
      */
     @DeleteMapping
-    public void delete(@RequestParam("demoId") String demoId) {
+    public void delete(String demoId) {
         service.deleteAlone(demoId);
     }
 

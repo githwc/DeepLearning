@@ -29,16 +29,10 @@ public interface MallShippingService extends IService<MallShipping> {
     Page<MallShipping> shippingPage(Page<MallShipping> page);
 
     /**
-     * 添加收货地址
+     * 添加/更新收货地址
      * @param mallShipping 地址信息
      */
-    void add(MallShipping mallShipping);
-
-    /**
-     * 修改商品信息
-     * @param mallShipping 地址信息
-     */
-    void updateShipping(MallShipping mallShipping);
+    void saveShipping(MallShipping mallShipping);
 
     /**
      * 删除指定收货地址

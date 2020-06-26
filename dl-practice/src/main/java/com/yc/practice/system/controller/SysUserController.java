@@ -80,22 +80,22 @@ public class SysUserController {
     @DeleteMapping(value = "/delete")
     @ApiOperation(value = "删除用户", notes = "删除用户")
     @WriteLog(opPosition = "删除用户", optype = CommonConstant.OPTYPE_DELETE)
-    public void delete(@RequestParam("sysUserId") String sysUserId) {
+    public void delete(String sysUserId) {
         service.deleteUser(sysUserId);
     }
 
     @DeleteMapping(value = "/deleteBatch")
     @ApiOperation(value = "批量删除用户", notes = "批量删除用户")
     @WriteLog(opPosition = "批量删除用户", optype = CommonConstant.OPTYPE_DELETE)
-    public void deleteBatch(@RequestParam("sysUserIds") String ids) {
-        service.deleteBatch(ids);
+    public void deleteBatch(String sysUserIds) {
+        service.deleteBatch(sysUserIds);
     }
 
     @GetMapping(value = "/queryUserRole")
     @ApiOperation(value = "查询用户拥有角色", notes = "查询用户拥有角色")
     @WriteLog(opPosition = "查询用户拥有角色")
-    public List<String> queryUserRole(@RequestParam("sysUserId") String userId) {
-        return service.queryUserRole(userId);
+    public List<String> queryUserRole(String sysUserId) {
+        return service.queryUserRole(sysUserId);
     }
 
     @PostMapping(value = "/resetPassword")

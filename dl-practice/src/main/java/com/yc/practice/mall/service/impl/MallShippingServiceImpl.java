@@ -9,6 +9,7 @@ import com.yc.core.region.entity.Region;
 import com.yc.core.region.mapper.RegionMapper;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallShippingService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,16 +59,15 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
     }
 
     @Override
-    public void add(MallShipping mallShipping) {
-        mallShipping.setSysUserId(UserUtil.getUserId());
-        dealRegion(mallShipping);
-        this.baseMapper.insert(mallShipping);
-    }
-
-    @Override
-    public void updateShipping(MallShipping mallShipping) {
-        dealRegion(mallShipping);
-        this.baseMapper.updateById(mallShipping);
+    public void saveShipping(MallShipping mallShipping) {
+        if(StringUtils.isNotBlank(mallShipping.getMallShippingId())){
+            dealRegion(mallShipping);
+            this.baseMapper.updateById(mallShipping);
+        } else {
+            mallShipping.setSysUserId(UserUtil.getUserId());
+            dealRegion(mallShipping);
+            this.baseMapper.insert(mallShipping);
+        }
     }
 
     private void dealRegion(MallShipping mallShipping){

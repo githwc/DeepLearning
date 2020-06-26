@@ -6,8 +6,8 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
-import com.yc.core.mall.entity.MallGood;
-import com.yc.core.mall.mapper.MallGoodMapper;
+import com.yc.core.mall.entity.MallProduct;
+import com.yc.core.mall.mapper.MallProductMapper;
 import com.yc.core.mall.model.form.CartForm;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.mall.service.MallCartService;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * 功能描述：
  * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 未经本人许可，不得以任何方式复制或使用本程序任何部分F
  *
  * @Company: 紫色年华
  * @Author: xieyc
@@ -36,13 +36,13 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
 public class MallCartServiceImpl implements MallCartService {
 
-    private final MallGoodMapper mallGoodMapper;
+    private final MallProductMapper mallProductMapper;
     private StringRedisTemplate redisTemplate;
 
 
     @Autowired
-    public MallCartServiceImpl(MallGoodMapper mallGoodMapper, StringRedisTemplate redisTemplate) {
-        this.mallGoodMapper = mallGoodMapper;
+    public MallCartServiceImpl(MallProductMapper mallProductMapper, StringRedisTemplate redisTemplate) {
+        this.mallProductMapper = mallProductMapper;
         this.redisTemplate = redisTemplate;
     }
 
@@ -64,7 +64,7 @@ public class MallCartServiceImpl implements MallCartService {
 
     @Override
     public CartForm add(CartForm form) {
-        MallGood dbMallGood = this.mallGoodMapper.selectById(form.getMallGoodId());
+        MallProduct dbMallGood = this.mallProductMapper.selectById(form.getMallProductId());
         // 判断商品是否存在
         if (ObjectUtil.isNull(dbMallGood)) {
             throw new ErrorException(Error.GoodError);
@@ -81,12 +81,12 @@ public class MallCartServiceImpl implements MallCartService {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         String key = CommonConstant.CART + UserUtil.getUserId();
 
-        String value = opsForHash.get(key,form.getMallGoodId());
+        String value = opsForHash.get(key,form.getMallProductId());
         if(StringUtils.isNotEmpty(value)){
             form = JSONObject.parseObject(value,CartForm.class);
             form.setNum(form.getNum()+1);
         }
-        opsForHash.put(key,form.getMallGoodId(),JSONObject.toJSONString(form));
+        opsForHash.put(key,form.getMallProductId(),JSONObject.toJSONString(form));
         return this.list();
     }
 
@@ -94,24 +94,24 @@ public class MallCartServiceImpl implements MallCartService {
     public CartForm update(CartForm cartForm) {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         String redisKey = CommonConstant.CART + UserUtil.getUserId();
-        String value = opsForHash.get(redisKey, cartForm.getMallGoodId());
+        String value = opsForHash.get(redisKey, cartForm.getMallProductId());
         if (StringUtils.isEmpty(value)) {
             throw new ErrorException(Error.GoodError);
         }
         CartForm cart = JSONObject.parseObject(value,CartForm.class);
-        opsForHash.put(redisKey, cartForm.getMallGoodId(), JSONObject.toJSONString(cart));
+        opsForHash.put(redisKey, cartForm.getMallProductId(), JSONObject.toJSONString(cart));
         return list();
     }
 
     @Override
-    public CartForm delete(String mallGoodId) {
+    public CartForm delete(String mallProductId) {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         String redisKey = CommonConstant.CART + UserUtil.getUserId();
-        String value = opsForHash.get(redisKey, String.valueOf(mallGoodId));
+        String value = opsForHash.get(redisKey, String.valueOf(mallProductId));
         if(StringUtils.isEmpty(value)){
             throw new ErrorException(Error.GoodError);
         }
-        opsForHash.delete(redisKey, String.valueOf(mallGoodId));
+        opsForHash.delete(redisKey, String.valueOf(mallProductId));
         return this.list();
     }
 

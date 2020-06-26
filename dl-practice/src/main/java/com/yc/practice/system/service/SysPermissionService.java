@@ -57,13 +57,7 @@ public interface SysPermissionService extends IService<SysPermission> {
      * @param sysPermission
      * @return
      */
-    void addPermission(SysPermission sysPermission);
-
-    /**
-     * 编辑
-     * @param sysPermission
-     */
-    void editPermission(SysPermission sysPermission);
+    void savePermission(SysPermission sysPermission);
 
     /**
      * 删除
