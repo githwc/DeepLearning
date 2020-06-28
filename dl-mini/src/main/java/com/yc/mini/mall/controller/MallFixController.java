@@ -1,6 +1,6 @@
-package com.yc.practice.mall.controller;
+package com.yc.mini.mall.controller;
 
-import com.yc.practice.mall.service.MallFixService;
+import com.yc.mini.mall.service.MallFixService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

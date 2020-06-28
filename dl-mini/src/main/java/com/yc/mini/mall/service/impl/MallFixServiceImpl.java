@@ -1,9 +1,9 @@
-package com.yc.practice.mall.service.impl;
+package com.yc.mini.mall.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.mall.entity.MallFix;
 import com.yc.core.mall.mapper.MallFixMapper;
-import com.yc.practice.mall.service.MallFixService;
+import com.yc.mini.mall.service.MallFixService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

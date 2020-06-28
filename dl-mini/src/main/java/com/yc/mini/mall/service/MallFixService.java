@@ -1,4 +1,4 @@
-package com.yc.practice.mall.service;
+package com.yc.mini.mall.service;
 
 import com.yc.core.mall.entity.MallFix;
 import com.baomidou.mybatisplus.extension.service.IService;
