@@ -4,18 +4,12 @@ import io.netty.util.internal.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 功能描述：流水号生成规则(按默认规则递增，数字从1-99开始递增，数字到99，递增字母;位数不够增加位数)
+ * 功能描述:流水号生成规则(按默认规则递增，数字从1-99开始递增，数字到99，递增字母;位数不够增加位数)
  *      A001
  *      A001A002
  *
- * <p>
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-10-31 13:48
- *
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-10-31 13:48
  */
 public class YouBianCodeUtil {
 

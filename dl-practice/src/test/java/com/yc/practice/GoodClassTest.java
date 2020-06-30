@@ -4,11 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.yc.core.category.entity.ProductCategory;
-import com.yc.core.category.service.ProductCategoryService;
+import com.yc.core.mall.entity.ProductCategory;
+import com.yc.practice.mall.service.ProductCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.platform.commons.util.CollectionUtils;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 功能描述：
- * <p>版权所有：</p>
- * 未经本公司许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-06-18
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-06-18
  * @Version: 1.0.0
  */
 @SpringBootTest

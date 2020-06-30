@@ -16,16 +16,16 @@
 		   order by p.sort ASC
 	</select>
 
-    <resultMap id="permissionMap" type="com.yc.core.cascadeList.CaseTopLevel">
+    <resultMap id="permissionMap" type="com.yc.core.cascade.CaseTopLevel">
         <id column="sys_permission_id" property="id" />
         <result column="name" property="title" />
         <result column="sys_permission_id" property="key" />
         <result column="top_leaf" property="leaf" />
-        <collection property="children" ofType="com.yc.core.cascadeList.CaseSecondLevel">
+        <collection property="children" ofType="com.yc.core.cascade.CaseSecondLevel">
             <result column="second_name" property="title" />
             <result column="second_id" property="key" />
             <result column="second_leaf" property="leaf" />
-            <collection property="children" ofType="com.yc.core.cascadeList.CaseLastLevel">
+            <collection property="children" ofType="com.yc.core.cascade.CaseLastLevel">
                 <result column="last_name" property="title" />
                 <result column="last_id" property="key" />
                 <result column="last_leaf" property="leaf" />

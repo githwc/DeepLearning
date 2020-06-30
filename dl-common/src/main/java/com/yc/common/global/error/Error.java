@@ -1,7 +1,7 @@
 package com.yc.common.global.error;
 
 /**
- * 功能描述：异常代码枚举
+ * 功能描述:异常代码枚举
  *  一、[throw new ErrorException(DlError.RoleNoDelete);]
  *  二、
  *      httpStatusCode: http响应码(非200前端进入error代码逻辑块)
@@ -11,13 +11,8 @@ package com.yc.common.global.error;
  *      401:缺乏有效身份认证凭证,多指未登录
  *      403:服务器拒绝响应,权限不足
  *
- *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-03-22
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-03-22
  * @Version: 1.0.0
  */
 public enum Error implements IError {

@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 功能描述：购物车控制层
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:购物车控制层
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-05-17
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-05-17
  * @Version: 1.0.0
  */
 @RestController

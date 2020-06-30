@@ -1,30 +1,33 @@
 package com.yc.practice;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yc.common.constant.CommonEnum;
-import com.yc.core.category.entity.ProductCategory;
+import com.yc.core.mall.entity.ProductCategory;
+import com.yc.core.region.entity.Region;
+import com.yc.core.region.mapper.RegionMapper;
+import com.yc.practice.region.service.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.sound.midi.Soundbank;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.SQLOutput;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 功能描述：
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-05-26
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-05-26
  * @Version: 1.0.0
  */
 @SpringBootTest
@@ -32,6 +35,8 @@ import java.util.*;
 @RunWith(SpringRunner.class)
 public class TempTest {
 
+    @Autowired
+    private RegionService regionService;
 
     @Test
     public void tests(){
@@ -1790,5 +1795,21 @@ public class TempTest {
 
     }
 
-
+    @Test
+    public void dealRegion(){
+        List<Region> list = regionService.list(new LambdaQueryWrapper<Region>()
+            .eq(Region::getRegionLevel,3)
+                .orderByAsc(Region::getRegionCode)
+        );
+        List<Region> updateList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            Region region = new Region();
+            BeanUtil.copyProperties(list.get(i),region);
+            region.setRegionCode(region.getRegionCode().substring(0,6));
+            region.setSort(i);
+            updateList.add(region);
+        };
+        System.out.println(updateList);
+        regionService.updateBatchById(updateList);
+    }
 }

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.constant.CommonConstant;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
@@ -28,11 +27,7 @@ import java.util.List;
 /**
  * 功能描述:
  *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author xieyc
+ * @Author:  xieyc && 紫色年华
  * @Date 2019-09-20
  * @Version: 1.0.0
  */
@@ -49,7 +44,12 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
 
     @Override
     public Page<SysDict> childrenDict(Page<SysDict> page, DictQuery dictQuery) {
-        return this.baseMapper.childrenDict(page, dictQuery);
+        return this.baseMapper.selectPage(page,new LambdaQueryWrapper<SysDict>()
+            .eq(SysDict::getDelFlag,false)
+            .like(StringUtils.isNotBlank(dictQuery.getName()),SysDict::getName,dictQuery.getName())
+            .orderByAsc(SysDict::getSort)
+            .orderByDesc(SysDict::getCreateTime)
+        );
     }
 
     @Override

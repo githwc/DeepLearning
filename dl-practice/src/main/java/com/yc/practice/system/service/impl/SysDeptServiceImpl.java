@@ -25,16 +25,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
-* 功能描述：
+* 功能描述:
 *
-*  <p>版权所有：</p>
-*  未经本人许可，不得以任何方式复制或使用本程序任何部分
-*
-* @Company: 紫色年华
-* @Author xieyc
+* @Author:  xieyc && 紫色年华
 * @Date 2019-09-20
 * @Version: 1.0.0
-*
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -48,7 +43,13 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     public Page<SysDept> childrenDept(Page<SysDept> page, DeptQuery deptQuery) {
-        return this.baseMapper.childrenDept(page,deptQuery);
+        return baseMapper.selectPage(page,new LambdaQueryWrapper<SysDept>()
+            .eq(SysDept::getDelFlag,false)
+            .eq(SysDept::getParentId,deptQuery.getParentId())
+            .like(StringUtils.isNotBlank(deptQuery.getDepartName()),SysDept::getDepartName,deptQuery.getDepartName())
+            .orderByAsc(SysDept::getSort)
+            .orderByDesc(SysDept::getCreateTime)
+        );
     }
 
     @Override

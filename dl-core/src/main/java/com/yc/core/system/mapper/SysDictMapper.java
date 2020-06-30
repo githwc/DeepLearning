@@ -1,9 +1,7 @@
 package com.yc.core.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.system.entity.SysDict;
-import com.yc.core.system.model.query.DictQuery;
 import com.yc.core.tree.TreeNode;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,16 +10,11 @@ import java.util.List;
 
 /**
  *
- * 功能描述：
+ * 功能描述:
  *
- *  <p>版权所有：</p>
- *  未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author xieyc
+ * @Author:  xieyc && 紫色年华
  * @Date 2019-09-20
  * @Version: 1.0.0
- *
  */
 @Repository
 public interface SysDictMapper extends BaseMapper<SysDict> {
@@ -32,14 +25,6 @@ public interface SysDictMapper extends BaseMapper<SysDict> {
      * @return tree
      */
     List<TreeNode> dictTree(@Param("name") String name);
-
-    /**
-     * 子级字典
-     * @param page 分页
-     * @param dictQuery 父级ID
-     * @return dept list
-     */
-    Page<SysDict> childrenDict(@Param("page") Page<SysDict> page, @Param("query") DictQuery dictQuery);
 
     /**
      * 根据字典路径查询子集

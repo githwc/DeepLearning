@@ -2,31 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yc.core.region.mapper.RegionMapper">
 
-    <resultMap id="regionMap" type="com.yc.core.cascadeList.CaseTopLevel">
-        <id column="region_code" property="id" />
-        <result column="region_name" property="title" />
-        <result column="region_code" property="key" />
-        <collection property="children" ofType="com.yc.core.cascadeList.CaseSecondLevel">
-            <result column="second_name" property="title" />
-            <result column="second_code" property="key" />
-            <collection property="children" ofType="com.yc.core.cascadeList.CaseLastLevel">
-                <result column="last_name" property="title" />
-                <result column="last_code" property="key" />
-            </collection>
-        </collection>
-    </resultMap>
-
-    <select id="regionList" resultMap="regionMap">
-        select
-            a.region_code, a.region_name,
-            b.region_name as second_name,b.region_code as second_code,
-            c.region_name as last_name,c.region_code as last_code
-        from region a
-        left join region b on a.region_code = b.region_pcode AND b.region_level = 2
-        left join region c on b.region_code = c.region_pcode AND c.region_level = 3
-        where
-            a.region_level = 1
-        ORDER BY a.sort,b.sort,c.sort
-    </select>
-
 </mapper>

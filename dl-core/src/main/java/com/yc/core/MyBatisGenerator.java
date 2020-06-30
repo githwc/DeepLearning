@@ -15,14 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 功能描述：MyBatis-plus 代码生成器
+ * 功能描述:MyBatis-plus 代码生成器
  *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author:  xieyc
- * @Datetime: 2019-06-28 17:17
+ * @Author:  xieyc && 紫色年华
+ * @Date: 2019-06-28 17:17
  * @Version: 1.0.0
  */
 public class MyBatisGenerator {
@@ -67,7 +63,7 @@ public class MyBatisGenerator {
         // 全局配置
         gen.setGlobalConfig(new GlobalConfig()
                 // 主键自增
-                .setIdType(IdType.UUID)
+                .setIdType(IdType.ASSIGN_UUID)
                 // 是否覆盖文件
                 .setFileOverride(true)
                 // 输出目录

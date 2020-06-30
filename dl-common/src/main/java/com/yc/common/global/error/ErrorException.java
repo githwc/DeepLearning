@@ -3,13 +3,10 @@ package com.yc.common.global.error;
 import com.yc.common.global.response.RestResult;
 
 /**
- * 功能描述：接口服务通用异常
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:接口服务通用异常
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-03-22
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-03-22
  * @Version: 1.0.0
  */
 public class ErrorException extends RuntimeException {

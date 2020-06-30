@@ -13,12 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * 功能描述：
- *  <p>版权所有：</p>
- *  未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:
  *
- * @Company: 紫色年华
- * @Author xieyc
+ * @Author:  xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  *
@@ -39,9 +36,9 @@ public class SysUser implements Serializable {
      *         IdType.AUTO：数据库ID自增
      *         IdType.INPUT: 用户输入ID
      *         IdType.ID_WORKER:  全局唯一ID，内容为空自动填充（默认配置）
-     *         IdType.UUID: 全局唯一ID，内容为空自动填充
+     *         IdType.ASSIGN_UUID: 全局唯一ID，内容为空自动填充
      */
-    @TableId(value = "sys_user_id", type = IdType.UUID)
+    @TableId(value = "sys_user_id", type = IdType.ASSIGN_UUID)
     private String sysUserId;
     /**
      * 真实姓名

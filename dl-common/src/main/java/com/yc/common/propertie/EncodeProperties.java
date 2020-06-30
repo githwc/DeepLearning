@@ -5,13 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * 功能描述：
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述: 密钥配置
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-05-23
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-05-23
  * @Version: 1.0.0
  */
 @Data

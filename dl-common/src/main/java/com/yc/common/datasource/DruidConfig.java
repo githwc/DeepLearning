@@ -24,12 +24,8 @@ import java.util.Map;
  *      具体方法是，用winRAR打开jar包，在druid-1.1.6.jar\support\http\resources\js\common.js路径下找到文件，
  *      修改common.js中的代码，删除buildFooter函数中的代码即可
  *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author:  xieyc
- * @Datetime: 2019-06-06
+ * @Author:  xieyc && 紫色年华
+ * @Date: 2019-06-06
  * @Version: 1.0.0
  */
 @Configuration

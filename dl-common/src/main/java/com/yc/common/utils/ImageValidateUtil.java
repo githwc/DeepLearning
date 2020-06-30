@@ -14,9 +14,8 @@ import java.util.Random;
 /**
  * 图形验证码生成工具类
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-06-17 15:13
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-06-17 15:13
  * @Version: 1.0.0
  */
 public class ImageValidateUtil {

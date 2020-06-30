@@ -6,13 +6,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 功能描述：我的通知公告
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:我的通知公告
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2020-05-21
+ * @Author: xieyc && 紫色年华
+ * @Date: 2020-05-21
  * @Version: 1.0.0
  */
 @Data

@@ -14,13 +14,11 @@ import ${superControllerClassPackage};
 
 /**
  *
- * 功能描述：
+ * 功能描述:
  *
- * @Company: 紫色年华
- * @Author ${author}
+ * @Author ${author} && 紫色年华
  * @Date ${date}
  * @Version: 1.0.0
- *
  */
 <#if restControllerStyle>
 @RestController

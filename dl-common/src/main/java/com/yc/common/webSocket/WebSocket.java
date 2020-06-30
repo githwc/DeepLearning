@@ -15,16 +15,12 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * 功能描述：websocket 操作类
+ * 功能描述:websocket 操作类
  *
  * @ServerEndpoint：此注解相当于设置访问URL
  *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-10-08
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-10-08
  * @Version: 1.0.0
  */
 @Component

@@ -3,11 +3,11 @@ server:
 spring:
   #===== DataBase 相关 ===========
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3306/deeplearning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: xieyc@mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
     # 配置监控统计拦截的filters，'stat'用于监控统计;  'log4j'用于日志;  'wall'用于防火墙
     druid:
       filters: stat,wall,config,log4j
@@ -44,6 +44,7 @@ dl:
     - /upload/**
     - /websocket/**
     - /mallOrder/syncCallBackPay
+    - /region/**
   #===== 文件相关 =====
   upload:
     img-save-path: D://upload//image//

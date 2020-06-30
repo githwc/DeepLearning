@@ -1,7 +1,7 @@
 package com.yc.practice.selfOffice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.yc.core.selfOffice.entity.WorkBench;
+import com.yc.core.selfoffice.entity.WorkBench;
 import com.yc.practice.selfOffice.service.WorkBenchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -13,16 +13,11 @@ import java.util.Random;
 
 /**
  *
- * 功能描述：工作台 控制层
+ * 功能描述:工作台 控制层
  *
- *  <p>版权所有：</p>
- *  未经本人许可，不得以任何方式复制或使用本程序任何部分
- *
- * @Company: 紫色年华
- * @Author xieyc
+ * @Author:  xieyc && 紫色年华
  * @Date 2020-04-15
  * @Version: 1.0.0
- *
  */
 @RestController
 @RequestMapping("/workBench")

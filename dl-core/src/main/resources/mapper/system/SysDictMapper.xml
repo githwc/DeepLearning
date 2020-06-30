@@ -17,19 +17,6 @@
         order by sort
     </select>
 
-    <select id="childrenDict" resultType="com.yc.core.system.entity.SysDict">
-        select
-            sd.*
-        from sys_dict sd
-        where
-            sd.del_flag = 0
-        and sd.parent_id = #{query.parentId}
-        <if test="query.name != null and query.name != '' ">
-            and sd.name like concat ('%',#{query.name},'%')
-        </if>
-        order by sd.sort,sd.create_time desc
-    </select>
-
     <select id="getDict" resultType="com.yc.core.system.entity.SysDict">
         select
             dic.*

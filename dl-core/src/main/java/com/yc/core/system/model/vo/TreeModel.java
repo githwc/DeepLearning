@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 功能描述：树形列表VO
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:树形列表VO
+
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-10-28
+
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-10-28
  * @Version: 1.0.0
  */
 @Data

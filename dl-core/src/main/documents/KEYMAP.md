@@ -13,6 +13,7 @@
     4.对全局文本内容进行替换    ctrl + shift + R
     5.删除当前行或选中行        ctrl + Y
     6.移动光标向上/向下         Alt + Shift + 方向
+    7.格式化代码              ctrl + Alt + L
 
 [快捷]
     1.最大化编辑区域           ctrl + shift + f12

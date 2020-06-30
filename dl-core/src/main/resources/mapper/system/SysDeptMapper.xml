@@ -17,17 +17,4 @@
         order by sort
     </select>
 
-    <select id="childrenDept" resultType="com.yc.core.system.entity.SysDept">
-        select
-            sd.*
-        from sys_dept sd
-        where
-            sd.del_flag = 0
-            and sd.parent_id = #{query.parentId}
-            <if test="query.departName != null and query.departName != '' ">
-                and sd.depart_name like concat ('%',#{query.departName},'%')
-            </if>
-        order by sd.sort,sd.create_time desc
-    </select>
-
 </mapper>

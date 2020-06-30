@@ -15,13 +15,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
- * 功能描述：Spring Boot 2.0 跨域相关
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:Spring Boot 2.0 跨域相关
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-09-27
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-09-27
  * @Version: 1.0.0
  */
 @Configuration

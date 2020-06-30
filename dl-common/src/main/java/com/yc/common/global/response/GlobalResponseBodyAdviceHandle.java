@@ -4,28 +4,22 @@ import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 功能描述：封装返回数据
+ * 功能描述:封装返回数据
  *
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-08-21 17:58
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-08-21 17:58
  * @Version: 1.0.0
  */
 @ControllerAdvice

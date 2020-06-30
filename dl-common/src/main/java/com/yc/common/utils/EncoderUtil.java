@@ -18,14 +18,10 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * 功能描述：关于加解密、加解码的工具类
- * <p>
- * <p>版权所有：</p>
- * 未经本人许可，不得以任何方式复制或使用本程序任何部分
+ * 功能描述:关于加解密、加解码的工具类
  *
- * @Company: 紫色年华
- * @Author: xieyc
- * @Datetime: 2019-05-10 13:48
+ * @Author: xieyc && 紫色年华
+ * @Date: 2019-05-10 13:48
  */
 @Slf4j
 public class EncoderUtil {
