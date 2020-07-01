@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonEnum;
 import com.yc.common.global.error.Error;
@@ -62,8 +63,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         this.getAuthJsonArray(authjsonArray, metaList);
         // 查询所有的权限
         List<SysPermission> allAuthList = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getDelFlag, 0)
-                .eq(SysPermission::getMenuType, 2)
+            .eq(SysPermission::getDelFlag, 0)
+            .eq(SysPermission::getMenuType, 2)
         );
         JSONArray allauthjsonArray = new JSONArray();
         this.getAllAuthJsonArray(allauthjsonArray, allAuthList);
@@ -349,8 +350,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                 this.baseMapper.setMenuLeaf(pid, 1);
             }
         }
-        // 删除节点及子节点
-        this.removeChildrenBy(sysPermission.getSysPermissionId());
+        // 删除子节点
+        this.removeChildren(sysPermission.getSysPermissionId());
+        // 删除节点
+        sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
+        this.baseMapper.updateById(sysPermission);
     }
 
     @Override
@@ -429,32 +433,30 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     /**
-     * 根据父id删除其关联的子节点数据 ====== deletePermission 子方法 =========
-     *
-     * @return
+     * 根据父id删除其关联的子节点数据 ****** 子方法 *****
      */
-    private void removeChildrenBy(String parentId) {
-        // TODO: 2020/6/23 待验证
-        // 如果查出的集合不为空, 则先删除所有
-        SysPermission sysPermission = new SysPermission();
-        sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
-        this.update(sysPermission, new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getSysPermissionId, parentId)
-        );
+    private void removeChildren(String parentId) {
         // 查出该主键下的所有子级
         List<SysPermission> permissionList = this.list(new LambdaQueryWrapper<SysPermission>()
                 .eq(SysPermission::getParentId, parentId)
         );
-        if (permissionList != null && permissionList.size() > 0) {
+        if (CollectionUtils.isNotEmpty(permissionList)) {
+            // 如果查出的集合不为空, 则先删除所有
+            SysPermission sysPermission = new SysPermission();
+            sysPermission.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
+            this.update(sysPermission, new LambdaQueryWrapper<SysPermission>()
+                    .eq(SysPermission::getParentId, parentId)
+            );
             // 遍历, 根据每个对象,查找其是否仍有子级
-            for (int i = 0, len = permissionList.size(); i < len; i++) {
-                String id = permissionList.get(i).getSysPermissionId();
+            permissionList.forEach(item->{
+                String id = item.getSysPermissionId();
                 int num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, id));
                 // 有子级, 则递归
                 if (num > 0) {
-                    this.removeChildrenBy(id);
+                    this.removeChildren(id);
                 }
-            }
+            });
+
         }
     }
 

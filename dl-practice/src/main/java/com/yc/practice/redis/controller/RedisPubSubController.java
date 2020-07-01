@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * 功能描述:发布订阅 控制层
  *
- *
-
  * @Author:  xieyc && 紫色年华
  * @Date 2020-01-29
  * @Version: 1.0.0
@@ -45,7 +43,7 @@ public class RedisPubSubController {
      * @param page 分页信息
      * @return page
      */
-    @GetMapping("/pubSubPage")
+    @GetMapping("/page")
     public Page<RedisPubSub> pubSubPage(Page<RedisPubSub> page){
         return iRedisPubSubService.pubSubPage(page);
     }

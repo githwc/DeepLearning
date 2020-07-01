@@ -98,9 +98,9 @@ public class UploadServiceImpl implements UploadService {
      */
     private String generateOrderNo(){
         StringBuilder sb = new StringBuilder();
-        Long nowLong = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
+        Long nowLong = Long.parseLong(new SimpleDateFormat(CommonConstant.yyyyMMddHHmmss).format(new Date()));
         sb.append(nowLong.toString());
-        String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String date = new SimpleDateFormat(CommonConstant.yyyyMMddHHmm).format(new Date());
         String key = CommonConstant.TODAY_ORDER_NO + date;
         if(!redisTemplate.hasKey(key)){
             redisTemplate.opsForValue().set(key,0,5, TimeUnit.MINUTES);

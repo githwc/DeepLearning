@@ -6,8 +6,6 @@ import com.yc.core.message.entity.Message;
 /**
  * 功能描述:
  *
- *
-
  * @Author:  xieyc && 紫色年华
  * @Date 2019-10-08
  * @Version: 1.0.0

@@ -20,13 +20,13 @@ public interface MallProductService extends IService<MallProduct> {
      * @param query 入参
      * @return page
      */
-    Page<MallProduct> mallPage(Page<MallProduct> page, GoodQuery query);
+    Page<MallProduct> pageMallProduct(Page<MallProduct> page, GoodQuery query);
 
     /**
      * 增加商品信息
      * @param mallProduct 商品信息
      */
-    void add(MallProduct mallProduct);
+    void saveProduct(MallProduct mallProduct);
 
     /**
      * 删除指定商品

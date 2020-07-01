@@ -1,9 +1,9 @@
 package com.yc.practice.mall.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallProductCategory;
-import com.yc.core.tree.TreeNode;
 
 import java.util.List;
 
@@ -20,13 +20,13 @@ public interface MallProductCategoryService extends IService<MallProductCategory
      * 类目树
      * @return 树
      */
-    List<TreeNode> classTree();
+    List<Tree<String>> mallProductTree();
 
     /**
      * 添加类目
      * @param mallProductCategory 类目信息
      */
-    void add(MallProductCategory mallProductCategory);
+    void saveProductCategory(MallProductCategory mallProductCategory);
 
     /**
      * 查询子级类目
@@ -44,7 +44,7 @@ public interface MallProductCategoryService extends IService<MallProductCategory
 
     /**
      * 类目级联信息
-     * @return case list
+     * @return list
      */
-    List<MallProductCategory> classList();
+    List<Tree<String>> listProductCategory();
 }

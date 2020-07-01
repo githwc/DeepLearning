@@ -35,8 +35,8 @@ public class MallProductController {
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallProduct> mallPage(Page<MallProduct> page, GoodQuery query){
-        return iMallGoodService.mallPage(page,query);
+    public Page<MallProduct> page(Page<MallProduct> page, GoodQuery query){
+        return iMallGoodService.pageMallProduct(page,query);
     }
 
     /**
@@ -44,8 +44,8 @@ public class MallProductController {
      * @param mallProduct 商品信息
      */
     @PostMapping
-    public void add(@RequestBody MallProduct mallProduct){
-        iMallGoodService.add(mallProduct);
+    public void save(@RequestBody MallProduct mallProduct){
+        iMallGoodService.saveProduct(mallProduct);
     }
 
     /**

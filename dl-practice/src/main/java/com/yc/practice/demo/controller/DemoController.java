@@ -45,7 +45,7 @@ public class DemoController {
      * @param demo 添加信息
      */
     @PostMapping
-    public void saveDemo(@RequestBody Demo demo) {
+    public void save(@RequestBody Demo demo) {
         service.saveDemo(demo);
     }
 

@@ -1,10 +1,10 @@
 package com.yc.practice.system.controller;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.model.query.DeptQuery;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.system.service.SysDeptService;
 import io.swagger.annotations.Api;
@@ -39,7 +39,7 @@ public class SysDeptController {
     @GetMapping(value = "/departTree")
     @ApiOperation(value = "加载部门树",notes = "加载所有部门树")
     @WriteLog(opPosition = "加载部门树")
-    public List<TreeNode> departTree(@RequestParam(value = "departName",required = false)String departName){
+    public List<Tree<String>> departTree(@RequestParam(value = "departName",required = false)String departName){
         return service.departTree(departName);
     }
 

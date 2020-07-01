@@ -1,14 +1,16 @@
 package com.yc.practice.mall.service.impl;
 
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.MallProductCategory;
 import com.yc.core.mall.mapper.MallProductCategoryClassMapper;
-import com.yc.core.tree.Tree;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.mall.service.MallProductCategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,13 +30,23 @@ import java.util.List;
 public class MallProductCategoryServiceImpl extends ServiceImpl<MallProductCategoryClassMapper, MallProductCategory> implements MallProductCategoryService {
 
     @Override
-    public List<TreeNode> classTree() {
-        List<TreeNode> list = this.baseMapper.classTree();
-        return Tree.getTreeList("#", list);
+    public List<Tree<String>> mallProductTree() {
+        List<MallProductCategory> list = this.baseMapper.selectList(new LambdaQueryWrapper<MallProductCategory>()
+                .eq(MallProductCategory::getState,"0")
+                .orderByAsc(MallProductCategory::getSort)
+        );
+        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        treeNodeConfig.setNameKey("title");
+        return TreeUtil.build(list,"#",treeNodeConfig,(category, treeNode)->{
+            treeNode.setId(category.getMallProductCategoryId());
+            treeNode.setParentId(category.getParentId());
+            treeNode.setName(category.getName());
+            treeNode.putExtra("orderNum",category.getSort());
+        });
     }
 
     @Override
-    public void add(MallProductCategory mallProductCategory) {
+    public void saveProductCategory(MallProductCategory mallProductCategory) {
         if(StringUtils.isNotBlank(mallProductCategory.getMallProductCategoryId())){
             this.updateById(mallProductCategory);
         } else {
@@ -47,7 +59,9 @@ public class MallProductCategoryServiceImpl extends ServiceImpl<MallProductCateg
 
     @Override
     public Page<MallProductCategory> childrenClass(Page<MallProductCategory> page, String parentId) {
-        return this.baseMapper.childrenClass(page,parentId);
+        return baseMapper.selectPage(page, Wrappers.<MallProductCategory>lambdaQuery()
+            .eq(MallProductCategory::getParentId,parentId)
+        );
     }
 
     @Override
@@ -73,19 +87,19 @@ public class MallProductCategoryServiceImpl extends ServiceImpl<MallProductCateg
     }
 
     @Override
-    public List<MallProductCategory> classList() {
+    public List<Tree<String>> listProductCategory() {
         List<MallProductCategory> list = this.baseMapper.selectList(new LambdaQueryWrapper<MallProductCategory>()
-            .eq(MallProductCategory::getParentId,"root")
                 .eq(MallProductCategory::getState,"0")
+                .orderByAsc(MallProductCategory::getSort)
         );
-        list.forEach(i->{
-            List<MallProductCategory> item = this.baseMapper.selectList(new LambdaQueryWrapper<MallProductCategory>()
-                .eq(MallProductCategory::getParentId,i.getMallProductCategoryId())
-                    .eq(MallProductCategory::getState,"0")
-            );
-            i.setChildren(item);
+        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        treeNodeConfig.setIdKey("mallProductCategoryId");
+        return TreeUtil.build(list,"root",treeNodeConfig,(category, treeNode)->{
+            treeNode.setId(category.getMallProductCategoryId());
+            treeNode.setParentId(category.getParentId());
+            treeNode.setName(category.getName());
+            treeNode.putExtra("sort",category.getSort());
         });
-        return list;
     }
 
 

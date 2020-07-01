@@ -1,5 +1,8 @@
 package com.yc.practice.system.service.impl;
 
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,8 +14,6 @@ import com.yc.common.utils.YouBianCodeUtil;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.mapper.SysDeptMapper;
 import com.yc.core.system.model.query.DeptQuery;
-import com.yc.core.tree.Tree;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysDeptService;
 import io.netty.util.internal.StringUtil;
@@ -25,30 +26,41 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2019-09-20
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2019-09-20
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
 
     @Override
-    public List<TreeNode> departTree(String departName) {
-       List<TreeNode> list = this.baseMapper.departTree(departName);
-       return Tree.getTreeList("#", list);
+    public List<Tree<String>> departTree(String departName) {
+        List<SysDept> list = baseMapper.selectList(new LambdaQueryWrapper<SysDept>()
+                .eq(SysDept::getDelFlag, 0)
+                .eq(StringUtils.isNotBlank(departName), SysDept::getDepartName, departName)
+                .orderByAsc(SysDept::getSort)
+        );
+        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        treeNodeConfig.setNameKey("title");
+        return TreeUtil.build(list, "#", treeNodeConfig, (dept, treeNode) -> {
+            treeNode.setId(dept.getSysDeptId());
+            treeNode.setParentId(dept.getParentId());
+            treeNode.setName(dept.getDepartName());
+            treeNode.putExtra("orderNum", dept.getSort());
+        });
     }
 
     @Override
     public Page<SysDept> childrenDept(Page<SysDept> page, DeptQuery deptQuery) {
-        return baseMapper.selectPage(page,new LambdaQueryWrapper<SysDept>()
-            .eq(SysDept::getDelFlag,false)
-            .eq(SysDept::getParentId,deptQuery.getParentId())
-            .like(StringUtils.isNotBlank(deptQuery.getDepartName()),SysDept::getDepartName,deptQuery.getDepartName())
-            .orderByAsc(SysDept::getSort)
-            .orderByDesc(SysDept::getCreateTime)
+        return baseMapper.selectPage(page, new LambdaQueryWrapper<SysDept>()
+                .eq(SysDept::getDelFlag, false)
+                .eq(SysDept::getParentId, deptQuery.getParentId())
+                .like(StringUtils.isNotBlank(deptQuery.getDepartName()), SysDept::getDepartName, deptQuery.getDepartName())
+                .orderByAsc(SysDept::getSort)
+                .orderByDesc(SysDept::getCreateTime)
         );
     }
 
@@ -56,17 +68,17 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     public void deleteAlone(String id) {
         List<String> idList = new ArrayList<String>();
         SysDept sysDept = this.getById(id);
-        if(sysDept == null) {
+        if (sysDept == null) {
             throw new ErrorException(Error.DeptNotFound);
-        }else {
+        } else {
             //逻辑删除子部门
             idList.add(id);
             this.checkChildrenExists(id, idList);
-            idList.forEach(currId->{
+            idList.forEach(currId -> {
                 SysDept sysDept1 = new SysDept();
                 sysDept1.setDelFlag(CommonEnum.DelFlag.DEL.getCode());
-                this.update(sysDept1,new LambdaQueryWrapper<SysDept>()
-                        .eq(SysDept::getSysDeptId,currId)
+                this.update(sysDept1, new LambdaQueryWrapper<SysDept>()
+                        .eq(SysDept::getSysDeptId, currId)
                 );
             });
         }
@@ -74,7 +86,7 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     public void deleteBatch(String ids) {
-        if (ids == null || "".equals(ids.trim())) {
+        if (StringUtils.isBlank(ids)) {
             throw new ErrorException(Error.ParameterNotFound);
         } else {
             List<String> list = Arrays.asList(ids.split(","));
@@ -84,11 +96,11 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     @Override
     public void saveDept(SysDept sysDept) {
-        if(StringUtils.isNotBlank(sysDept.getSysDeptId())){
+        if (StringUtils.isNotBlank(sysDept.getSysDeptId())) {
             sysDept.setUpdateUserId(UserUtil.getUserId());
             this.updateById(sysDept);
         } else {
-            if (sysDept != null ) {
+            if (ObjectUtil.isNotNull(sysDept)) {
                 String[] codeAndLevel = this.generateOrgCode(sysDept.getParentId());
                 sysDept.setUniqueCoding(codeAndLevel[0]);
                 sysDept.setAdminLevel(Integer.parseInt(codeAndLevel[1]));
@@ -102,17 +114,18 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
     }
 
     /**
-     *  查询子级部门  ====== deleteAlone 子方法 =======
-     * @param id 部门ID
+     * 查询子级部门  ====== deleteAlone 子方法 =======
+     *
+     * @param id     部门ID
      * @param idList idList
      */
     private void checkChildrenExists(String id, List<String> idList) {
         List<SysDept> departList = this.list(new LambdaQueryWrapper<SysDept>()
-                .eq(SysDept::getParentId,id)
-                .eq(SysDept::getDelFlag,CommonEnum.DelFlag.NO_DEL.getCode())
+                .eq(SysDept::getParentId, id)
+                .eq(SysDept::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
         );
-        if(departList != null && departList.size() > 0) {
-            for(SysDept depart : departList) {
+        if (departList != null && departList.size() > 0) {
+            for (SysDept depart : departList) {
                 idList.add(depart.getSysDeptId());
                 this.checkChildrenExists(depart.getSysDeptId(), idList);
             }
@@ -121,8 +134,9 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
 
     /**
      * 生成部门编码及部门级别 ==== create 子方法 =======
+     *
      * @param parentId 父级编码
-     * @return [部门编码,级别]
+     * @return [部门编码, 级别]
      */
     private String[] generateOrgCode(String parentId) {
         String[] strArray = new String[2];
@@ -138,16 +152,16 @@ public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> impl
                     .isNull(SysDept::getParentId)
                     .orderByDesc(SysDept::getUniqueCoding)
             );
-            if(ObjectUtil.isNull(departList)) {
+            if (ObjectUtil.isNull(departList)) {
                 strArray[0] = YouBianCodeUtil.getNextYouBianCode(null);
                 return strArray;
-            }else {
+            } else {
                 SysDept depart = departList.get(0);
                 strArray[0] = YouBianCodeUtil.getNextYouBianCode(depart.getUniqueCoding());
             }
         } else { // 反之则查询出所有同级的部门,获取结果后有两种情况,有同级和没有同级
             List<SysDept> parentList = this.list(new LambdaQueryWrapper<SysDept>()
-                .eq(SysDept::getParentId,parentId)
+                    .eq(SysDept::getParentId, parentId)
                     .orderByDesc(SysDept::getUniqueCoding)
             );
             // 父级部门

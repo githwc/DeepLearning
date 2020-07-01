@@ -2,31 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yc.core.system.mapper.SysDictMapper">
 
-    <select id="dictTree" resultType="com.yc.core.tree.TreeNode">
-        select
-            sys_dict_id as id,
-            parent_id as parentId,
-            name as title,
-            sort as order_num
-        from sys_dict
-        where
-            del_flag = 0
-        <if test="name != null and name != '' ">
-            and name like concat ('%',#{name},'%')
-        </if>
-        order by sort
-    </select>
-
-    <select id="getDict" resultType="com.yc.core.system.entity.SysDict">
-        select
-            dic.*
-        from sys_dict dic
-        where
-            dic.parent_id = ('"'+ #{hqls} +'"' )
-            and dic.del_flag = 0
-        order by dic.sort asc
-    </select>
-
     <select id="getDictByRoute" resultType="com.yc.core.system.entity.SysDict">
         select
             dic.*

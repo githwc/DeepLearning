@@ -1,5 +1,6 @@
 package com.yc.practice.system.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysDict;
@@ -22,7 +23,7 @@ public interface SysDictService extends IService<SysDict> {
      * @param name [搜索条件] 字典名称
      * @return tree
      */
-    List<TreeNode> dictTree(String name);
+    List<Tree<String>> dictTree(String name);
 
     /**
      * 查询子级字典

@@ -39,12 +39,12 @@ public class MallCartController {
      * @return 我的购物车
      */
     @PostMapping
-    public CartForm add(@RequestBody CartForm cartForm) {
+    public CartForm save(@RequestBody CartForm cartForm) {
         return mallCartService.add(cartForm);
     }
 
     /**
-     * 删除购物车中的商品
+     * 更新购物车中的商品
      *
      * @param cartForm 商品信息
      * @return 我的购物车

@@ -191,7 +191,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
                     .eq(MallOrder::getOrderNo,syncCallBack.getOrderNo())
                 );
                 mallOrder.setState(20);
-                DateTimeFormatter df = DateTimeFormatter.ofPattern(CommonConstant.yyyyMMddHHmmss);
+                DateTimeFormatter df = DateTimeFormatter.ofPattern(CommonConstant.yyyy_MM_ddHHmmss);
                 mallOrder.setPayTime(LocalDateTime.parse(syncCallBack.getPayTime(),df));
                 mallOrder.setPayType(syncCallBack.getPayType());
                 this.baseMapper.updateById(mallOrder);
@@ -205,11 +205,6 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         }
     }
 
-    @Override
-    public String aa() {
-        return generateOrderNo();
-    }
-
     // ======================== 私有方法 ========================
     /**
      * 生成唯一订单号
@@ -217,9 +212,9 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
      */
     private String generateOrderNo(){
         StringBuilder sb = new StringBuilder();
-        Long nowLong = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()));
+        Long nowLong = Long.parseLong(new SimpleDateFormat(CommonConstant.yyyyMMddHHmmssSSS).format(new Date()));
         sb.append(nowLong.toString());
-        String date = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String date = new SimpleDateFormat(CommonConstant.yyyyMMddHHmm).format(new Date());
         String key = CommonConstant.TODAY_ORDER_NO + date;
         if(!redisTemplate.hasKey(key)){
             redisTemplate.opsForValue().set(key,0,5, TimeUnit.MINUTES);

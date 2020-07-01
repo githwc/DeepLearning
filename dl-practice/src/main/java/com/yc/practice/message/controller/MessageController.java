@@ -54,5 +54,4 @@ public class MessageController {
         iRemindMessageService.sendAllUser(message);
     }
 
-
 }

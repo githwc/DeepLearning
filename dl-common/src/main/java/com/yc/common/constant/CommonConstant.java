@@ -194,7 +194,22 @@ public class CommonConstant {
     /**
      * 2020-05-05 12:12:23
      */
-    public static final String yyyyMMddHHmmss = "yyyy-MM-dd HH:mm:ss";
+    public static final String yyyy_MM_ddHHmmss = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 20200505121245
+     */
+    public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
+
+    /**
+     * 202005051212
+     */
+    public static final String yyyyMMddHHmm = "yyyyMMddHHmm";
+
+    /**
+     * 20200505121233281
+     */
+    public static final String yyyyMMddHHmmssSSS = "yyyyMMddHHmmssSSS";
 
 
 }

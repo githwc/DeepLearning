@@ -30,7 +30,6 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
                 .orderByAsc(Region::getSort)
         );
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
-        treeNodeConfig.setIdKey("id");
         treeNodeConfig.setNameKey("title");
         return TreeUtil.build(list,"root",treeNodeConfig,(region,treeNode)->{
             treeNode.setId(region.getRegionCode());

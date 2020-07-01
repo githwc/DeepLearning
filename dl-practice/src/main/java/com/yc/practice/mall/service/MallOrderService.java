@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.query.OrderQuery;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,6 +44,5 @@ public interface MallOrderService extends IService<MallOrder> {
      */
     void syncCallBackPay(HttpServletRequest request);
 
-    String aa();
 
 }

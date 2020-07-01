@@ -20,25 +20,10 @@ import java.util.List;
 public interface SysDictMapper extends BaseMapper<SysDict> {
 
     /**
-     * 字典树
-     * @param name 搜索条件
-     * @return tree
-     */
-    List<TreeNode> dictTree(@Param("name") String name);
-
-    /**
-     * 根据字典路径查询子集
-     *  # 弃用
-     * @param hqls hql
-     * @return
-     */
-    List<SysDict> getDict(@Param("hqls") String hqls);
-
-    /**
      * 根据字典路径查询数据
      * @param firstName 一级name
      * @param secondName 二级name
-     * @return
+     * @return list
      */
     List<SysDict> getDictByRoute(@Param("firstName") Object firstName,
                                  @Param("secondName") Object secondName);

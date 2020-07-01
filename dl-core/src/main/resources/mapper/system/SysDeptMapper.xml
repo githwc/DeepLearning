@@ -2,19 +2,4 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yc.core.system.mapper.SysDeptMapper">
 
-    <select id="departTree" resultType="com.yc.core.tree.TreeNode">
-        select
-            sys_dept_id as id,
-            parent_id as parent_id,
-            depart_name as title,
-            sort as order_num
-        from sys_dept
-        where
-            del_flag = 0
-            <if test="departName != null and departName != '' ">
-                and depart_name like concat ('%',#{departName},'%')
-            </if>
-        order by sort
-    </select>
-
 </mapper>

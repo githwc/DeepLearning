@@ -20,13 +20,13 @@ public interface MallSeckillService extends IService<MallSeckill> {
      * @param page 分页信息
      * @return page
      */
-    Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page);
+    Page<MallSeckill> pageMallSeckill(Page<MallSeckill> page);
 
     /**
-     * 增加秒杀商品
+     * 增加/更新秒杀商品
      * @param mallSeckill 商品信息
      */
-    void add(MallSeckill mallSeckill);
+    void saveMallSeckill(MallSeckill mallSeckill);
 
     /**
      * 删除指定秒杀商品

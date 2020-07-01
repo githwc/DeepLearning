@@ -31,7 +31,7 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductMapper, MallP
         this.malProductCategoryMapper = malProductCategoryMapper;
     }
     @Override
-    public Page<MallProduct> mallPage(Page<MallProduct> page, GoodQuery query) {
+    public Page<MallProduct> pageMallProduct(Page<MallProduct> page, GoodQuery query) {
         Page<MallProduct> goodPage = this.baseMapper.goodPage(page,query);
         goodPage.getRecords().forEach(i->{
             MallProductCategory mallProductCategory = this.malProductCategoryMapper.selectById(i.getClassId());
@@ -41,7 +41,7 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductMapper, MallP
     }
 
     @Override
-    public void add(MallProduct mallProduct) {
+    public void saveProduct(MallProduct mallProduct) {
         if(StringUtils.isNotBlank(mallProduct.getMallProductId())){
             this.baseMapper.updateById(mallProduct);
         } else {

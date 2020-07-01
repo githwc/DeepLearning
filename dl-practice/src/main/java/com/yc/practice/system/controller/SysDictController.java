@@ -1,10 +1,10 @@
 package com.yc.practice.system.controller;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.common.constant.CommonConstant;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.common.log.WriteLog;
 import com.yc.practice.system.service.SysDictService;
 import io.swagger.annotations.Api;
@@ -39,7 +39,7 @@ public class SysDictController {
     @GetMapping(value = "/dictTree")
     @ApiOperation(value = "加载字典树",notes = "加载所有字典")
     @WriteLog(opPosition = "加载字典树")
-    public List<TreeNode> dictTree(@RequestParam(value = "name",required = false)String name){
+    public List<Tree<String>> dictTree(@RequestParam(value = "name",required = false)String name){
         return service.dictTree(name);
     }
 
@@ -50,8 +50,8 @@ public class SysDictController {
         return service.childrenDict(page,dictQuery);
     }
 
-    @ApiOperation(value = "字典添加/修改",notes = "字典添加/修改")
     @PostMapping
+    @ApiOperation(value = "字典添加/修改",notes = "字典添加/修改")
     @WriteLog(opPosition = "字典添加/修改" ,optype = CommonConstant.OPTYPE_CREATE)
     public void saveDict(@RequestBody SysDict sysDict) {
         service.saveDict(sysDict);
@@ -71,10 +71,6 @@ public class SysDictController {
         service.deleteBatch(ids);
     }
 
-    /**
-     * 查询指定字典
-     * @return list
-     */
     @GetMapping("/getDict")
     @ApiOperation(value = "查询指定字典",notes = "查询指定字典")
     @WriteLog(opPosition = "查询指定字典")

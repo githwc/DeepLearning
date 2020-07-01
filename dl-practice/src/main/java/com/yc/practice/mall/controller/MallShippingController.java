@@ -44,7 +44,7 @@ public class MallShippingController {
      * @param mallShipping 地址信息
      */
     @PostMapping
-    public void saveShipping(@RequestBody MallShipping mallShipping){
+    public void save(@RequestBody MallShipping mallShipping){
         iMallShippingService.saveShipping(mallShipping);
     }
 

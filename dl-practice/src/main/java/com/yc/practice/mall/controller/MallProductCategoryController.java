@@ -1,8 +1,8 @@
 package com.yc.practice.mall.controller;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yc.core.mall.entity.MallProductCategory;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.mall.service.MallProductCategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +34,9 @@ public class MallProductCategoryController {
      * 类目树
      * @return 树
      */
-    @GetMapping(value = "/classTree")
-    public List<TreeNode> classTree(){
-        return iMallGoodClassService.classTree();
+    @GetMapping(value = "/tree")
+    public List<Tree<String>> classTree(){
+        return iMallGoodClassService.mallProductTree();
     }
 
     /**
@@ -44,8 +44,8 @@ public class MallProductCategoryController {
      * @param mallProductCategory 类目信息
      */
     @PostMapping
-    public void add(@RequestBody MallProductCategory mallProductCategory) {
-        iMallGoodClassService.add(mallProductCategory);
+    public void save(@RequestBody MallProductCategory mallProductCategory) {
+        iMallGoodClassService.saveProductCategory(mallProductCategory);
     }
 
     /**
@@ -54,7 +54,7 @@ public class MallProductCategoryController {
      * @param parentId 父级类别ID
      * @return page
      */
-    @GetMapping("/childrenClass")
+    @GetMapping("/children")
     public Page<MallProductCategory> childrenClass(Page<MallProductCategory> page, String parentId){
         return iMallGoodClassService.childrenClass(page,parentId);
     }
@@ -70,12 +70,11 @@ public class MallProductCategoryController {
 
     /**
      * 类目级联信息
-     * @return case list
+     * @return list
      */
-    @GetMapping("/classList")
-    public List<MallProductCategory> classList(){
-        return iMallGoodClassService.classList();
+    @GetMapping("/list")
+    public List<Tree<String>> list() {
+        return iMallGoodClassService.listProductCategory();
     }
-
 
 }

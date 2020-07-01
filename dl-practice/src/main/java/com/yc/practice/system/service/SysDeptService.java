@@ -1,10 +1,10 @@
 package com.yc.practice.system.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yc.core.system.entity.SysDept;
 import com.yc.core.system.model.query.DeptQuery;
-import com.yc.core.tree.TreeNode;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface SysDeptService extends IService<SysDept> {
      * @param departName [搜索条件] 部门名称
      * @return tree
      */
-    List<TreeNode> departTree(String departName);
+    List<Tree<String>> departTree(String departName);
 
     /**
      * 查询子级部门

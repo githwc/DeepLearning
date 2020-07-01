@@ -10,9 +10,6 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 /**
  * 功能描述:监听通道信息
  *
-
- *
-
  * @Author: xieyc && 紫色年华
  * @Date: 2020-01-29
  * @Version: 1.0.0

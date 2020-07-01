@@ -70,8 +70,4 @@ public class MallOrderController {
         this.iMallOrderService.syncCallBackPay(request);
     }
 
-    @GetMapping("/aa")
-    public String aa(){
-        return iMallOrderService.aa();
-    }
 }

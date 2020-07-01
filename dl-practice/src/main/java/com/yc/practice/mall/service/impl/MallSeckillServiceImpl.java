@@ -47,7 +47,7 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
     }
 
     @Override
-    public Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page) {
+    public Page<MallSeckill> pageMallSeckill(Page<MallSeckill> page) {
         return baseMapper.selectPage(page, Wrappers.<MallSeckill>lambdaQuery()
             .eq(MallSeckill::getDelFlag,false)
             .orderByDesc(MallSeckill::getSeckillEndTime)
@@ -55,7 +55,7 @@ public class MallSeckillServiceImpl extends ServiceImpl<MallSeckillMapper, MallS
     }
 
     @Override
-    public void add(MallSeckill mallSeckill) {
+    public void saveMallSeckill(MallSeckill mallSeckill) {
         if(StringUtils.isNotBlank(mallSeckill.getMallSeckillId())){
             mallSeckill.setUpdateUserId(UserUtil.getUserId());
             this.baseMapper.updateById(mallSeckill);

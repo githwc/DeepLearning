@@ -1,8 +1,12 @@
 package com.yc.practice.system.service.impl;
 
+import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNodeConfig;
+import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.common.constant.CommonEnum;
@@ -11,8 +15,6 @@ import com.yc.common.global.error.ErrorException;
 import com.yc.core.system.entity.SysDict;
 import com.yc.core.system.mapper.SysDictMapper;
 import com.yc.core.system.model.query.DictQuery;
-import com.yc.core.tree.Tree;
-import com.yc.core.tree.TreeNode;
 import com.yc.practice.common.UserUtil;
 import com.yc.practice.system.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +39,20 @@ import java.util.List;
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements SysDictService {
 
     @Override
-    public List<TreeNode> dictTree(String name) {
-        List<TreeNode> list = this.baseMapper.dictTree(name);
-        return Tree.getTreeList("#",list);
+    public List<Tree<String>> dictTree(String name) {
+        List<SysDict> list = baseMapper.selectList(Wrappers.<SysDict>lambdaQuery()
+            .eq(SysDict::getDelFlag,0)
+                .like(StringUtils.isNotBlank(name),SysDict::getName,name)
+                .orderByAsc(SysDict::getSort)
+        );
+        TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
+        treeNodeConfig.setNameKey("title");
+        return TreeUtil.build(list,"#",treeNodeConfig,(dict, treeNode)->{
+            treeNode.setId(dict.getSysDictId());
+            treeNode.setParentId(dict.getParentId());
+            treeNode.setName(dict.getName());
+            treeNode.putExtra("orderNum",dict.getSort());
+        });
     }
 
     @Override

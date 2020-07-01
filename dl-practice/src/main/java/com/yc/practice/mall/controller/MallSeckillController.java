@@ -71,8 +71,8 @@ public class MallSeckillController {
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallSeckill> mallSeckillPage(Page<MallSeckill> page){
-        return iMallSeckillService.mallSeckillPage(page);
+    public Page<MallSeckill> pageMallSeckill(Page<MallSeckill> page){
+        return iMallSeckillService.pageMallSeckill(page);
     }
 
     /**
@@ -80,8 +80,8 @@ public class MallSeckillController {
      * @param mallSeckill 商品信息
      */
     @PostMapping
-    public void add(@RequestBody MallSeckill mallSeckill){
-        iMallSeckillService.add(mallSeckill);
+    public void save(@RequestBody MallSeckill mallSeckill){
+        iMallSeckillService.saveMallSeckill(mallSeckill);
     }
 
     /**
