@@ -17,12 +17,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 功能描述:
- *    swagger相关配置
+ * swagger相关配置
+ * <p>
+ * 安全框架中放行Swagger2,
+ * 通过 "项目路径/swagger-ui.html" 访问
  *
- *    安全框架中放行Swagger2,
- *    通过 "项目路径/swagger-ui.html" 访问
- *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date: 2019-07-07
  * @Version: 1.0.0
  */
@@ -33,8 +33,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
      * 指定接口基础信息
-     *      apiInfo:定义项目描述信息
-     *      apis:   指定接口层中的位置
+     * apiInfo:定义项目描述信息
+     * apis:   指定接口层中的位置
      *
      * @return Docket
      */
@@ -51,17 +51,17 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
      * 指定接口基础信息
-     *      apiInfo:定义项目描述信息
-     *      apis:   指定接口层中的位置
-     *
-     *  [将多个controller拼装到一个分组
-     *    .apis(Predicates.or(selector1,selector2))   ]
-     *  [只监控user相关接口
-     *    .paths(PathSelectors.regex("/user.*"))  ]
-     *  [为有@Api注解的Controller生成API文档
-     *   .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))   ]
-     *  [为有@ApiOperation注解的方法生成API文档
-     *    .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))  ]
+     * apiInfo:定义项目描述信息
+     * apis:   指定接口层中的位置
+     * <p>
+     * [将多个controller拼装到一个分组
+     * .apis(Predicates.or(selector1,selector2))   ]
+     * [只监控user相关接口
+     * .paths(PathSelectors.regex("/user.*"))  ]
+     * [为有@Api注解的Controller生成API文档
+     * .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))   ]
+     * [为有@ApiOperation注解的方法生成API文档
+     * .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))  ]
      *
      * @return Docket
      */
@@ -81,6 +81,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     /**
      * 定义项目描述信息
+     *
      * @return 定义项目描述信息
      */
     private ApiInfo apiInfo() {

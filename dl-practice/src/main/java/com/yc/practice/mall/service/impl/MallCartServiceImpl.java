@@ -51,7 +51,7 @@ public class MallCartServiceImpl implements MallCartService {
         Map<String, String> entries = opsForHash.entries(redisKey);
         List<CartForm> list = new ArrayList<>();
         for (Map.Entry<String, String> entry : entries.entrySet()) {
-            CartForm item = JSONObject.parseObject(entry.getValue(),CartForm.class);
+            CartForm item = JSONObject.parseObject(entry.getValue(), CartForm.class);
             // 查询商品实时信息
             list.add(item);
         }
@@ -78,12 +78,12 @@ public class MallCartServiceImpl implements MallCartService {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         String key = CommonConstant.CART + UserUtil.getUserId();
 
-        String value = opsForHash.get(key,form.getMallProductId());
-        if(StringUtils.isNotEmpty(value)){
-            form = JSONObject.parseObject(value,CartForm.class);
-            form.setNum(form.getNum()+1);
+        String value = opsForHash.get(key, form.getMallProductId());
+        if (StringUtils.isNotEmpty(value)) {
+            form = JSONObject.parseObject(value, CartForm.class);
+            form.setNum(form.getNum() + 1);
         }
-        opsForHash.put(key,form.getMallProductId(),JSONObject.toJSONString(form));
+        opsForHash.put(key, form.getMallProductId(), JSONObject.toJSONString(form));
         return this.list();
     }
 
@@ -95,7 +95,7 @@ public class MallCartServiceImpl implements MallCartService {
         if (StringUtils.isEmpty(value)) {
             throw new ErrorException(Error.GoodError);
         }
-        CartForm cart = JSONObject.parseObject(value,CartForm.class);
+        CartForm cart = JSONObject.parseObject(value, CartForm.class);
         opsForHash.put(redisKey, cartForm.getMallProductId(), JSONObject.toJSONString(cart));
         return list();
     }
@@ -105,7 +105,7 @@ public class MallCartServiceImpl implements MallCartService {
         HashOperations<String, String, String> opsForHash = redisTemplate.opsForHash();
         String redisKey = CommonConstant.CART + UserUtil.getUserId();
         String value = opsForHash.get(redisKey, String.valueOf(mallProductId));
-        if(StringUtils.isEmpty(value)){
+        if (StringUtils.isEmpty(value)) {
             throw new ErrorException(Error.GoodError);
         }
         opsForHash.delete(redisKey, String.valueOf(mallProductId));

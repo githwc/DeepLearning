@@ -9,10 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
  * 功能描述:商品控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-04-08
  * @Version: 1.0.0
  */
@@ -24,32 +23,35 @@ public class MallProductController {
     private final MallProductService iMallGoodService;
 
     @Autowired
-    public MallProductController(MallProductService iMallGoodService){
+    public MallProductController(MallProductService iMallGoodService) {
         this.iMallGoodService = iMallGoodService;
     }
 
     /**
      * 商品分页查询
-     * @param page 分页信息
+     *
+     * @param page  分页信息
      * @param query 入参
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallProduct> page(Page<MallProduct> page, GoodQuery query){
-        return iMallGoodService.pageMallProduct(page,query);
+    public Page<MallProduct> page(Page<MallProduct> page, GoodQuery query) {
+        return iMallGoodService.pageMallProduct(page, query);
     }
 
     /**
      * 增加/更新商品信息
+     *
      * @param mallProduct 商品信息
      */
     @PostMapping
-    public void save(@RequestBody MallProduct mallProduct){
+    public void save(@RequestBody MallProduct mallProduct) {
         iMallGoodService.saveProduct(mallProduct);
     }
 
     /**
      * 删除指定商品
+     *
      * @param mallProductId 商品ID
      */
     @DeleteMapping

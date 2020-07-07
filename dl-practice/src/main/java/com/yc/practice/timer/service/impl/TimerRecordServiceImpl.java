@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-04-16
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-04-16
+ * @Version: 1.0.0
+ */
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -34,7 +34,7 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
     private final MallOrderLogService mallOrderLogService;
 
     @Autowired
-    public TimerRecordServiceImpl(MallOrderMapper mallOrderMapper,MallOrderLogService mallOrderLogService){
+    public TimerRecordServiceImpl(MallOrderMapper mallOrderMapper, MallOrderLogService mallOrderLogService) {
         this.mallOrderMapper = mallOrderMapper;
         this.mallOrderLogService = mallOrderLogService;
     }
@@ -42,13 +42,13 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
 
     @Override
     public void orderCheck() {
-        try{
+        try {
             // 1.查询从创建订单开始超时30分钟的订单
             List<MallOrder> mallOrders = mallOrderMapper.selectList(new LambdaQueryWrapper<MallOrder>()
                     .eq(MallOrder::getState, CommonEnum.OrderState.ORDER_STATE_10.getCode())
             );
-            mallOrders.forEach(i->{
-                if(Duration.between(i.getCreateTime(),LocalDateTime.now()).toMinutes() > 30 ){
+            mallOrders.forEach(i -> {
+                if (Duration.between(i.getCreateTime(), LocalDateTime.now()).toMinutes() > 30) {
                     log.info("=====================订单超时关闭==================");
                     log.info("=====================订单超时关闭==================");
                     // 2.修改为订单超时
@@ -58,12 +58,12 @@ public class TimerRecordServiceImpl extends ServiceImpl<TimerRecordMapper, Timer
                     this.mallOrderMapper.updateById(mallOrder);
                     // 3.记录订单日志
                     mallOrderLogService.saveOrderLog(i.getMallOrderId(),
-                            CommonEnum.OrderLogState.INVALID.getCode(),"admin","订单超时自动关闭");
+                            CommonEnum.OrderLogState.INVALID.getCode(), "admin", "订单超时自动关闭");
                 }
             });
-        }catch(Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
-        }finally {
+        } finally {
             // 4.记录定时器日志
             TimerRecord timerRecord = new TimerRecord();
             timerRecord.setTitle("订单超时监测");

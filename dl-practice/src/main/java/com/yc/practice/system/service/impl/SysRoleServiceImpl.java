@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  */
@@ -42,18 +42,18 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public Page<SysRole> rolePage(Page<SysRole> page, RoleQuery roleQuery) {
-        return this.baseMapper.selectPage(page,new LambdaQueryWrapper<SysRole>()
-            .eq(SysRole::getDelFlag,false)
-            .like(StringUtils.isNotBlank(roleQuery.getRoleName()),SysRole::getRoleName,roleQuery.getRoleName())
-            .orderByAsc(SysRole::getSort)
+        return this.baseMapper.selectPage(page, new LambdaQueryWrapper<SysRole>()
+                .eq(SysRole::getDelFlag, false)
+                .like(StringUtils.isNotBlank(roleQuery.getRoleName()), SysRole::getRoleName, roleQuery.getRoleName())
+                .orderByAsc(SysRole::getSort)
         );
     }
 
     @Override
     public List<SysRole> roleList() {
         return this.baseMapper.selectList(new LambdaQueryWrapper<SysRole>()
-            .eq(SysRole::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
-            .orderByAsc(SysRole::getSort)
+                .eq(SysRole::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
+                .orderByAsc(SysRole::getSort)
         );
     }
 
@@ -72,10 +72,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Override
     public void duplicate(String roleCode) {
         List<SysRole> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysRole>()
-            .eq(SysRole::getRoleCode,roleCode)
-                .eq(SysRole::getDelFlag,CommonEnum.DelFlag.NO_DEL.getCode())
+                .eq(SysRole::getRoleCode, roleCode)
+                .eq(SysRole::getDelFlag, CommonEnum.DelFlag.NO_DEL.getCode())
         );
-        if(list != null && list.size() >0){
+        if (list != null && list.size() > 0) {
             throw new ErrorException(Error.RoleExisted);
         }
     }
@@ -96,19 +96,19 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         String permissionIds = json.getString("permissionIds");
         // 旧权限点
         String lastPermissionIds = json.getString("lastPermissionIds");
-        List<String> add = getDiff(lastPermissionIds,permissionIds);
-        if(CollectionUtils.isNotEmpty(add)) {
+        List<String> add = getDiff(lastPermissionIds, permissionIds);
+        if (CollectionUtils.isNotEmpty(add)) {
             List<SysRolePermission> list = new ArrayList<>();
             for (String p : add) {
-                if(StringUtils.isNotEmpty(p)) {
+                if (StringUtils.isNotEmpty(p)) {
                     SysRolePermission rolepms = new SysRolePermission(roleId, p);
                     list.add(rolepms);
                 }
             }
             this.sysRolePermissionService.saveBatch(list);
         }
-        List<String> delete = getDiff(permissionIds,lastPermissionIds);
-        if(delete!=null && delete.size()>0) {
+        List<String> delete = getDiff(permissionIds, lastPermissionIds);
+        if (delete != null && delete.size() > 0) {
             for (String permissionId : delete) {
                 this.sysRolePermissionService.remove(new LambdaQueryWrapper<SysRolePermission>()
                         .eq(SysRolePermission::getRoleId, roleId)
@@ -119,15 +119,16 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     /**
      * 从diff中找出main中没有的元素
+     *
      * @param main 权限点
      * @param diff 权限点
      * @return list
      */
-    private List<String> getDiff(String main,String diff){
-        if(StringUtils.isEmpty(diff)){
+    private List<String> getDiff(String main, String diff) {
+        if (StringUtils.isEmpty(diff)) {
             return null;
         }
-        if(StringUtils.isEmpty(main)) {
+        if (StringUtils.isEmpty(main)) {
             return Arrays.asList(diff.split(","));
         }
         String[] mainArr = main.split(",");
@@ -138,7 +139,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         }
         List<String> res = new ArrayList<>();
         for (String key : diffArr) {
-            if(StringUtils.isNotEmpty(key) && !map.containsKey(key)) {
+            if (StringUtils.isNotEmpty(key) && !map.containsKey(key)) {
                 res.add(key);
             }
         }

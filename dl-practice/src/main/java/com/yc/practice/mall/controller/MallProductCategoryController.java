@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *
  * 功能描述:商品类目控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-05-08
  * @Version: 1.0.0
  */
@@ -26,21 +25,23 @@ public class MallProductCategoryController {
     private final MallProductCategoryService iMallGoodClassService;
 
     @Autowired
-    public MallProductCategoryController(MallProductCategoryService iMallGoodClassService){
+    public MallProductCategoryController(MallProductCategoryService iMallGoodClassService) {
         this.iMallGoodClassService = iMallGoodClassService;
     }
 
     /**
      * 类目树
+     *
      * @return 树
      */
     @GetMapping(value = "/tree")
-    public List<Tree<String>> classTree(){
+    public List<Tree<String>> classTree() {
         return iMallGoodClassService.mallProductTree();
     }
 
     /**
      * 添加/更新类目
+     *
      * @param mallProductCategory 类目信息
      */
     @PostMapping
@@ -50,17 +51,19 @@ public class MallProductCategoryController {
 
     /**
      * 查询子级类目
-     * @param page 分页信息
+     *
+     * @param page     分页信息
      * @param parentId 父级类别ID
      * @return page
      */
     @GetMapping("/children")
-    public Page<MallProductCategory> childrenClass(Page<MallProductCategory> page, String parentId){
-        return iMallGoodClassService.childrenClass(page,parentId);
+    public Page<MallProductCategory> childrenClass(Page<MallProductCategory> page, String parentId) {
+        return iMallGoodClassService.childrenClass(page, parentId);
     }
 
     /**
      * 删除类目
+     *
      * @param mallProductCategoryId 类目ID
      */
     @DeleteMapping
@@ -70,6 +73,7 @@ public class MallProductCategoryController {
 
     /**
      * 类目级联信息
+     *
      * @return list
      */
     @GetMapping("/list")

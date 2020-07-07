@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-04-15
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-04-15
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class WorkBenchServiceImpl extends ServiceImpl<WorkBenchMapper, WorkBench> implements WorkBenchService {

@@ -15,9 +15,9 @@ import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.EncodeProperties;
 import com.yc.common.utils.EncoderUtil;
-import com.yc.core.mall.entity.MallProduct;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.entity.MallOrderItem;
+import com.yc.core.mall.entity.MallProduct;
 import com.yc.core.mall.entity.MallShipping;
 import com.yc.core.mall.mapper.MallOrderMapper;
 import com.yc.core.mall.mapper.MallShippingMapper;
@@ -25,10 +25,10 @@ import com.yc.core.mall.model.form.OrderForm;
 import com.yc.core.mall.model.form.SyncCallBack;
 import com.yc.core.mall.model.query.OrderQuery;
 import com.yc.practice.common.UserUtil;
-import com.yc.practice.mall.service.MallProductService;
 import com.yc.practice.mall.service.MallOrderItemService;
 import com.yc.practice.mall.service.MallOrderLogService;
 import com.yc.practice.mall.service.MallOrderService;
+import com.yc.practice.mall.service.MallProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +50,12 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-04-08
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-04-08
+ * @Version: 1.0.0
+ */
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -71,7 +71,7 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     @Autowired
     public MallOrderServiceImpl(MallOrderItemService mallOrderItemService, RedisTemplate redisTemplate,
                                 MallShippingMapper mallShippingMapper, MallOrderLogService mallOrderLogService,
-                                MallProductService mallProductService, EncodeProperties encodeProperties){
+                                MallProductService mallProductService, EncodeProperties encodeProperties) {
         this.mallOrderItemService = mallOrderItemService;
         this.redisTemplate = redisTemplate;
         this.encodeProperties = encodeProperties;
@@ -84,12 +84,12 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     public JSONObject createOrder(OrderForm orderForm) {
         // 收货地址校验
         MallShipping mallShipping = mallShippingMapper.selectById(orderForm.getMallShippingId());
-        if(ObjectUtil.isNull(mallShipping)){
+        if (ObjectUtil.isNull(mallShipping)) {
             throw new ErrorException(Error.ShippingNotFound);
         }
         // ========= 保存订单信息 ========
         MallOrder mallOrder = new MallOrder();
-        BeanUtil.copyProperties(orderForm,mallOrder);
+        BeanUtil.copyProperties(orderForm, mallOrder);
         mallOrder.setOrderNo(generateOrderNo());
         mallOrder.setCreateUserId(UserUtil.getUserId());
         mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_10.getCode());
@@ -107,60 +107,60 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
         List<MallProduct> goodList = new ArrayList<>();
         BigDecimal amount = BigDecimal.valueOf(0);
         for (MallOrderItem curr : orderItemList) {
-            if(StringUtils.isBlank(curr.getGoodId())){
+            if (StringUtils.isBlank(curr.getGoodId())) {
                 throw new ErrorException(Error.GoodNotFound);
             }
             MallProduct mallProduct = this.mallProductService.getBaseMapper().selectById(curr.getGoodId());
-            if(mallProduct.getStock()<curr.getGoodNum()){
+            if (mallProduct.getStock() < curr.getGoodNum()) {
                 throw new ErrorException(Error.StockLow);
             }
             curr.setMallOrderId(mallOrder.getMallOrderId());
             curr.setOrderNo(mallOrder.getOrderNo());
             curr.setSysUserId(UserUtil.getUserId());
             amount = amount.add(mallProduct.getPrice().multiply(BigDecimal.valueOf(curr.getGoodNum())));
-            mallProduct.setSale(curr.getGoodNum()+mallProduct.getSale());
-            mallProduct.setStock(mallProduct.getStock()-curr.getGoodNum());
+            mallProduct.setSale(curr.getGoodNum() + mallProduct.getSale());
+            mallProduct.setStock(mallProduct.getStock() - curr.getGoodNum());
             goodList.add(mallProduct);
         }
         // 校验总价
-        if(amount.compareTo(orderForm.getPayAmount()) != 0){
+        if (amount.compareTo(orderForm.getPayAmount()) != 0) {
             throw new ErrorException(Error.AmountError);
         }
         this.mallOrderItemService.saveBatch(orderItemList);
         // 减库存 加销量
         this.mallProductService.updateBatchById(goodList);
         // 订单变更记录
-        mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),CommonEnum.OrderLogState.WAIT_PAY.getCode(),
-                UserUtil.getUserId(),"正常订单");
+        mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(), CommonEnum.OrderLogState.WAIT_PAY.getCode(),
+                UserUtil.getUserId(), "正常订单");
         JSONObject jsonObject = new JSONObject();
         String shipping =
-                mallShipping.getReceiverName()+" "+mallShipping.getReceiverPhone()+ " " +
-                        mallShipping.getReceiverProvince()+" "+mallShipping.getReceiverCity()+" "+
-                        mallShipping.getReceiverArea()+" "+mallShipping.getReceiverAddress();
-        jsonObject.put("shipping",shipping);
-        jsonObject.put("payAmount",mallOrder.getPayAmount());
-        jsonObject.put("orderNo",mallOrder.getOrderNo());
-        jsonObject.put("sysUserId",mallOrder.getCreateUserId());
+                mallShipping.getReceiverName() + " " + mallShipping.getReceiverPhone() + " " +
+                        mallShipping.getReceiverProvince() + " " + mallShipping.getReceiverCity() + " " +
+                        mallShipping.getReceiverArea() + " " + mallShipping.getReceiverAddress();
+        jsonObject.put("shipping", shipping);
+        jsonObject.put("payAmount", mallOrder.getPayAmount());
+        jsonObject.put("orderNo", mallOrder.getOrderNo());
+        jsonObject.put("sysUserId", mallOrder.getCreateUserId());
         return jsonObject;
     }
 
     @Override
     public Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query) {
-        return this.baseMapper.page(page,query);
+        return this.baseMapper.page(page, query);
     }
 
     @Override
     public void cancelOrder(String mallOrderId) {
         MallOrder mallOrder = new MallOrder();
         mallOrder.setState(CommonEnum.OrderState.ORDER_STATE_0.getCode());
-        boolean flag = this.update(mallOrder,new LambdaQueryWrapper<MallOrder>()
-                .eq(MallOrder::getMallOrderId,mallOrderId)
+        boolean flag = this.update(mallOrder, new LambdaQueryWrapper<MallOrder>()
+                .eq(MallOrder::getMallOrderId, mallOrderId)
         );
-        if(!flag){
+        if (!flag) {
             throw new ErrorException(Error.ParameterNotFound);
         }
         // 订单变更记录
-        mallOrderLogService.saveOrderLog(mallOrderId,CommonEnum.OrderLogState.INVALID.getCode(),UserUtil.getUserId(),
+        mallOrderLogService.saveOrderLog(mallOrderId, CommonEnum.OrderLogState.INVALID.getCode(), UserUtil.getUserId(),
                 "订单取消");
     }
 
@@ -172,30 +172,30 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
                     CommonConstant.CHARSET_UTF_8));
             StringBuilder responseStrBuilder = new StringBuilder();
             String inputStr;
-            while ((inputStr = streamReader.readLine()) != null){
+            while ((inputStr = streamReader.readLine()) != null) {
                 responseStrBuilder.append(inputStr);
             }
             Map<String, String> map = JSON.parseObject(responseStrBuilder.toString(), Map.class);
             // 获取报文密文信息
             String notifyData = map.get("requestData");
             // 报文解密
-            String deStr = EncoderUtil.rsaDecrypt(notifyData,CommonConstant.RSA_PRIVATE_KEY);
+            String deStr = EncoderUtil.rsaDecrypt(notifyData, CommonConstant.RSA_PRIVATE_KEY);
             // 验签
-            String sign = DigestUtil.md5Hex(deStr+encodeProperties.getSecretKey());
+            String sign = DigestUtil.md5Hex(deStr + encodeProperties.getSecretKey());
             //获取签名数据密文信息
             String signMsg = map.get("signData");
-            if(StringUtils.equals(signMsg,sign)){
+            if (StringUtils.equals(signMsg, sign)) {
                 ObjectMapper mapper = new ObjectMapper();
-                SyncCallBack syncCallBack = mapper.readValue(deStr , SyncCallBack.class);
+                SyncCallBack syncCallBack = mapper.readValue(deStr, SyncCallBack.class);
                 MallOrder mallOrder = this.baseMapper.selectOne(new LambdaQueryWrapper<MallOrder>()
-                    .eq(MallOrder::getOrderNo,syncCallBack.getOrderNo())
+                        .eq(MallOrder::getOrderNo, syncCallBack.getOrderNo())
                 );
                 mallOrder.setState(20);
                 DateTimeFormatter df = DateTimeFormatter.ofPattern(CommonConstant.yyyy_MM_ddHHmmss);
-                mallOrder.setPayTime(LocalDateTime.parse(syncCallBack.getPayTime(),df));
+                mallOrder.setPayTime(LocalDateTime.parse(syncCallBack.getPayTime(), df));
                 mallOrder.setPayType(syncCallBack.getPayType());
                 this.baseMapper.updateById(mallOrder);
-                this.mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(),1,syncCallBack.getSysUserId(),
+                this.mallOrderLogService.saveOrderLog(mallOrder.getMallOrderId(), 1, syncCallBack.getSysUserId(),
                         "支付回调完成");
             } else {
                 log.error("请求数据异常");
@@ -206,20 +206,22 @@ public class MallOrderServiceImpl extends ServiceImpl<MallOrderMapper, MallOrder
     }
 
     // ======================== 私有方法 ========================
+
     /**
      * 生成唯一订单号
+     *
      * @return 23位订单号[当前时间(毫秒) + 自增id]
      */
-    private String generateOrderNo(){
+    private String generateOrderNo() {
         StringBuilder sb = new StringBuilder();
         Long nowLong = Long.parseLong(new SimpleDateFormat(CommonConstant.yyyyMMddHHmmssSSS).format(new Date()));
         sb.append(nowLong.toString());
         String date = new SimpleDateFormat(CommonConstant.yyyyMMddHHmm).format(new Date());
         String key = CommonConstant.TODAY_ORDER_NO + date;
-        if(!redisTemplate.hasKey(key)){
-            redisTemplate.opsForValue().set(key,0,5, TimeUnit.MINUTES);
+        if (!redisTemplate.hasKey(key)) {
+            redisTemplate.opsForValue().set(key, 0, 5, TimeUnit.MINUTES);
         }
-        Long increment = redisTemplate.opsForValue().increment(key,1);
+        Long increment = redisTemplate.opsForValue().increment(key, 1);
         String incrementStr = increment.toString();
         if (incrementStr.length() <= 6) {
             sb.append(String.format("%06d", increment));

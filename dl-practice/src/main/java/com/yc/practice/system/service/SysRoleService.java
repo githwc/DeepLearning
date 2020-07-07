@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  */
@@ -20,6 +20,7 @@ public interface SysRoleService extends IService<SysRole> {
 
     /**
      * 获取用户权限
+     *
      * @param loginName 登录名称
      * @return
      */
@@ -27,12 +28,14 @@ public interface SysRoleService extends IService<SysRole> {
 
     /**
      * 加载有效角色
+     *
      * @return
      */
     List<SysRole> roleList();
 
     /**
      * 分页查询所有角色
+     *
      * @param page
      * @param roleQuery
      * @return
@@ -41,12 +44,14 @@ public interface SysRoleService extends IService<SysRole> {
 
     /**
      * 角色代码唯一性校验
+     *
      * @param roleCode
      */
     void duplicate(String roleCode);
 
     /**
      * 查询角色拥有的权限
+     *
      * @param roleId
      * @return
      */

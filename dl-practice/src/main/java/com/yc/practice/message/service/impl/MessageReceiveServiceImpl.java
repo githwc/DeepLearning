@@ -1,6 +1,5 @@
 package com.yc.practice.message.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yc.core.message.entity.MessageReceive;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2019-10-08
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2019-10-08
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MessageReceiveServiceImpl extends ServiceImpl<MessageReceiveMapper, MessageReceive> implements MessageReceiveService {
@@ -26,7 +25,7 @@ public class MessageReceiveServiceImpl extends ServiceImpl<MessageReceiveMapper,
     @Override
     public Page<NoticeVO> pageNotice(Page<NoticeVO> page, MessageReceiveQuery query) {
         query.setUserId(UserUtil.getUserId());
-        return this.baseMapper.pageNotice(page,query);
+        return this.baseMapper.pageNotice(page, query);
     }
 
     @Override
@@ -36,7 +35,7 @@ public class MessageReceiveServiceImpl extends ServiceImpl<MessageReceiveMapper,
     }
 
     @Override
-    public void insertRecord(String userId, String messageId,boolean receiveState) {
+    public void insertRecord(String userId, String messageId, boolean receiveState) {
         MessageReceive remindMessageReceive = new MessageReceive();
         remindMessageReceive.setMessageId(messageId);
         remindMessageReceive.setUserId(userId);

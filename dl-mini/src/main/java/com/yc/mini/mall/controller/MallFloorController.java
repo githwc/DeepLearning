@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- *
  * 功能描述: 商品楼层控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-06-26
  * @Version: 1.0.0
  */
@@ -26,18 +25,23 @@ public class MallFloorController {
     private final MallFloorService service;
 
     @Autowired
-    public MallFloorController(MallFloorService service){
+    public MallFloorController(MallFloorService service) {
         this.service = service;
-    };
+    }
+
+    ;
 
     /**
      * 楼层树
+     *
      * @return tree
      */
     @GetMapping("/tree")
-    public List<Tree<String>> tree(){
+    public List<Tree<String>> tree() {
         return service.tree();
-    };
+    }
+
+    ;
 
 
 }

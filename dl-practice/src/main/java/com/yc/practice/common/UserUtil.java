@@ -16,24 +16,26 @@ public class UserUtil {
 
     /**
      * 获取当前用户信息
+     *
      * @return 用户信息
      */
     public static UserDetailsSelf getUser() {
         try {
             return (UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new ErrorException(Error.TokenError);
         }
     }
 
     /**
      * 获取当前用户ID
+     *
      * @return 用户ID
      */
     public static String getUserId() {
         try {
             return ((UserDetailsSelf) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getSysUserId();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new ErrorException(Error.TokenError);
         }
     }

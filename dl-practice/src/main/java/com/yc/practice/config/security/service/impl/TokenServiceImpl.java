@@ -29,9 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述:JWT
-
  *
-
  * @Author: xieyc && 紫色年华
  * @Date: 2020-03-23
  * @Version: 1.0.0
@@ -45,11 +43,11 @@ public class TokenServiceImpl implements TokenService {
     private final JwtTokenUtil jwtTokenUtil;
     private final SecurityProperties securityProperties;
     private final SysPermissionService sysPermissionService;
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     public TokenServiceImpl(SysUserMapper sysUserMapper, JwtTokenUtil jwtTokenUtil,
-                            RedisTemplate<String,String> redisTemplate,
+                            RedisTemplate<String, String> redisTemplate,
                             SecurityProperties securityProperties, SysPermissionService sysPermissionService) {
         this.sysUserMapper = sysUserMapper;
         this.jwtTokenUtil = jwtTokenUtil;
@@ -68,11 +66,11 @@ public class TokenServiceImpl implements TokenService {
         String loginName = jwtTokenUtil.getName(token);
         SysUser sysUser = sysUserMapper.loginByName(loginName);
         UserDetailsSelf userDetailsSelf = new UserDetailsSelf();
-        BeanUtil.copyProperties(sysUser,userDetailsSelf);
+        BeanUtil.copyProperties(sysUser, userDetailsSelf);
         List<String> permissions = sysPermissionService.getUserPerm(userDetailsSelf.getLoginName());
         userDetailsSelf.setAuthorities(
-                AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",permissions))
-                     );
+                AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions))
+        );
         try {
             jwtTokenUtil.validateToken(token);
             DecodedJWT jwt = jwtTokenUtil.getDecodedJWT(token);
@@ -90,12 +88,12 @@ public class TokenServiceImpl implements TokenService {
                 response.setHeader("Access-Control-Allow-Headers", "authorization");
                 response.setHeader("Access-Control-Expose-Headers", "authorization");
                 // 续签缓存
-                redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE+sysUser.getSysUserId(), sysUser.getSysUserId(),
+                redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE + sysUser.getSysUserId(), sysUser.getSysUserId(),
                         securityProperties.getJwtActiveTime(), TimeUnit.MILLISECONDS);
             }
         } catch (TokenExpiredException e) {
             throw new ErrorException(Error.TokenError);
         }
-        return new UsernamePasswordAuthenticationToken(userDetailsSelf, userDetailsSelf.getPassWord(), AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",",permissions)));
+        return new UsernamePasswordAuthenticationToken(userDetailsSelf, userDetailsSelf.getPassWord(), AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions)));
     }
 }

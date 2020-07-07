@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-02-01
  * @Version: 1.0.0
  */
@@ -20,6 +20,7 @@ public interface RedisRankService {
 
     /**
      * 获取数据
+     *
      * @return set
      */
     Set getData();
@@ -32,6 +33,7 @@ public interface RedisRankService {
 
     /**
      * 获取排行榜top10
+     *
      * @return
      */
     Set top10(String type);
@@ -43,20 +45,23 @@ public interface RedisRankService {
 
     /**
      * 查询指定人的排名和分数
+     *
      * @return
      */
     Map userInfo();
 
     /**
      * .统计分数区间人数
+     *
      * @return
      */
     Long scopeCount();
 
     /**
      * 使用加法操作分数
-     *  直接在原有的score上使用加法;
-     *  如果没有这个元素，则会创建，并且score初始为0.再使用加法
+     * 直接在原有的score上使用加法;
+     * 如果没有这个元素，则会创建，并且score初始为0.再使用加法
+     *
      * @return
      */
     void addScore();

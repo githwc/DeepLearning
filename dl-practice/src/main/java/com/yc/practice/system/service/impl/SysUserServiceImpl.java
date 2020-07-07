@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  */
@@ -51,11 +51,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     private final SysUserRoleMapper sysUserRoleMapper;
     private final SysLogService sysLogService;
     private final PasswordEncoder passwordEncoder;
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     public SysUserServiceImpl(SysUserRoleMapper sysUserRoleMapper,
-                              SysLogService sysLogService,RedisTemplate<String,String> redisTemplate,
+                              SysLogService sysLogService, RedisTemplate<String, String> redisTemplate,
                               PasswordEncoder passwordEncoder) {
         this.sysUserRoleMapper = sysUserRoleMapper;
         this.passwordEncoder = passwordEncoder;
@@ -66,14 +66,14 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
         String token = StringUtils.remove(request.getHeader(CommonConstant.HEADER_STRING), CommonConstant.TOKEN_PREFIX).trim();
-        redisTemplate.delete(CommonConstant.SYS_USERS_CACHE+UserUtil.getUserId());
-        sysLogService.addLog(request,"用户名: "+UserUtil.getUser().getLoginName()+",退出成功！",CommonConstant.LOG_TYPE_1,
-                UserUtil.getUserId(),"/sysUser/logout",token);
+        redisTemplate.delete(CommonConstant.SYS_USERS_CACHE + UserUtil.getUserId());
+        sysLogService.addLog(request, "用户名: " + UserUtil.getUser().getLoginName() + ",退出成功！", CommonConstant.LOG_TYPE_1,
+                UserUtil.getUserId(), "/sysUser/logout", token);
     }
 
     @Override
     public Page<SysUserVO> userList(Page<SysUser> page, UserQuery userQuery) {
-        return this.baseMapper.userList(page,userQuery);
+        return this.baseMapper.userList(page, userQuery);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         user.setBirthday(LocalDate.parse(IdcardUtil.getBirthByIdCard(user.getIdCard())));
         this.save(user);
         String roles = jsonObject.getString("selectedroles");
-        if(StringUtils.isNotEmpty(roles)) {
+        if (StringUtils.isNotEmpty(roles)) {
             String[] arr = roles.split(",");
             for (String roleId : arr) {
                 SysUserRole userRole = new SysUserRole(user.getSysUserId(), roleId);
@@ -96,15 +96,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void edit(SysUserForm user){
+    public void edit(SysUserForm user) {
         String roles = user.getSelectedroles();
         SysUser sysUser = new SysUser();
-        BeanUtils.copyProperties(user,sysUser);
+        BeanUtils.copyProperties(user, sysUser);
         this.updateById(sysUser);
         // 角色先删后加
         sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
                 .eq(SysUserRole::getUserId, user.getSysUserId()));
-        if(StringUtils.isNotEmpty(roles)) {
+        if (StringUtils.isNotEmpty(roles)) {
             String[] arr = roles.split(",");
             for (String roleId : arr) {
                 SysUserRole userRole = new SysUserRole(user.getSysUserId(), roleId);
@@ -116,9 +116,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public void checkIsOnly(String loginName) {
         List<SysUser> list = this.baseMapper.selectList(new LambdaQueryWrapper<SysUser>()
-            .eq(SysUser::getLoginName,loginName)
+                .eq(SysUser::getLoginName, loginName)
         );
-        if(list!= null && list.size()>0){
+        if (list != null && list.size() > 0) {
             throw new ErrorException(Error.UserExisted);
         }
     }
@@ -127,7 +127,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public void deleteUser(String id) {
         // 删除用户角色关联关系
         sysUserRoleMapper.delete(new LambdaQueryWrapper<SysUserRole>()
-            .eq(SysUserRole::getUserId,id)
+                .eq(SysUserRole::getUserId, id)
         );
         //删除用户
         SysUser user = new SysUser();
@@ -171,7 +171,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public String updatePassword(SysUser sysUser) {
         SysUser dbSysUser = this.baseMapper.selectById(sysUser.getSysUserId());
-        if(passwordEncoder.matches(sysUser.getOldPassword(),dbSysUser.getPassWord())){
+        if (passwordEncoder.matches(sysUser.getOldPassword(), dbSysUser.getPassWord())) {
             sysUser.setPassWord(passwordEncoder.encode(sysUser.getPassWord()));
             int result = this.baseMapper.updateById(sysUser);
             return result > 0 ? "success" : "error";
@@ -183,10 +183,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public Page<SysUserVO> chatPage(Page<SysUser> page) {
         Page<SysUserVO> pRecord = this.baseMapper.chatPage(page);
-        pRecord.getRecords().forEach(i->{
-            if(redisTemplate.hasKey(CommonConstant.SYS_USERS_CACHE+i.getSysUserId())){
+        pRecord.getRecords().forEach(i -> {
+            if (redisTemplate.hasKey(CommonConstant.SYS_USERS_CACHE + i.getSysUserId())) {
                 i.setOnline("1");
-            }else {
+            } else {
                 i.setOnline("0");
             }
         });

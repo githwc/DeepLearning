@@ -13,6 +13,7 @@ public interface LoginService {
 
     /**
      * 获取图片验证码
+     *
      * @return 验证码
      */
     JSONObject getImageVerify();

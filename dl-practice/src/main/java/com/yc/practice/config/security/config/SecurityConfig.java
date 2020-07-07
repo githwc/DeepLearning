@@ -26,9 +26,7 @@ import org.springframework.web.cors.CorsUtils;
 
 /**
  * 功能描述:Security 核心配置类
-
  *
-
  * @Author: xieyc && 紫色年华
  * @Date: 2020-03-20
  * @Version: 1.0.0
@@ -42,15 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final SecurityProperties securityProperties;
     private final SysUserMapper sysUserMapper;
     private final TokenService tokenService;
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final UserDetailsServiceImpl userDetailsService;
     private final SysLogService sysLogService;
 
     @Autowired
-    public SecurityConfig (JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
-                           SecurityProperties securityProperties, RedisTemplate<String,String> redisTemplate,
-                           SysUserMapper sysUserMapper,TokenService tokenService,
-                           UserDetailsServiceImpl userDetailsService, SysLogService sysLogService){
+    public SecurityConfig(JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter,
+                          SecurityProperties securityProperties, RedisTemplate<String, String> redisTemplate,
+                          SysUserMapper sysUserMapper, TokenService tokenService,
+                          UserDetailsServiceImpl userDetailsService, SysLogService sysLogService) {
         this.tokenService = tokenService;
         this.sysLogService = sysLogService;
         this.jwtAuthenticationTokenFilter = jwtAuthenticationTokenFilter;
@@ -66,12 +64,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     /**
      * 配置需要拦截的url路径、jwt过滤器及异常后的处理器
-     * @param httpSecurity  httpSecurity
+     *
+     * @param httpSecurity httpSecurity
      * @throws Exception 异常
      */
     @Override
@@ -88,18 +88,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(securityProperties.getExcludes()).permitAll()
                 .anyRequest().authenticated();
         httpSecurity.addFilterAt(new UsernamePasswordAuthenticationFilterSelf(authenticationManager(),
-                                sysUserMapper,tokenService,securityProperties,redisTemplate,sysLogService),
-                        UsernamePasswordAuthenticationFilter.class)
+                        sysUserMapper, tokenService, securityProperties, redisTemplate, sysLogService),
+                UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
      * 开放静态资源
+     *
      * @param web web
      */
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers( "/css/**",
+        web.ignoring().antMatchers("/css/**",
                 "/js/**",
                 "/swagger-ui.html",
                 "/webjars/**",

@@ -13,13 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
-* 功能描述:
-*
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-01-29
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-01-29
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RedisPubSubServiceImpl extends ServiceImpl<RedisPubSubMapper, RedisPubSub> implements RedisPubSubService {
@@ -27,7 +26,7 @@ public class RedisPubSubServiceImpl extends ServiceImpl<RedisPubSubMapper, Redis
     private final RedisTemplate redisTemplate;
 
     @Autowired
-    public RedisPubSubServiceImpl (RedisTemplate redisTemplate){
+    public RedisPubSubServiceImpl(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -40,14 +39,14 @@ public class RedisPubSubServiceImpl extends ServiceImpl<RedisPubSubMapper, Redis
         redisPubSub.setContent(content);
         redisPubSub.setCreateUserId(UserUtil.getUserId());
         int result = this.baseMapper.insert(redisPubSub);
-        if(result > 0 ){
-            redisTemplate.convertAndSend(channel,content);
+        if (result > 0) {
+            redisTemplate.convertAndSend(channel, content);
         }
     }
 
     @Override
     public Page<RedisPubSub> pubSubPage(Page<RedisPubSub> page) {
-        return  baseMapper.selectPage(page,Wrappers.<RedisPubSub>lambdaQuery()
+        return baseMapper.selectPage(page, Wrappers.<RedisPubSub>lambdaQuery()
                 .orderByDesc(RedisPubSub::getCreateTime)
         );
     }

@@ -14,11 +14,14 @@ public interface MallCartService {
 
     /**
      * 我的购物车
+     *
      * @return 我的购物车
      */
-    CartForm list() ;
+    CartForm list();
+
     /**
      * 添加购物车
+     *
      * @param cartForm 商品信息
      * @return 购物车信息
      */

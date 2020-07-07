@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * 功能描述:角色前端控制器
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  */
@@ -59,7 +59,7 @@ public class SysRoleController {
     @ApiOperation(value = "角色添加/更新", notes = "角色添加/更新")
     @WriteLog(opPosition = "角色添加/更新", optype = CommonConstant.OPTYPE_CREATE)
     public void add(@RequestBody SysRole sysRole) {
-        if(StringUtils.isNotBlank(sysRole.getSysRoleId())){
+        if (StringUtils.isNotBlank(sysRole.getSysRoleId())) {
             service.updateById(sysRole);
         } else {
             sysRole.setCreateUserId(UserUtil.getUserId());

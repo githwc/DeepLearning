@@ -23,26 +23,28 @@ public class ChatController {
     private final ChatService chatService;
 
     @Autowired
-    public ChatController (ChatService chatService){
+    public ChatController(ChatService chatService) {
         this.chatService = chatService;
     }
 
     /**
      * 发送消息
+     *
      * @param jsonObject 入参
-     *                     [content,receiveUserId]
+     *                   [content,receiveUserId]
      */
     @PostMapping("/sendMessage")
     public List<Object> message(@RequestBody JSONObject jsonObject) {
-       return chatService.message(jsonObject);
+        return chatService.message(jsonObject);
     }
 
     /**
      * 查看聊天记录
+     *
      * @param receiveUserId 接收人
      */
     @GetMapping("/init")
     public List<Object> message(String receiveUserId) {
-       return chatService.message(receiveUserId);
+        return chatService.message(receiveUserId);
     }
 }

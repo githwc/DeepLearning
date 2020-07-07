@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * 功能描述:
  * 主程序类、主入口类
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date: 2019-05-30
  */
 @SpringBootApplication
@@ -26,7 +26,7 @@ public class DlPracticeApplication extends SpringBootServletInitializer {
     }
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder){
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(DlPracticeApplication.class);
     }
 

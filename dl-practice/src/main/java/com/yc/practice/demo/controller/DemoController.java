@@ -31,17 +31,19 @@ public class DemoController {
 
     /**
      * 数据分页查询
-     * @param page 分页信息
+     *
+     * @param page  分页信息
      * @param query 入参
      * @return page
      */
     @GetMapping("/page")
-    public Page<Demo> demoPage(Page<Demo> page, DemoQuery query){
-        return service.demoPage(page,query);
+    public Page<Demo> demoPage(Page<Demo> page, DemoQuery query) {
+        return service.demoPage(page, query);
     }
 
     /**
      * 数据添加/更新
+     *
      * @param demo 添加信息
      */
     @PostMapping
@@ -51,6 +53,7 @@ public class DemoController {
 
     /**
      * 删除
+     *
      * @param demoId 主键
      */
     @DeleteMapping

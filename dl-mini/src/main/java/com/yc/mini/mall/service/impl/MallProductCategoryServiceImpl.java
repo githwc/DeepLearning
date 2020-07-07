@@ -4,15 +4,10 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNodeConfig;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yc.common.global.error.Error;
-import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.MallProductCategory;
 import com.yc.core.mall.mapper.MallProductCategoryClassMapper;
 import com.yc.mini.mall.service.MallProductCategoryService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,10 +30,11 @@ public class MallProductCategoryServiceImpl extends ServiceImpl<MallProductCateg
                 .orderByAsc(MallProductCategory::getSort)
         );
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
-        return TreeUtil.build(list, "root", treeNodeConfig, (category, treeNode) -> {
+        return TreeUtil.build(list, "0", treeNodeConfig, (category, treeNode) -> {
             treeNode.setId(category.getMallProductCategoryId());
             treeNode.setParentId(category.getParentId());
             treeNode.setName(category.getName());
+            treeNode.putExtra("icon", category.getIcon());
         });
     }
 

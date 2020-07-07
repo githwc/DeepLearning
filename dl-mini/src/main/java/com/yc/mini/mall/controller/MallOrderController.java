@@ -54,13 +54,14 @@ public class MallOrderController {
 
     /**
      * 订单编号
+     *
      * @param orderNo 订单编号
      * @return 订单信息
      */
     @GetMapping("/get")
-    public MallOrder get(String orderNo){
+    public MallOrder get(String orderNo) {
         return iMallOrderService.getOne(Wrappers.<MallOrder>lambdaQuery()
-            .eq(MallOrder::getOrderNo,orderNo)
+                .eq(MallOrder::getOrderNo, orderNo)
         );
     }
 

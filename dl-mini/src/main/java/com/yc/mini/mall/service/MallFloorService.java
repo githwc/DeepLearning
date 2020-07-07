@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-06-26
  * @Version: 1.0.0
  */
@@ -17,6 +17,7 @@ public interface MallFloorService extends IService<MallFloor> {
 
     /**
      * 楼层树
+     *
      * @return tree
      */
     List<Tree<String>> tree();

@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 功能描述:登录控制器
-
  *
-
  * @Author: xieyc && 紫色年华
  * @Date: 2020-03-21
  * @Version: 1.0.0
@@ -23,7 +21,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @Autowired
-    public LoginController(LoginService loginService){
+    public LoginController(LoginService loginService) {
         this.loginService = loginService;
     }
 

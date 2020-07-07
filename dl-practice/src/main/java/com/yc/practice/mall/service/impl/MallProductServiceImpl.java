@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-04-08
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-04-08
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MallProductServiceImpl extends ServiceImpl<MallProductMapper, MallProduct> implements MallProductService {
@@ -27,13 +27,14 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductMapper, MallP
     private final MallProductCategoryClassMapper malProductCategoryMapper;
 
     @Autowired
-    public MallProductServiceImpl(MallProductCategoryClassMapper malProductCategoryMapper){
+    public MallProductServiceImpl(MallProductCategoryClassMapper malProductCategoryMapper) {
         this.malProductCategoryMapper = malProductCategoryMapper;
     }
+
     @Override
     public Page<MallProduct> pageMallProduct(Page<MallProduct> page, GoodQuery query) {
-        Page<MallProduct> goodPage = this.baseMapper.goodPage(page,query);
-        goodPage.getRecords().forEach(i->{
+        Page<MallProduct> goodPage = this.baseMapper.goodPage(page, query);
+        goodPage.getRecords().forEach(i -> {
             MallProductCategory mallProductCategory = this.malProductCategoryMapper.selectById(i.getClassId());
             i.setPClassId(mallProductCategory.getParentId());
         });
@@ -42,7 +43,7 @@ public class MallProductServiceImpl extends ServiceImpl<MallProductMapper, MallP
 
     @Override
     public void saveProduct(MallProduct mallProduct) {
-        if(StringUtils.isNotBlank(mallProduct.getMallProductId())){
+        if (StringUtils.isNotBlank(mallProduct.getMallProductId())) {
             this.baseMapper.updateById(mallProduct);
         } else {
             this.baseMapper.insert(mallProduct);

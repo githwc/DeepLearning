@@ -43,13 +43,13 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
     private final SysUserMapper sysUserMapper;
     private final TokenService TokenService;
     private final SysLogService sysLogService;
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final SecurityProperties securityProperties;
 
     public UsernamePasswordAuthenticationFilterSelf(AuthenticationManager authenticationManager,
                                                     SysUserMapper sysUserMapper, TokenService TokenService,
                                                     SecurityProperties securityProperties,
-                                                    RedisTemplate<String,String> redisTemplate,SysLogService sysLogService) {
+                                                    RedisTemplate<String, String> redisTemplate, SysLogService sysLogService) {
         this.TokenService = TokenService;
         this.redisTemplate = redisTemplate;
         this.sysLogService = sysLogService;
@@ -142,8 +142,8 @@ public class UsernamePasswordAuthenticationFilterSelf extends UsernamePasswordAu
         ServletUtil.write(response, successMsg, ContentType.build(CommonConstant.JSON_CONTENTTYPE,
                 Charset.forName(CommonConstant.CHARSET_UTF_8)));
         // 在线用户放入redis 1.登出时消除缓存 2.随jwtToken一起存在，续签时重新续期缓存
-        redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE+sysUser.getSysUserId(), sysUser.getSysUserId(),
-                securityProperties.getJwtActiveTime(),TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE + sysUser.getSysUserId(), sysUser.getSysUserId(),
+                securityProperties.getJwtActiveTime(), TimeUnit.MILLISECONDS);
     }
 
     @Override

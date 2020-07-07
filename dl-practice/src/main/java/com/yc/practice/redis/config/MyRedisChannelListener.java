@@ -1,5 +1,6 @@
 package com.yc.practice.redis.config;
 
+import com.yc.common.constant.CommonConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -19,15 +20,15 @@ public class MyRedisChannelListener implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] bytes) {
         log.info("============>>>>> onMessage");
-        byte[] channel=message.getChannel();
-        byte[] body=message.getBody();
+        byte[] channel = message.getChannel();
+        byte[] body = message.getBody();
 
         try {
-            String title=new String(channel,"UTF-8");
-            String content=new String(body,"UTF-8");
+            String title = new String(channel, CommonConstant.CHARSET_UTF_8);
+            String content = new String(body, CommonConstant.CHARSET_UTF_8);
 
-            log.info("消息频道名称："+title);
-            log.info("消息内容是:"+content);
+            log.info("消息频道名称：" + title);
+            log.info("消息内容是:" + content);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

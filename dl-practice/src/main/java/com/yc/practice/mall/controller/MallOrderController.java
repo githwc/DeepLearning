@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- *
  * 功能描述:订单控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-04-08
  * @Version: 1.0.0
  */
@@ -28,45 +27,49 @@ public class MallOrderController {
     private final MallOrderService iMallOrderService;
 
     @Autowired
-    public MallOrderController(MallOrderService iMallOrderService){
+    public MallOrderController(MallOrderService iMallOrderService) {
         this.iMallOrderService = iMallOrderService;
     }
 
     /**
      * 生成订单
+     *
      * @param orderForm 订单信息
      * @return 收货地址 & 支付金额
      */
     @PostMapping("/createOrder")
-    public JSONObject createOrder(@RequestBody OrderForm orderForm){
+    public JSONObject createOrder(@RequestBody OrderForm orderForm) {
         return iMallOrderService.createOrder(orderForm);
     }
 
     /**
      * 订单分页查询
+     *
      * @param page 分页信息
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query){
-        return this.iMallOrderService.orderPage(page,query);
+    public Page<MallOrder> orderPage(Page<MallOrder> page, OrderQuery query) {
+        return this.iMallOrderService.orderPage(page, query);
     }
 
     /**
      * 取消订单
+     *
      * @param mallOrder 订单信息
      */
     @PostMapping("/cancelOrder")
-    public void cancelOrder(@RequestBody MallOrder mallOrder){
+    public void cancelOrder(@RequestBody MallOrder mallOrder) {
         this.iMallOrderService.cancelOrder(mallOrder.getMallOrderId());
     }
 
     /**
      * 支付回调
+     *
      * @param request 请求信息
      */
     @PostMapping("/syncCallBackPay")
-    public void syncCallBackPay(HttpServletRequest request){
+    public void syncCallBackPay(HttpServletRequest request) {
         this.iMallOrderService.syncCallBackPay(request);
     }
 

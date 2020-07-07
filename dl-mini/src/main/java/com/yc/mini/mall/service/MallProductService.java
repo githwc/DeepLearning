@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-04-08
  * @Version: 1.0.0
  */
@@ -17,7 +17,8 @@ public interface MallProductService extends IService<MallProduct> {
 
     /**
      * 商品分页查询
-     * @param page 分页信息
+     *
+     * @param page  分页信息
      * @param query 入参
      * @return page
      */
@@ -25,6 +26,7 @@ public interface MallProductService extends IService<MallProduct> {
 
     /**
      * 商品详情
+     *
      * @param mallProductId 商品ID
      * @return 商品详情
      */

@@ -20,7 +20,7 @@ import java.util.Collection;
 
 /**
  * 功能描述:SpringSecurity定义的核心接口，用于根据用户名获取用户信息
- *      [登录时校验用户信息,认证成功后将认证信息存入SecurityContextHolder上下文,后续操作会跳过过滤器，无需鉴权]
+ * [登录时校验用户信息,认证成功后将认证信息存入SecurityContextHolder上下文,后续操作会跳过过滤器，无需鉴权]
  *
  * @Author: xieyc && 紫色年华
  * @Date: 2020-03-20
@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginName) {
-        if(StringUtils.isEmpty(loginName)){
+        if (StringUtils.isEmpty(loginName)) {
             throw new ErrorException(Error.LoginNameIsNull);
         }
         SysUser sysUser = sysUserMapper.loginByName(loginName);

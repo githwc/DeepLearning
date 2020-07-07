@@ -15,12 +15,12 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-02-01
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-02-01
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
@@ -29,25 +29,25 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     private final RedisTemplate redisTemplate;
 
     @Autowired
-    public RedisCounterServiceImpl(RedisTemplate redisTemplate){
+    public RedisCounterServiceImpl(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     @Override
     public String importDevice() {
         String key = CommonConstant.DEVICE_REPAIR;
-        if(redisTemplate.hasKey(key)){
-            if((int)(redisTemplate.opsForValue().get(key)) > 5){
+        if (redisTemplate.hasKey(key)) {
+            if ((int) (redisTemplate.opsForValue().get(key)) > 5) {
                 return "操作过于频繁，请稍后再试！";
             }
         }
         String order = "";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = sdf.format(new Date());
-        Long incr = this.incr(key,1);
+        Long incr = this.incr(key, 1);
         // 防止初始化时为1
-        if(incr.intValue() == 0){
-            incr = this.incr(key,1);
+        if (incr.intValue() == 0) {
+            incr = this.incr(key, 1);
         }
         DecimalFormat df = new DecimalFormat("00000");
         String[] drs = dateString.split("-");
@@ -58,8 +58,9 @@ public class RedisCounterServiceImpl implements RedisCounterService {
     }
 
     /**
-     *  递增指定key
-     * @param key key
+     * 递增指定key
+     *
+     * @param key      key
      * @param liveTime 有效期(分钟)
      * @return
      */

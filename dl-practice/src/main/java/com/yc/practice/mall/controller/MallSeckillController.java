@@ -10,10 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *
  * 功能描述:秒杀商品控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-06-01
  * @Version: 1.0.0
  */
@@ -25,7 +24,7 @@ public class MallSeckillController {
     private final MallSeckillService iMallSeckillService;
 
     @Autowired
-    public MallSeckillController(MallSeckillService iMallSeckillService){
+    public MallSeckillController(MallSeckillService iMallSeckillService) {
         this.iMallSeckillService = iMallSeckillService;
     }
 
@@ -46,46 +45,52 @@ public class MallSeckillController {
 
     /**
      * 秒杀商品详情
+     *
      * @param mallSeckillId 主键
-     * @return (系统时间,加密串,秒杀ID)
+     * @return (系统时间, 加密串, 秒杀ID)
      */
     @GetMapping("/mallSeckill")
-    public SeckillVO mallSeckill(String mallSeckillId){
+    public SeckillVO mallSeckill(String mallSeckillId) {
         return this.iMallSeckillService.mallSeckill(mallSeckillId);
     }
 
     /**
      * 执行秒杀
+     *
      * @param seckillForm 秒杀提交页
      */
     @PutMapping("/execSeckill")
-    public void execSeckill(@RequestBody SeckillForm seckillForm){
+    public void execSeckill(@RequestBody SeckillForm seckillForm) {
         // this.iMallSeckillService.execSeckill(seckillForm);
         this.iMallSeckillService.execSeckillByProcedure(seckillForm);
     }
 
     // ============ CRUD =================
+
     /**
      * 秒杀商品分页查询
+     *
      * @param page 分页信息
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallSeckill> pageMallSeckill(Page<MallSeckill> page){
+    public Page<MallSeckill> pageMallSeckill(Page<MallSeckill> page) {
         return iMallSeckillService.pageMallSeckill(page);
     }
 
     /**
      * 增加/更新秒杀商品
+     *
      * @param mallSeckill 商品信息
      */
     @PostMapping
-    public void save(@RequestBody MallSeckill mallSeckill){
+    public void save(@RequestBody MallSeckill mallSeckill) {
         iMallSeckillService.saveMallSeckill(mallSeckill);
     }
 
     /**
      * 删除指定秒杀商品
+     *
      * @param mallSeckillId 秒杀商品ID
      */
     @DeleteMapping

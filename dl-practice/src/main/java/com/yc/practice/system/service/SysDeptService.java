@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-20
  * @Version: 1.0.0
  */
@@ -19,6 +19,7 @@ public interface SysDeptService extends IService<SysDept> {
 
     /**
      * 查询所有部门,并以树结构格式返回前端
+     *
      * @param departName [搜索条件] 部门名称
      * @return tree
      */
@@ -26,7 +27,8 @@ public interface SysDeptService extends IService<SysDept> {
 
     /**
      * 查询子级部门
-     * @param page 分页信息
+     *
+     * @param page      分页信息
      * @param deptQuery 父级部门ID
      * @return deptList
      */
@@ -34,18 +36,21 @@ public interface SysDeptService extends IService<SysDept> {
 
     /**
      * 根据部门ID删除
+     *
      * @param id 部門ID
      */
     void deleteAlone(String id);
 
     /**
      * 部门批量删除
+     *
      * @param ids ids
      */
     void deleteBatch(String ids);
 
     /**
      * 创建/更新部门
+     *
      * @param sysDept 部门信息
      */
     void saveDept(SysDept sysDept);

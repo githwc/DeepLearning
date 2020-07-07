@@ -32,13 +32,14 @@ public class ExportController {
     private final DemoService demoService;
 
     @Autowired
-    public ExportController(ExportService service,DemoService demoService) {
+    public ExportController(ExportService service, DemoService demoService) {
         this.service = service;
         this.demoService = demoService;
     }
 
     /**
      * 导出Word
+     *
      * @param response 响应
      */
     @PostMapping(value = "/exportWord")
@@ -48,12 +49,13 @@ public class ExportController {
 
     /**
      * 导出 excel
+     *
      * @param response 响应
      */
     @PostMapping("/exportExcel")
-    public void exportExcel(HttpServletResponse response)  {
+    public void exportExcel(HttpServletResponse response) {
         List<Demo> list = demoService.list(new LambdaQueryWrapper<Demo>()
-            .orderByAsc(Demo::getSort)
+                .orderByAsc(Demo::getSort)
         );
         Context context = new Context();
         context.putVar("list", list);

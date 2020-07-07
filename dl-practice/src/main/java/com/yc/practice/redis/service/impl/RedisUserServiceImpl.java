@@ -19,13 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 /**
-* 功能描述:
-*
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-01-19
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-01-19
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser> implements RedisUserService {
@@ -33,36 +32,37 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
     private final RedisTemplate redisTemplate;
 
     @Autowired
-    public RedisUserServiceImpl (RedisTemplate redisTemplate){
+    public RedisUserServiceImpl(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     @Override
     public Page<RedisUser> userPage(Page<RedisUser> page, RedisUserQuery query) {
-        return baseMapper.selectPage(page,new LambdaQueryWrapper<RedisUser>()
-                .eq(RedisUser::getDelFlag,false)
-                .like(StringUtils.isNotBlank(query.getName()),RedisUser::getName,query.getName())
+        return baseMapper.selectPage(page, new LambdaQueryWrapper<RedisUser>()
+                .eq(RedisUser::getDelFlag, false)
+                .like(StringUtils.isNotBlank(query.getName()), RedisUser::getName, query.getName())
                 .orderByAsc(RedisUser::getSort)
         );
     }
 
     /**
      * 获取信息策略：先从缓存中获取用户，没有则取数据表中数据，再将数据写入缓存
+     *
      * @param id 用户ID
      * @return
      */
     @Override
     public RedisUser findUserById(String id) {
         String key = CommonConstant.USER_BY_ID_ + id;
-        ValueOperations<String,RedisUser> operations = redisTemplate.opsForValue();
+        ValueOperations<String, RedisUser> operations = redisTemplate.opsForValue();
         // 判断redis中是否有键为key的缓存
-        if(redisTemplate.hasKey(key)){
+        if (redisTemplate.hasKey(key)) {
             //从缓存中获得数据
             return operations.get(key);
-        }else{
+        } else {
             RedisUser redisUser = this.baseMapper.selectById(id);
             // 写入缓存
-            operations.set(CommonConstant.USER_BY_ID_+redisUser.getRedisUserId(),redisUser);
+            operations.set(CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId(), redisUser);
             return redisUser;
         }
     }
@@ -70,34 +70,36 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
 
     /**
      * 增加信息策略:先增加数据,成功后,存入缓存
+     *
      * @param redisUser 用户信息
      */
     @Override
     public void add(RedisUser redisUser) {
         redisUser.setDelFlag(0);
         int result = this.baseMapper.insert(redisUser);
-        if(result > 0){
+        if (result > 0) {
             ValueOperations operations = redisTemplate.opsForValue();
-            operations.set(CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId(),this.baseMapper.selectById(redisUser.getRedisUserId()));
+            operations.set(CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId(), this.baseMapper.selectById(redisUser.getRedisUserId()));
         }
     }
 
     /**
      * 更新信息策略:先更新数据表，成功之后，删除原来的缓存，再更新缓存
+     *
      * @param redisUser 用户信息
      */
     @Override
     public void updateUser(RedisUser redisUser) {
         int result = this.baseMapper.updateById(redisUser);
-        if(result > 0){
+        if (result > 0) {
             ValueOperations operations = redisTemplate.opsForValue();
             String key = CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId();
-            if(redisTemplate.hasKey(key)){
+            if (redisTemplate.hasKey(key)) {
                 redisTemplate.delete(key);
             }
             RedisUser redisUser_cache = this.baseMapper.selectById(redisUser.getRedisUserId());
-            if(ObjectUtil.isNotNull(redisUser_cache)){
-                operations.set(key,redisUser_cache);
+            if (ObjectUtil.isNotNull(redisUser_cache)) {
+                operations.set(key, redisUser_cache);
             }
         }
     }
@@ -107,12 +109,12 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
         // 删除用户策略：删除数据表中数据，成功后,然后删除缓存
         RedisUser redisUser = new RedisUser();
         redisUser.setDelFlag(1);
-        int result = this.baseMapper.update(redisUser,new LambdaQueryWrapper<RedisUser>()
-            .eq(RedisUser::getRedisUserId,id)
+        int result = this.baseMapper.update(redisUser, new LambdaQueryWrapper<RedisUser>()
+                .eq(RedisUser::getRedisUserId, id)
         );
-        if(result > 0){
+        if (result > 0) {
             String key = CommonConstant.USER_BY_ID_ + id;
-            if(redisTemplate.hasKey(key)){
+            if (redisTemplate.hasKey(key)) {
                 redisTemplate.delete(key);
             }
         }
@@ -121,16 +123,16 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
     @Override
     public void setExpireTime(RedisUser redisUser) {
         int result = this.baseMapper.updateById(redisUser);
-        if(result > 0){
+        if (result > 0) {
             ValueOperations operations = redisTemplate.opsForValue();
             String key = CommonConstant.USER_BY_ID_ + redisUser.getRedisUserId();
-            if(redisTemplate.hasKey(key)){
+            if (redisTemplate.hasKey(key)) {
                 redisTemplate.delete(key);
             }
             RedisUser redisUser_cache = this.baseMapper.selectById(redisUser.getRedisUserId());
-            if(ObjectUtil.isNotNull(redisUser_cache)){
+            if (ObjectUtil.isNotNull(redisUser_cache)) {
                 // 放入缓存并设置超时时间
-                operations.set(key, redisUser_cache,1, TimeUnit.MINUTES);
+                operations.set(key, redisUser_cache, 1, TimeUnit.MINUTES);
             }
         }
     }
@@ -138,7 +140,7 @@ public class RedisUserServiceImpl extends ServiceImpl<RedisUserMapper, RedisUser
     @Override
     public boolean expireState(String redisUserId) {
         String key = CommonConstant.USER_BY_ID_ + redisUserId;
-        if(redisTemplate.hasKey(key)){
+        if (redisTemplate.hasKey(key)) {
             return true;
         }
         return false;

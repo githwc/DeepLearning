@@ -24,23 +24,24 @@ public class ExportServiceImpl implements ExportService {
 
     @Override
     public void export(HttpServletResponse response) {
-        Map<String,Object> map = this.dealExportData();
-        try{
-            WordUtil.exportWord(response,map,"企业信息","companyInfo.ftl");
-        }catch(Exception e){
+        Map<String, Object> map = this.dealExportData();
+        try {
+            WordUtil.exportWord(response, map, "企业信息", "companyInfo.ftl");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
      * 处理导出数据  ========== export 子方法 ==========
+     *
      * @return map
      */
-    private Map<String,Object> dealExportData(){
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("comunityName","园区名称[蓝海软件园]");
-        map.put("rentAddr","蓝海路1号蓝海软件园D座10层1001");
-        map.put("rentTimeLimit","2019-01-01至2020-10-10");
+    private Map<String, Object> dealExportData() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("comunityName", "园区名称[蓝海软件园]");
+        map.put("rentAddr", "蓝海路1号蓝海软件园D座10层1001");
+        map.put("rentTimeLimit", "2019-01-01至2020-10-10");
         return map;
     }
 }

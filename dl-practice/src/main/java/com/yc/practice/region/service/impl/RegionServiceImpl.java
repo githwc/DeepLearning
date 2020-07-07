@@ -14,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2019-09-20
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2019-09-20
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> implements RegionService {
@@ -31,11 +31,11 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
         );
         TreeNodeConfig treeNodeConfig = new TreeNodeConfig();
         treeNodeConfig.setNameKey("title");
-        return TreeUtil.build(list,"root",treeNodeConfig,(region,treeNode)->{
+        return TreeUtil.build(list, "root", treeNodeConfig, (region, treeNode) -> {
             treeNode.setId(region.getRegionCode());
             treeNode.setParentId(region.getRegionPcode());
             treeNode.setName(region.getRegionName());
-            treeNode.putExtra("key",region.getRegionCode());
+            treeNode.putExtra("key", region.getRegionCode());
         });
     }
 

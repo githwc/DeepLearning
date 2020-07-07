@@ -26,10 +26,10 @@ import java.util.concurrent.TimeUnit;
 @Transactional(rollbackFor = Exception.class)
 public class LoginServiceImpl implements LoginService {
 
-    private final RedisTemplate<String,String> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public  LoginServiceImpl(RedisTemplate<String,String> redisTemplate){
+    public LoginServiceImpl(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 

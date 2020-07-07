@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
  * 功能描述:工作台 控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-04-15
  * @Version: 1.0.0
  */
@@ -29,12 +28,13 @@ public class WorkBenchController {
 
     /**
      * 我的工作台
+     *
      * @return list
      */
     @GetMapping
-    public List<WorkBench> list(){
+    public List<WorkBench> list() {
         return iWorkBenchService.list(new LambdaQueryWrapper<WorkBench>()
-            .orderByAsc(WorkBench::getSort)
+                .orderByAsc(WorkBench::getSort)
         );
     }
 
@@ -42,12 +42,12 @@ public class WorkBenchController {
      * 我的工作台-添加
      */
     @PostMapping
-    public void save(@RequestBody WorkBench workBench){
-        Random random=new Random();
-        if(random.nextInt(2) > 0){
+    public void save(@RequestBody WorkBench workBench) {
+        Random random = new Random();
+        if (random.nextInt(2) > 0) {
             workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png");
-        }else {
-           workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png");
+        } else {
+            workBench.setAvatar("https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png");
         }
         iWorkBenchService.saveOrUpdate(workBench);
     }
@@ -55,10 +55,11 @@ public class WorkBenchController {
 
     /**
      * 我的工作台-删除
+     *
      * @param workBenchId 主键
      */
     @DeleteMapping
-    public void delete (@Param("workBenchId")String workBenchId){
+    public void delete(@Param("workBenchId") String workBenchId) {
         iWorkBenchService.removeById(workBenchId);
     }
 

@@ -33,7 +33,7 @@ public class RedisCounterController {
      * 限流 一分钟内不能超过5次
      */
     @PostMapping("/importDevice")
-    public String importDevice(){
+    public String importDevice() {
         return redisCounterService.importDevice();
     }
 }

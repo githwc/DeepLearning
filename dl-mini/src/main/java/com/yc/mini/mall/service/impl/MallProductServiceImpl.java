@@ -8,7 +8,6 @@ import com.yc.core.mall.mapper.MallProductCategoryClassMapper;
 import com.yc.core.mall.mapper.MallProductMapper;
 import com.yc.core.mall.model.query.GoodQuery;
 import com.yc.mini.mall.service.MallProductService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

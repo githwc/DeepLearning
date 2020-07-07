@@ -22,12 +22,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2019-10-08
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2019-10-08
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> implements MessageService {
@@ -37,7 +37,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
     private SysUserMapper sysUserMapper;
 
     @Autowired
-    public MessageServiceImpl(WebSocket webSocket, MessageReceiveService messageReceiveService,SysUserMapper sysUserMapper){
+    public MessageServiceImpl(WebSocket webSocket, MessageReceiveService messageReceiveService, SysUserMapper sysUserMapper) {
         this.webSocket = webSocket;
         this.sysUserMapper = sysUserMapper;
         this.messageReceiveService = messageReceiveService;
@@ -45,13 +45,13 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
 
 
     @Override
-    public void sendUser(String userId, String content,int level,int type,String rid) {
+    public void sendUser(String userId, String content, int level, int type, String rid) {
         // 记录推送消息
         Message remindMessage = new Message();
         remindMessage.setCreateTime(LocalDateTime.now());
         remindMessage.setLevel(level);
         remindMessage.setTitle("单点定向推送");
-            remindMessage.setContent(content);
+        remindMessage.setContent(content);
         remindMessage.setReceiveType(CommonEnum.ReceiveType.SINGLE_USER.getCode());
         remindMessage.setType(type);
         remindMessage.setRid(rid);
@@ -64,8 +64,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         //消息内容
         obj.put("content", content);
         boolean flag = webSocket.sendOneMessage(userId, obj.toJSONString());
-        if(result > 0){
-            messageReceiveService.insertRecord(userId,remindMessage.getMessageId(),flag);
+        if (result > 0) {
+            messageReceiveService.insertRecord(userId, remindMessage.getMessageId(), flag);
         }
     }
 
@@ -79,9 +79,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message> impl
         message.setCreateUser(UserUtil.getUser().getUsername());
         this.baseMapper.insert(message);
         List<SysUser> userList = this.sysUserMapper.selectList(new LambdaQueryWrapper<SysUser>()
-            .eq(SysUser::getDelFlag,0)
-                .eq(SysUser::getState,0)
-        ) ;
+                .eq(SysUser::getDelFlag, 0)
+                .eq(SysUser::getState, 0)
+        );
         List<MessageReceive> messageReceives = new LinkedList<>();
         for (SysUser user : userList) {
             MessageReceive messageReceive = new MessageReceive();

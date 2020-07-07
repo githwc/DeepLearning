@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *
  * 功能描述:消息提醒
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-10-08
  * @Version: 1.0.0
  */
@@ -37,8 +36,8 @@ public class MessageController {
 
     @PostMapping("/sendUser")
     @ApiOperation(value = "发送消息(点对点)", notes = "发送消息给具体的某个人")
-    @WriteLog(opPosition = "发送消息(单点)" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void sendUser(@RequestBody JSONObject jsonObject){
+    @WriteLog(opPosition = "发送消息(单点)", optype = CommonConstant.OPTYPE_CREATE)
+    public void sendUser(@RequestBody JSONObject jsonObject) {
         iRemindMessageService.sendUser(jsonObject.getString("userId"),
                 jsonObject.getString("content"),
                 jsonObject.getInteger("level"),
@@ -49,8 +48,8 @@ public class MessageController {
 
     @PostMapping("/sendAll")
     @ApiOperation(value = "群发消息", notes = "发送消息给多个人")
-    @WriteLog(opPosition = "群发消息" ,optype = CommonConstant.OPTYPE_CREATE)
-    public void sendAll(@RequestBody Message message){
+    @WriteLog(opPosition = "群发消息", optype = CommonConstant.OPTYPE_CREATE)
+    public void sendAll(@RequestBody Message message) {
         iRemindMessageService.sendAllUser(message);
     }
 

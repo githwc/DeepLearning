@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
-* 功能描述:
-*
-* @Author:  xieyc && 紫色年华
-* @Date 2020-05-08
-* @Version: 1.0.0
-*/
+ * 功能描述:
+ *
+ * @Author: xieyc && 紫色年华
+ * @Date 2020-05-08
+ * @Version: 1.0.0
+ */
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, MallShipping> implements MallShippingService {
@@ -30,23 +30,24 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
     private final RegionMapper regionMapper;
 
     @Autowired
-    public MallShippingServiceImpl(RegionMapper regionMapper){
+    public MallShippingServiceImpl(RegionMapper regionMapper) {
         this.regionMapper = regionMapper;
     }
+
     @Override
     public Page<MallShipping> shippingPage(Page<MallShipping> page) {
-        Page<MallShipping> record = baseMapper.shippingPage(page,UserUtil.getUserId());
-        record.getRecords().forEach(i->{
+        Page<MallShipping> record = baseMapper.shippingPage(page, UserUtil.getUserId());
+        record.getRecords().forEach(i -> {
             Region region = this.regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                    .eq(Region::getRegionCode,i.getRegionCode())
+                    .eq(Region::getRegionCode, i.getRegionCode())
             );
             i.setReceiverAreaCode(i.getRegionCode());
             Region cityRegion = this.regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                .eq(Region::getRegionCode,region.getRegionPcode())
+                    .eq(Region::getRegionCode, region.getRegionPcode())
             );
             i.setReceiverCityCode(cityRegion.getRegionCode());
             Region provinceRegion = this.regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                    .eq(Region::getRegionCode,cityRegion.getRegionPcode())
+                    .eq(Region::getRegionCode, cityRegion.getRegionPcode())
             );
             i.setReceiverProvinceCode(provinceRegion.getRegionCode());
         });
@@ -55,7 +56,7 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
 
     @Override
     public void saveShipping(MallShipping mallShipping) {
-        if(StringUtils.isNotBlank(mallShipping.getMallShippingId())){
+        if (StringUtils.isNotBlank(mallShipping.getMallShippingId())) {
             dealRegion(mallShipping);
             this.baseMapper.updateById(mallShipping);
         } else {
@@ -65,17 +66,17 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
         }
     }
 
-    private void dealRegion(MallShipping mallShipping){
+    private void dealRegion(MallShipping mallShipping) {
         Region region = regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                .eq(Region::getRegionCode,mallShipping.getReceiverProvince())
+                .eq(Region::getRegionCode, mallShipping.getReceiverProvince())
         );
         mallShipping.setReceiverProvince(region.getRegionName());
         region = regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                .eq(Region::getRegionCode,mallShipping.getReceiverCity())
+                .eq(Region::getRegionCode, mallShipping.getReceiverCity())
         );
         mallShipping.setReceiverCity(region.getRegionName());
         region = regionMapper.selectOne(new LambdaQueryWrapper<Region>()
-                .eq(Region::getRegionCode,mallShipping.getReceiverArea())
+                .eq(Region::getRegionCode, mallShipping.getReceiverArea())
         );
         mallShipping.setReceiverArea(region.getRegionName());
     }
@@ -91,8 +92,8 @@ public class MallShippingServiceImpl extends ServiceImpl<MallShippingMapper, Mal
     @Override
     public List<MallShipping> shipingList() {
         return this.baseMapper.selectList(new LambdaQueryWrapper<MallShipping>()
-            .eq(MallShipping::getSysUserId,UserUtil.getUserId())
-                .eq(MallShipping::getDelFlag,0)
+                .eq(MallShipping::getSysUserId, UserUtil.getUserId())
+                .eq(MallShipping::getDelFlag, 0)
         );
     }
 }

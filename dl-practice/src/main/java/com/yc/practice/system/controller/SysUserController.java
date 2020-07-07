@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * 功能描述:系统用户前端控制器
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-19
  * @Version: 1.0.0
  */
@@ -112,7 +112,7 @@ public class SysUserController {
     @GetMapping("/chatPage")
     @ApiOperation(value = "获取聊天对象", notes = "聊天功能")
     @WriteLog(opPosition = "获取聊天对象")
-    public Page<SysUserVO> chatPage(Page<SysUser> page){
+    public Page<SysUserVO> chatPage(Page<SysUser> page) {
         return service.chatPage(page);
     }
 }

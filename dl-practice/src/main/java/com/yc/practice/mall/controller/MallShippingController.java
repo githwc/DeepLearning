@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *
  * 功能描述:收货地址控制层
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-05-08
  * @Version: 1.0.0
  */
@@ -25,31 +24,34 @@ public class MallShippingController {
     private final MallShippingService iMallShippingService;
 
     @Autowired
-    public MallShippingController (MallShippingService iMallShippingService){
+    public MallShippingController(MallShippingService iMallShippingService) {
         this.iMallShippingService = iMallShippingService;
     }
 
     /**
      * 我的收货地址
+     *
      * @param page 分页信息
      * @return page
      */
     @GetMapping("/page")
-    public Page<MallShipping> shippingPage(Page<MallShipping> page){
+    public Page<MallShipping> shippingPage(Page<MallShipping> page) {
         return iMallShippingService.shippingPage(page);
     }
 
     /**
      * 添加/更新收货地址
+     *
      * @param mallShipping 地址信息
      */
     @PostMapping
-    public void save(@RequestBody MallShipping mallShipping){
+    public void save(@RequestBody MallShipping mallShipping) {
         iMallShippingService.saveShipping(mallShipping);
     }
 
     /**
      * 删除指定收货地址
+     *
      * @param mallShippingId 收货地址ID
      */
     @DeleteMapping
@@ -59,10 +61,11 @@ public class MallShippingController {
 
     /**
      * 查询我的所有收货地址
+     *
      * @return 我的所有收货地址
      */
     @GetMapping("/shipingList")
-    public List<MallShipping> shipingList(){
+    public List<MallShipping> shipingList() {
         return iMallShippingService.shipingList();
     }
 }
