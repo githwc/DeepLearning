@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * 功能描述:
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2019-09-20
  * @Version: 1.0.0
  */
@@ -45,7 +45,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public List<String> getUserPerm(String loginName) {
         List<String> list = new ArrayList<>();
         List<SysPermission> permissions = this.baseMapper.queryPermissionByUser(loginName);
-        permissions.forEach(i->list.add(i.getPermsCode()));
+        permissions.forEach(i -> list.add(i.getPermsCode()));
         return list;
     }
 
@@ -63,8 +63,8 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         this.getAuthJsonArray(authjsonArray, metaList);
         // 查询所有的权限
         List<SysPermission> allAuthList = this.baseMapper.selectList(new LambdaQueryWrapper<SysPermission>()
-            .eq(SysPermission::getDelFlag, 0)
-            .eq(SysPermission::getMenuType, 2)
+                .eq(SysPermission::getDelFlag, 0)
+                .eq(SysPermission::getMenuType, 2)
         );
         JSONArray allauthjsonArray = new JSONArray();
         this.getAllAuthJsonArray(allauthjsonArray, allAuthList);
@@ -83,7 +83,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
      * 然后遍历所有metaList,如果是一级菜单不执行任何操作,如果是二级菜单并且此parentJson的ID等于当前菜单的父ID,
      * 执行@3(将子菜单组装到children中，将按钮组装到meta->permissionList中,如果不是叶子节点,会继续调用getMenuJsonArray方法封装其下级菜单)
      * 3、如果是二级菜单或三级菜单，不执行任何操作(在一级菜单走完后会循环放入二级三级菜单)
-     *
+     * <p>
      * menuType: 类型( 0：一级菜单 1：子菜单 2：按钮 )
      */
     private void getMenuJsonArray(JSONArray jsonArray, List<SysPermission> metaList, JSONObject parentJson) {
@@ -266,16 +266,16 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public void savePermission(SysPermission sysPermission) {
-        if(StringUtils.isNotBlank(sysPermission.getSysPermissionId())){
+        if (StringUtils.isNotBlank(sysPermission.getSysPermissionId())) {
             sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
             SysPermission oldPer = this.getById(sysPermission.getSysPermissionId());
-            String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+            String code = sysPermission.getUrl().substring(1).replace("/", ":").toUpperCase();
             int codeCount = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
-                    .eq(SysPermission::getMenuType,sysPermission.getMenuType())
-                    .eq(SysPermission::getPermsCode,code)
-                    .ne(SysPermission::getSysPermissionId,oldPer.getSysPermissionId())
+                    .eq(SysPermission::getMenuType, sysPermission.getMenuType())
+                    .eq(SysPermission::getPermsCode, code)
+                    .ne(SysPermission::getSysPermissionId, oldPer.getSysPermissionId())
             );
-            if(codeCount > 0){
+            if (codeCount > 0) {
                 throw new ErrorException(Error.URLNotUnique);
             }
             sysPermission.setPermsCode(code);
@@ -310,12 +310,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             }
         } else {
             sysPermission = PermissionOPUtil.intelligentProcessData(sysPermission);
-            String code = sysPermission.getUrl().substring(1).replace("/",":").toUpperCase();
+            String code = sysPermission.getUrl().substring(1).replace("/", ":").toUpperCase();
             int count = this.baseMapper.selectCount(new LambdaQueryWrapper<SysPermission>()
-                .eq(SysPermission::getMenuType,sysPermission.getMenuType())
-                    .eq(SysPermission::getPermsCode,code)
+                    .eq(SysPermission::getMenuType, sysPermission.getMenuType())
+                    .eq(SysPermission::getPermsCode, code)
             );
-            if(count > 0){
+            if (count > 0) {
                 throw new ErrorException(Error.URLNotUnique);
             }
             sysPermission.setPermsCode(code);
@@ -330,7 +330,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
             sysPermission.setIsLeaf(true);
             sysPermission.setCreateUserId(UserUtil.getUser().getSysUserId());
             this.save(sysPermission);
-            if(CommonEnum.MenuType.SECOND_MENU_TYPE.getCode().equals(sysPermission.getMenuType())){
+            if (CommonEnum.MenuType.SECOND_MENU_TYPE.getCode().equals(sysPermission.getMenuType())) {
                 this.addDefaultPermission(sysPermission);
             }
         }
@@ -448,7 +448,7 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                     .eq(SysPermission::getParentId, parentId)
             );
             // 遍历, 根据每个对象,查找其是否仍有子级
-            permissionList.forEach(item->{
+            permissionList.forEach(item -> {
                 String id = item.getSysPermissionId();
                 int num = this.count(new LambdaQueryWrapper<SysPermission>().eq(SysPermission::getParentId, id));
                 // 有子级, 则递归
@@ -456,23 +456,23 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
                     this.removeChildren(id);
                 }
             });
-
         }
     }
 
 
     /**
      * ****** 子方法 ***** 初始化二级菜单按钮权限
+     *
      * @param sysPermission 二级菜单信息
      */
-    private void addDefaultPermission(SysPermission sysPermission){
-        String [] permissionArr = new String[]{"ADD","UPDATE","DEL","QUERY"};
-        for (int i = 0 ; i< permissionArr.length; i++){
+    private void addDefaultPermission(SysPermission sysPermission) {
+        String[] permissionArr = new String[]{"ADD", "UPDATE", "DEL", "QUERY"};
+        for (int i = 0; i < permissionArr.length; i++) {
             SysPermission buttonPermission = new SysPermission();
             buttonPermission.setParentId(sysPermission.getSysPermissionId());
             buttonPermission.setName(CommonEnum.ButtonName.getEnumByCode(i));
             // isystem:user:add
-            String code = (sysPermission.getUrl().substring(1)+":"+permissionArr[i]).replace("/",":");
+            String code = (sysPermission.getUrl().substring(1) + ":" + permissionArr[i]).replace("/", ":");
             buttonPermission.setPermsCode(code.toUpperCase());
             buttonPermission.setMenuType(2);
             buttonPermission.setSort(i);

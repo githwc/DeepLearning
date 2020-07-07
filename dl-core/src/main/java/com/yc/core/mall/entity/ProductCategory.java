@@ -49,5 +49,6 @@ public class ProductCategory implements Serializable {
      */
     private Integer seqNum;
 
-
+    private String id;
+    private String pid;
 }

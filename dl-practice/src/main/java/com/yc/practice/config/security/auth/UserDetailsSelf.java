@@ -2,6 +2,7 @@ package com.yc.practice.config.security.auth;
 
 import com.yc.core.system.entity.SysUser;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +16,7 @@ import java.util.Collection;
  * @Version: 1.0.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserDetailsSelf extends SysUser implements UserDetails {
 
     /**

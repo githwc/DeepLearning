@@ -1,7 +1,10 @@
 package com.yc.mini.mall.service;
 
-import com.yc.core.mall.entity.MallFloor;
+import cn.hutool.core.lang.tree.Tree;
+import com.yc.core.mini.entity.MallFloor;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * 功能描述:
@@ -12,4 +15,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MallFloorService extends IService<MallFloor> {
 
+    /**
+     * 楼层树
+     * @return tree
+     */
+    List<Tree<String>> tree();
 }

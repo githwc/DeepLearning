@@ -34,14 +34,13 @@ public class MyBatisGenerator {
     /**
      * 文件夹名
      */
-    private static final String MODEL_NAME = "mall";
+    private static final String MODEL_NAME = "mini";
     private static final String AUTHOR = "xieyc";
     /**
      * 要生成的表名
      */
     private static final String[] TABLES = {
-            "mall_fix",
-            "mall_floor"
+            "mini_mall_category",
     };
 
     /**

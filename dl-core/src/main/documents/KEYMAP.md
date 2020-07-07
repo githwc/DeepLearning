@@ -19,7 +19,7 @@
     1.最大化编辑区域           ctrl + shift + f12
     2.打开设置               ctrl + alt + s
     3.关闭当前编辑文件          ctrl + F4
-    4.
+    4.生成get/set,构造函数,toString()  Alt + Insert	
     
     
 	1.Alt+Enter：创建该接口的实现类/实现未实现的方法

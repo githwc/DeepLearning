@@ -1,8 +1,7 @@
 package com.yc.mini.mall.service;
 
-import com.yc.core.mall.entity.MallFix;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.web.bind.annotation.GetMapping;
+import com.yc.core.mini.entity.MallFix;
 
 import java.util.List;
 
@@ -17,8 +16,7 @@ public interface MallFixService extends IService<MallFix> {
 
     /**
      * 获取轮播图或导航栏
-     * @param type 类型 0:轮播图 1:导航栏
      * @return list
      */
-    List<MallFix> listFix(String type);
+    List<MallFix> listFix();
 }

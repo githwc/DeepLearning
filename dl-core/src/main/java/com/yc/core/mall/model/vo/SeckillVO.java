@@ -3,9 +3,9 @@ package com.yc.core.mall.model.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yc.core.mall.entity.MallSeckill;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
  * @Version: 1.0.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class SeckillVO extends MallSeckill implements Serializable {
 
     private static final long serialVersionUID = 1L;

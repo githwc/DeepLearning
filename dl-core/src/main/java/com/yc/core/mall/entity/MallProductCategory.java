@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 功能描述:商品类别
  *
- * @Author:  xieyc && 紫色年华
+ * @Author: xieyc && 紫色年华
  * @Date 2020-05-08
  * @Version: 1.0.0
  */
@@ -38,21 +38,19 @@ public class MallProductCategory implements Serializable {
      */
     private String name;
     /**
-     * 类别状态0-正常,1-已废弃
-     */
-    private Integer state;
-    /**
      * 排序
      */
     private Integer sort;
+
     /**
-     * 创建时间
+     * 图标
      */
-    private LocalDateTime createTime;
+    private String icon;
+
     /**
-     * 更新时间
+     * 等级
      */
-    private LocalDateTime updateTime;
+    private Integer level;
 
     // ============= 非表字段 ==============
     /**

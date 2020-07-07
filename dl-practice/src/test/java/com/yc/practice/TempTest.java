@@ -4,10 +4,12 @@ import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yc.common.constant.CommonEnum;
 import com.yc.core.mall.entity.ProductCategory;
 import com.yc.core.region.entity.Region;
 import com.yc.core.region.mapper.RegionMapper;
+import com.yc.practice.mall.service.ProductCategoryService;
 import com.yc.practice.region.service.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -37,6 +39,35 @@ public class TempTest {
 
     @Autowired
     private RegionService regionService;
+
+    @Autowired
+    private ProductCategoryService productCategoryService;
+
+    @Test
+    public void categoryInit(){
+        List<ProductCategory> dbList = productCategoryService.list(Wrappers.<ProductCategory>lambdaQuery()
+                .eq(ProductCategory::getLevel,5)
+                .orderByAsc(ProductCategory::getProductCategoryPid)
+        );
+        List<ProductCategory> list = new ArrayList<>();
+        int num = 1000;
+        String pid = "";
+        for (int i = 0; i < dbList.size(); i++) {
+            ProductCategory productCategory =
+                    productCategoryService.getOne(new LambdaQueryWrapper<ProductCategory>()
+                            .eq(ProductCategory::getProductCategoryId,dbList.get(i).getProductCategoryPid())
+                    );
+            if(!pid.equals(productCategory.getProductCategoryId())){
+                num = 1000;
+                pid = productCategory.getProductCategoryId();
+            }
+            // dbList.get(i).setB(productCategory.getA());
+            // dbList.get(i).setA(productCategory.getA()+num);
+            num++;
+            list.add(dbList.get(i));
+        }
+        productCategoryService.updateBatchById(list);
+    }
 
     @Test
     public void tests(){

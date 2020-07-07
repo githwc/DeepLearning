@@ -3,6 +3,7 @@ package com.yc.core.mall.model.form;
 import com.yc.core.mall.entity.MallOrder;
 import com.yc.core.mall.entity.MallOrderItem;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @Version: 1.0.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class OrderForm extends MallOrder {
 
     /**
