@@ -38,12 +38,10 @@ dl:
     jwt-secret: deepLearning-dev@123*
     excludes:
       - /
-      - /login
-      - /auth/**
       - /druid/**
       - /upload/**
+      - /login/wxLogin
       - /websocket/**
-      - /mallOrder/syncCallBackPay
   #===== 文件相关 =====
   upload:
     img-save-path: D://upload//image//

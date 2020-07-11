@@ -61,6 +61,6 @@ public class SystemLogService {
         }
         log.setLogContent(tmpDesc);
         int result = sysLogMapper.insert(log);
-        return result > 0 ? true : false;
+        return result > 0;
     }
 }

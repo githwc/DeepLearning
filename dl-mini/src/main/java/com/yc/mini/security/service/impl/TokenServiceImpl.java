@@ -1,4 +1,4 @@
-package com.yc.practice.config.security.service.impl;
+package com.yc.mini.security.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
@@ -8,24 +8,19 @@ import com.yc.common.constant.CommonConstant;
 import com.yc.common.global.error.Error;
 import com.yc.common.global.error.ErrorException;
 import com.yc.common.propertie.SecurityProperties;
-import com.yc.practice.config.security.utils.JwtTokenUtil;
-import com.yc.core.system.entity.SysUser;
-import com.yc.core.system.mapper.SysUserMapper;
-import com.yc.practice.config.security.auth.UserDetailsSelf;
-import com.yc.practice.config.security.service.TokenService;
-import com.yc.practice.system.service.SysPermissionService;
+import com.yc.core.mini.entity.MiniUser;
+import com.yc.core.mini.mapper.MiniUserMapper;
+import com.yc.mini.security.auth.UserDetailsSelf;
+import com.yc.mini.security.service.TokenService;
+import com.yc.mini.security.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 功能描述:JWT
@@ -39,21 +34,16 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class TokenServiceImpl implements TokenService {
 
-    private final SysUserMapper sysUserMapper;
+    private final MiniUserMapper miniUserMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final SecurityProperties securityProperties;
-    private final SysPermissionService sysPermissionService;
-    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public TokenServiceImpl(SysUserMapper sysUserMapper, JwtTokenUtil jwtTokenUtil,
-                            RedisTemplate<String, String> redisTemplate,
-                            SecurityProperties securityProperties, SysPermissionService sysPermissionService) {
-        this.sysUserMapper = sysUserMapper;
+    public TokenServiceImpl(MiniUserMapper miniUserMapper, JwtTokenUtil jwtTokenUtil,
+                            SecurityProperties securityProperties) {
+        this.miniUserMapper = miniUserMapper;
         this.jwtTokenUtil = jwtTokenUtil;
-        this.redisTemplate = redisTemplate;
         this.securityProperties = securityProperties;
-        this.sysPermissionService = sysPermissionService;
     }
 
     @Override
@@ -63,14 +53,10 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public UsernamePasswordAuthenticationToken verify(HttpServletResponse response, String token) {
-        String loginName = jwtTokenUtil.getName(token);
-        SysUser sysUser = sysUserMapper.loginByName(loginName);
+        String id = jwtTokenUtil.getId(token);
+        MiniUser miniUser = miniUserMapper.selectById(id);
         UserDetailsSelf userDetailsSelf = new UserDetailsSelf();
-        BeanUtil.copyProperties(sysUser, userDetailsSelf);
-        List<String> permissions = sysPermissionService.getUserPerm(userDetailsSelf.getLoginName());
-        userDetailsSelf.setAuthorities(
-                AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions))
-        );
+        BeanUtil.copyProperties(miniUser, userDetailsSelf);
         try {
             jwtTokenUtil.validateToken(token);
             DecodedJWT jwt = jwtTokenUtil.getDecodedJWT(token);
@@ -83,17 +69,14 @@ public class TokenServiceImpl implements TokenService {
             log.debug("续签时间：{}", DateUtil.formatDateTime(renewTime));
             // 满足续签条件
             if (now.compareTo(renewTime) >= 0) {
-                String newToken = this.create(jwtTokenUtil.getName(token));
+                String newToken = this.create(jwtTokenUtil.getId(token));
                 response.addHeader(CommonConstant.HEADER_STRING, CommonConstant.TOKEN_PREFIX + " " + newToken);
                 response.setHeader("Access-Control-Allow-Headers", "authorization");
                 response.setHeader("Access-Control-Expose-Headers", "authorization");
-                // 续签缓存
-                redisTemplate.opsForValue().set(CommonConstant.SYS_USERS_CACHE + sysUser.getSysUserId(), sysUser.getSysUserId(),
-                        securityProperties.getJwtActiveTime(), TimeUnit.MILLISECONDS);
             }
         } catch (TokenExpiredException e) {
             throw new ErrorException(Error.TokenError);
         }
-        return new UsernamePasswordAuthenticationToken(userDetailsSelf, userDetailsSelf.getPassWord(), AuthorityUtils.commaSeparatedStringToAuthorityList(String.join(",", permissions)));
+        return new UsernamePasswordAuthenticationToken(userDetailsSelf, null);
     }
 }

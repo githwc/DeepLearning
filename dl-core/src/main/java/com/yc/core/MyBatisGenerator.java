@@ -40,7 +40,7 @@ public class MyBatisGenerator {
      * 要生成的表名
      */
     private static final String[] TABLES = {
-            "mini_mall_category",
+            "mini_user",
     };
 
     /**

@@ -1,4 +1,4 @@
-package com.yc.common.webMvcConfig;
+package com.yc.common.config.webMvc;
 
 import com.yc.common.propertie.UploadProperties;
 import org.springframework.beans.factory.annotation.Autowired;

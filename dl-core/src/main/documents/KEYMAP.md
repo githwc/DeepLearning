@@ -5,6 +5,7 @@
     4.按名字搜索所有文件        ctrl + shift + N
     5.controller到impl      ctrl + Alt + 左键
     6.查找类或方法在哪被调用    Alt + F7
+    7.方法参数提示显示         ctrl + P
     
 [编辑]
     1.最大化编辑区            ctrl + shift + F12

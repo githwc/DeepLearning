@@ -1,4 +1,4 @@
-package com.yc.common.utils;
+package com.yc.practice.config.security.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 /**
- * 功能描述:
+ * 功能描述: 生成jwtToken
  *
  * @Author: xieyc && 紫色年华
  * @Date: 2020-03-20
@@ -33,7 +33,8 @@ public class JwtTokenUtil {
 
     /**
      * 根据用户信息生成token
-     * @param name   用户信息
+     *
+     * @param name 用户信息
      * @return token
      */
     public String createJWT(String name) {
@@ -61,17 +62,6 @@ public class JwtTokenUtil {
 
 
     /**
-     * 获取token中的id
-     *
-     * @param token token
-     * @return string
-     */
-    public String getId(String token) {
-        DecodedJWT jwt = JWT.decode(token);
-        return jwt.getClaim("id").toString();
-    }
-
-    /**
      * 获取token中的name
      *
      * @param token token
@@ -79,7 +69,7 @@ public class JwtTokenUtil {
      */
     public String getName(String token) {
         DecodedJWT jwt = JWT.decode(token);
-        return jwt.getClaim("name").asString();
+        return jwt.getClaim(CLAIM_KEY_USERNAME).asString();
     }
 
     /**

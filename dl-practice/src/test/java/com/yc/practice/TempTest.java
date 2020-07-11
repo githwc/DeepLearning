@@ -1,24 +1,23 @@
 package com.yc.practice;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yc.common.constant.CommonEnum;
+import com.yc.common.global.error.ErrorException;
 import com.yc.core.mall.entity.ProductCategory;
 import com.yc.core.region.entity.Region;
-import com.yc.core.region.mapper.RegionMapper;
+import com.yc.core.system.entity.SysUser;
 import com.yc.practice.mall.service.ProductCategoryService;
 import com.yc.practice.region.service.RegionService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sound.midi.Soundbank;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -34,19 +33,21 @@ import java.util.*;
  */
 @SpringBootTest
 @Slf4j
-@RunWith(SpringRunner.class)
+// @RunWith(SpringRunner.class)
 public class TempTest {
 
     @Autowired
     private RegionService regionService;
 
+
     @Autowired
     private ProductCategoryService productCategoryService;
 
+
     @Test
-    public void categoryInit(){
+    public void categoryInit() {
         List<ProductCategory> dbList = productCategoryService.list(Wrappers.<ProductCategory>lambdaQuery()
-                .eq(ProductCategory::getLevel,5)
+                .eq(ProductCategory::getLevel, 5)
                 .orderByAsc(ProductCategory::getProductCategoryPid)
         );
         List<ProductCategory> list = new ArrayList<>();
@@ -55,9 +56,9 @@ public class TempTest {
         for (int i = 0; i < dbList.size(); i++) {
             ProductCategory productCategory =
                     productCategoryService.getOne(new LambdaQueryWrapper<ProductCategory>()
-                            .eq(ProductCategory::getProductCategoryId,dbList.get(i).getProductCategoryPid())
+                            .eq(ProductCategory::getProductCategoryId, dbList.get(i).getProductCategoryPid())
                     );
-            if(!pid.equals(productCategory.getProductCategoryId())){
+            if (!pid.equals(productCategory.getProductCategoryId())) {
                 num = 1000;
                 pid = productCategory.getProductCategoryId();
             }
@@ -70,7 +71,7 @@ public class TempTest {
     }
 
     @Test
-    public void tests(){
+    public void tests() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         long lt = new Long("1591254000000");
         Date date = new Date(lt);
@@ -85,7 +86,7 @@ public class TempTest {
     }
 
     @Test
-    public void test1(){
+    public void test1() {
         // BigDecimal a = null;
         // Integer faultRate = 6;
         // a = BigDecimal.valueOf(faultRate.doubleValue()/3);
@@ -96,18 +97,18 @@ public class TempTest {
         BigDecimal dd = BigDecimal.valueOf(9);
         NumberFormat percent = NumberFormat.getPercentInstance();
         percent.setMaximumFractionDigits(2);
-        BigDecimal ddd = dd.divide(cc,2,RoundingMode.HALF_UP);
+        BigDecimal ddd = dd.divide(cc, 2, RoundingMode.HALF_UP);
         System.out.println(ddd);
         System.out.println(percent.format(ddd.doubleValue()));
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = new Date(new Long("1591214400000"));
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY,-8);
+        calendar.add(Calendar.HOUR_OF_DAY, -8);
         String startTime = simpleDateFormat.format(calendar.getTime());
         System.out.println(startTime);
         // System.out.println(startTime.substring(startTime.length()-5));
@@ -136,7 +137,7 @@ public class TempTest {
         // 开始时间
         int startTime = b + c;
         // 间隔时间
-        int limit = 30*60;
+        int limit = 30 * 60;
 
         int initForntTime = startTime - limit;
         int initEndTime = startTime;
@@ -144,13 +145,13 @@ public class TempTest {
         for (int i = 0; i < Ahoursmin; i++) {
             Map map = new HashMap();
             // 开始时间加limit分钟
-            initForntTime = initForntTime+limit;
+            initForntTime = initForntTime + limit;
             // 结束时间加limit分钟
-            initEndTime = initEndTime+limit;
+            initEndTime = initEndTime + limit;
             String frontTime = "";
-            String endTime = "" ;
+            String endTime = "";
             // 起
-            if(initForntTime != 0){
+            if (initForntTime != 0) {
                 // 换算成小时
                 int AHourst = (Integer.valueOf(initForntTime) / 3600);
                 // 换算成分钟
@@ -158,22 +159,22 @@ public class TempTest {
                 //把生成的时间转化成字符串
                 String hourst = String.valueOf(AHourst);
                 String minute = String.valueOf(Aminute);
-                if(hourst.length() == 1){
-                    hourst = "0"+hourst;
+                if (hourst.length() == 1) {
+                    hourst = "0" + hourst;
                 }
-                if(hourst.equals("24")){
+                if (hourst.equals("24")) {
                     hourst = "00";
                 }
-                if(Integer.parseInt(hourst)>24){
-                    hourst = "0"+ (Integer.parseInt(hourst) - 24);
+                if (Integer.parseInt(hourst) > 24) {
+                    hourst = "0" + (Integer.parseInt(hourst) - 24);
                 }
-                if(minute.length() == 1){
-                    minute = "0"+minute;
+                if (minute.length() == 1) {
+                    minute = "0" + minute;
                 }
                 frontTime = hourst + ":" + minute;
             }
             // 至
-            if(initEndTime != 0){
+            if (initEndTime != 0) {
                 //换算成小时
                 int AHourst = (Integer.valueOf(initEndTime) / 3600);
                 //换算成分钟
@@ -181,39 +182,39 @@ public class TempTest {
                 //把生成的时间转化成字符串
                 String hourst = String.valueOf(AHourst);
                 String minute = String.valueOf(Aminute);
-                if(hourst.length() == 1){
-                    hourst = "0"+hourst;
+                if (hourst.length() == 1) {
+                    hourst = "0" + hourst;
                 }
-                if(hourst.equals("24")){
+                if (hourst.equals("24")) {
                     hourst = "00";
                 }
-                if(Integer.parseInt(hourst)>24){
-                    hourst = "0"+ (Integer.parseInt(hourst) - 24);
+                if (Integer.parseInt(hourst) > 24) {
+                    hourst = "0" + (Integer.parseInt(hourst) - 24);
                 }
-                if(minute.length() == 1){
-                    minute = "0"+minute;
+                if (minute.length() == 1) {
+                    minute = "0" + minute;
                 }
                 endTime = hourst + ":" + minute;
             }
-            map.put("section", frontTime+"~"+endTime);
-            list.add(frontTime+"~"+endTime);
+            map.put("section", frontTime + "~" + endTime);
+            list.add(frontTime + "~" + endTime);
             System.out.println(map);
         }
         System.out.println(list);
     }
 
     @Test
-    public void tes(){
+    public void tes() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.HOUR_OF_DAY,-8);
+        calendar.add(Calendar.HOUR_OF_DAY, -8);
         Date d = calendar.getTime();
         System.out.println(d);
     }
 
     @Test
-    public void ads(){
+    public void ads() {
         // String ss = "8IYMZIJPK\u001B02\u001B0.10\u001B01\u001B05\u001B02\u001B02\u001B\u001B" +
         //         "\u001B12020022900087894149\u001B\u001B12020022900087894149\u001B2020-02-29\u001B14:32:28\u001B06\u001B10286632\u001B1\u001B222\u001B444\u001B111\u001B333\u001B0\u001B0.00\u001B0.00\u001B0.00\u001B\u001B\u001B\u001B01\u001B0020000000\u001B2020-03-20\u001B10000000000000145513\u001B02\u001B3\u001B\u001B\u001B12020022900087894148\u001B02\u001B0.00\u001B0.00\u001B00\u001B00";
         // String[] arr = ss.split(String.valueOf((char)27));
@@ -259,13 +260,13 @@ public class TempTest {
                 "20200102T100100fCsx7\u001B02\u001B0.10\u001B01\u001B05\u001B02\u001B02\u001B\u001B\u001B1JFT2020022900002805178\u001B\u001B12020022900087898284\u001B2020-02-29\u001B11:59:28\u001B06\u001B10281030\u001B1\u001B222\u001B444\u001B111\u001B333\u001B0\u001B0.00\u001B0.00\u001B0.00\u001B\u001B\u001B\u001B01\u001B0020000000\u001B2020-03-20\u001B10000000000000145513\u001B01\u001B3\u001B\u001B\u001B\u001B\u001B0.00\u001B0.00\u001B00\u001B00\n" +
                 "000E0000001182000605\u001B02\u001B0.01\u001B01\u001B05\u001B02\u001B02\u001B\u001B\u001B1JFT2020022900002805215\u001B\u001B12020022900087898315\u001B2020-02-29\u001B13:53:12\u001B01\u001B10281031\u001B1\u001B222\u001B444\u001B111\u001B333\u001B0\u001B0.00\u001B0.00\u001B0.00\u001B\u001B\u001B\u001B01\u001B0020000000\u001B2020-03-20\u001B10000000000000145513\u001B01\u001B3\u001B\u001B\u001B\u001B\u001B0.00\u001B0.00\u001B00\u001B00\n" +
                 "000E0000000196702754\u001B02\u001B0.01\u001B01\u001B05\u001B02\u001B02\u001B\u001B\u001B1JFT2020022900002805274\u001B\u001B12020022900087898385\u001B2020-02-29\u001B14:29:46\u001B01\u001B10281031\u001B1\u001B222\u001B444\u001B111\u001B333\u001B0\u001B0.00\u001B0.00\u001B0.00\u001B\u001B\u001B\u001B01\u001B0020000000\u001B2020-03-20\u001B10000000000000145513\u001B01\u001B3\u001B\u001B\u001B\u001B\u001B0.00\u001B0.00\u001B00\u001B00";
-        String[] arra = dd.split(String.valueOf((char)10));
-        List<Map<Integer,String>> list = new ArrayList<>();
+        String[] arra = dd.split(String.valueOf((char) 10));
+        List<Map<Integer, String>> list = new ArrayList<>();
         for (int i = 1; i < arra.length; i++) {
-            String[] columns = arra[i].split(String.valueOf((char)27));
-            Map<Integer,String> mapItem = new HashMap<>();
+            String[] columns = arra[i].split(String.valueOf((char) 27));
+            Map<Integer, String> mapItem = new HashMap<>();
             for (int j = 0; j < columns.length; j++) {
-                mapItem.put(j,columns[j]);
+                mapItem.put(j, columns[j]);
             }
             list.add(mapItem);
         }
@@ -288,12 +289,15 @@ public class TempTest {
             this.code = code;
             this.name = name;
         }
+
         public String getCode() {
             return code;
         }
+
         public String getName() {
             return name;
         }
+
         public static String getEnumByCode(String code) {
             for (TransCode bt : values()) {
                 if (bt.code.equals(code)) {
@@ -306,7 +310,7 @@ public class TempTest {
 
 
     @Test
-    public void goodClass0(){
+    public void goodClass0() {
         String result = "[{\n" +
                 "\t\t\"channelList\": [1, 6],\n" +
                 "\t\t\"hasChildren\": true,\n" +
@@ -1827,20 +1831,46 @@ public class TempTest {
     }
 
     @Test
-    public void dealRegion(){
+    public void dealRegion() {
         List<Region> list = regionService.list(new LambdaQueryWrapper<Region>()
-            .eq(Region::getRegionLevel,3)
+                .eq(Region::getRegionLevel, 3)
                 .orderByAsc(Region::getRegionCode)
         );
         List<Region> updateList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             Region region = new Region();
-            BeanUtil.copyProperties(list.get(i),region);
-            region.setRegionCode(region.getRegionCode().substring(0,6));
+            BeanUtil.copyProperties(list.get(i), region);
+            region.setRegionCode(region.getRegionCode().substring(0, 6));
             region.setSort(i);
             updateList.add(region);
-        };
+        }
+        ;
         System.out.println(updateList);
         regionService.updateBatchById(updateList);
     }
+
+    @Test
+    public void dealLowData() {
+        // String url ="https://hutool.cn?shopId=%s&type=%s";
+        // // String url ="www.xxx.com/s?index=%s";
+        // String ss = String.format(url,"aaaa","1");
+        // System.out.println(ss);
+        // SimpleDateFormat
+        // Long nowLong = Long.parseLong(new SimpleDateFormat(CommonConstant.yyyyMMddHHmmss).format(new Date()));
+        // System.out.println(nowLong);
+
+        // String ss = "";
+        // String [] a = ss.split(",");
+        // System.out.println(ObjectUtil.isNull(a));
+        // System.out.println(a.length);
+
+        // System.out.println(RandomUtil.randomNumbers(4));
+
+        SysUser sysUser = null;
+
+        ObjectUtil.isNull(sysUser);
+        System.out.println("错误");
+    }
+
+
 }

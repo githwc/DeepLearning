@@ -24,7 +24,7 @@ public enum Error implements IError {
     TokenError(401, 99999, "登录信息已失效，请重新登录！"),
     CheckCodeError(403, 40101, "验证码错误"),
     ParameterNotFound(403, 40102, "请求参数错误"),
-    GetCodeAgain(403, 40104, "验证码不存在!"),
+    GetCodeAgain(403, 40104, "验证码已失效!"),
     IllegalRequest(403, 40105, "非法请求"),
 
     /**
